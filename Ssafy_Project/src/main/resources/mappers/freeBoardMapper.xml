@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.FreeBoardDao">
+
+	<insert id="insertBoard" parameterType="FreeBoard">
+		INSERT INTO
+		freeBoard(fb_userId, fb_title, fb_writer, fb_content)
+		VALUES(#{fb_userId}, #{fb_title}, #{fb_writer}, #{fb_content})
+	</insert>
+
+	<select id="search" parameterType="SearchCondition">
+		SELECT * FROM freeBoard
+		<if test="key != 'none'">
+			WHERE ${key} LIKE CONCAT ('%',#{word}, '%')
+		</if>
+		<if test="orderBy != 'none'">
+			ORDER BY ${orderyBy} ${orderByDir}
+		</if>
+	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="FreeBoard">
+		SELECT * FROM freeBoard
+		WHERE fb_num = #{fb_num}
+	</select>
+	
+	<update id="updateBoard" parameterType="FreeBoard">
+		UPDATE freeBoard
+		SET fb_title = #{fb_title}, fb_content = #{fb_content}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM freeBoard
+		WHERE fb_num = #{fb_num}
+	</delete>
+
+</mapper>

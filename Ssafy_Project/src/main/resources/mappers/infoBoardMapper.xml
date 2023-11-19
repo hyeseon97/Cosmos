@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.InfoBoardDao">
+
+	<insert id="insertBoard" parameterType="InfoBoard">
+		INSERT INTO
+		infoBoard(ib_title, ib_content)
+		VALUES (#{ib_title}, #{ib_content})
+	</insert>
+
+	<select id="selectAll" parameterType="SearchCondition"
+		resultType="InfoBoard">
+		SELECT * FROM infoBoard
+		<if test="key != 'none'">
+			WHERE ${key} LIKE CONCAT('%',#{word},'%')
+		</if>
+		<if test="orderBy != 'none'">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>
+	</select>
+
+	<select id="selectOne" parameterType="int"
+		resultType="InfoBoard">
+		SELECT * FROM infoBoard
+		WHERE ib_num = #{ib_num}
+	</select>
+
+	<update id="updateBoard" parameterType="InfoBoard">
+		UPDATE infoBoard
+		SET
+		ib_title=#{ib_title}, ib_content = #{ib_content}
+	</update>
+
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM infoBoard
+		WHERE ib_num = #{ib_num}
+	</delete>
+
+</mapper>
