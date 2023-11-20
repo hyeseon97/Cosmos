@@ -22,8 +22,8 @@ public class InfoCommentServiceImpl implements InfoCommentService {
 	}
 
 	@Override
-	public List<InfoComment> getListInfoComment() {
-		return infoCommentDao.selectAll();
+	public List<InfoComment> getListInfoComment(int boardNum) {
+		return infoCommentDao.selectAll(boardNum);
 	}
 
 }

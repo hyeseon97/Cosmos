@@ -30,7 +30,7 @@ const router = useRouter();
 // const user = ref(null);
 const user = ref("11");
 
-console.log("현재 게시글은 " + route.params.num + "번 게시글");
+// console.log("현재 게시글은 " + route.params.num + "번 게시글");
 
 
 onMounted(() => {

@@ -8,6 +8,6 @@ public interface FreeCommentDao {
 
 	int insertComment(FreeComment freeComment);
 
-	List<FreeComment> selectAll();
+	List<FreeComment> selectAll(int boardNum);
 
 }

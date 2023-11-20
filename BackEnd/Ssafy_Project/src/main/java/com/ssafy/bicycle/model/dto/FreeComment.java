@@ -59,6 +59,14 @@ public class FreeComment {
 	public void setFc_regdate(String fc_regdate) {
 		this.fc_regdate = fc_regdate;
 	}
+
+	@Override
+	public String toString() {
+		return "FreeComment [fc_boardNum=" + fc_boardNum + ", fc_userId=" + fc_userId + ", fc_userName=" + fc_userName
+				+ ", fc_content=" + fc_content + ", fc_regdate=" + fc_regdate + "]";
+	}
+	
+	
 	
 	
 }

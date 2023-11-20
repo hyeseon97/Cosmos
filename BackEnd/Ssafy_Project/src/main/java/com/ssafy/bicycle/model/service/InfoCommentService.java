@@ -9,5 +9,5 @@ public interface InfoCommentService {
 	int writeInfoComment(InfoComment infoComment);
 
 	// 댓글 조회
-	List<InfoComment> getListInfoComment();
+	List<InfoComment> getListInfoComment(int boardNum);
 }

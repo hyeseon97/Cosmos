@@ -5,12 +5,14 @@
 <mapper namespace="com.ssafy.bicycle.model.dao.FreeCommentDao">
 	
 	<insert id="insertComment" parameterType="FreeComment">
-		INSERT INTO freeComment(fc_userId, fc_userName, fc_content)
-		VALUES(#{fc_userId}, #{fc_userName}, #{fc_content})
+		INSERT INTO freeComment(fc_boardNum, fc_userId, fc_userName, fc_content)
+		VALUES(#{fc_boardNum}, #{fc_userId}, #{fc_userName}, #{fc_content})
 	</insert>
 
-	<select id="selectAll" resultType="FreeComment">
+	<select id="selectAll" parameterType="int" resultType="FreeComment">
 		SELECT * FROM freeComment
+		WHERE fc_boardNum = #{boardNum}
+		ORDER BY fc_num DESC;
 	</select>
 
 </mapper>

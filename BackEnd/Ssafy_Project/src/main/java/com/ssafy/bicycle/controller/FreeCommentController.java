@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +24,14 @@ public class FreeCommentController {
 	
 	@PostMapping("/freeComment")
 	public ResponseEntity<?> writeFreeComment(@RequestBody FreeComment freeComment){
+		System.out.println(freeComment);
 		freeCommentService.writeFreeComment(freeComment);
 		return new ResponseEntity<FreeComment>(freeComment,HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/freeComment/{num}")
-	public ResponseEntity<?> list(){
-		List<FreeComment> list = freeCommentService.getListFreeComment();
+	public ResponseEntity<?> list(@PathVariable int num){
+		List<FreeComment> list = freeCommentService.getListFreeComment(num);
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}

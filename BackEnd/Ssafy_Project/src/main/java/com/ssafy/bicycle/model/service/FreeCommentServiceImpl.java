@@ -22,8 +22,8 @@ public class FreeCommentServiceImpl implements FreeCommentService {
 	}
 
 	@Override
-	public List<FreeComment> getListFreeComment() {
-		return freeCommentDao.selectAll();
+	public List<FreeComment> getListFreeComment(int boardNum) {
+		return freeCommentDao.selectAll(boardNum);
 	}
 
 	

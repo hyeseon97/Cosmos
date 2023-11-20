@@ -10,6 +10,6 @@ public interface InfoCommentDao {
 	int insertComment(InfoComment infocomment);
 
 	// 댓글 조회
-	List<InfoComment> selectAll();
+	List<InfoComment> selectAll(int boardNum);
 
 }

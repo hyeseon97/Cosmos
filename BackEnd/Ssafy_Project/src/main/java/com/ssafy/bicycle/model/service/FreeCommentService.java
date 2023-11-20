@@ -10,6 +10,6 @@ public interface FreeCommentService {
 	int writeFreeComment(FreeComment freeComment);
 	
 	// 댓글 조회
-	List<FreeComment> getListFreeComment();
+	List<FreeComment> getListFreeComment(int boardNum);
 	
 }

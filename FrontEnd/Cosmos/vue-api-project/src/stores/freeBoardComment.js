@@ -7,8 +7,8 @@ const REST_BOARD_API = `http://localhost:8080/api/freeComment`
 
 export const useFreeCommentStore = defineStore('freeComment', () => {
   const freeCommentList = ref([])
-  const getFreeCommentList = function () {
-    axios.get(REST_BOARD_API)
+  const getFreeCommentList = function (boardNum) {
+    axios.get(`${REST_BOARD_API}/${boardNum}`)
       .then((response) => {
       freeCommentList.value = response.data
       })
@@ -16,21 +16,10 @@ export const useFreeCommentStore = defineStore('freeComment', () => {
 
   //게시글 등록
   const createComment = function (comment) {
-    axios({
-      url: REST_BOARD_API,
-      method: 'POST',
-      //아래꺼 없어도 알아서 보내더라 axios 쵝오~ 
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: comment.value
-    })
-      .then(() => {
-        
+    return axios.post(REST_BOARD_API, comment.value)
+      .then((response) => {
+        return response.data;
       })
-      .catch((err) => {
-      console.log(err)
-    })
   }
   return { freeCommentList, getFreeCommentList, createComment }
 })

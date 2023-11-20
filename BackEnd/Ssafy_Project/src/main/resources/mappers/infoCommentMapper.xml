@@ -5,12 +5,14 @@
 <mapper namespace="com.ssafy.bicycle.model.dao.InfoCommentDao">
 
 <insert id="insertComment" parameterType="InfoComment">
-	INSERT INTO infoComment(ic_userId, ic_userName, ic_content)
-	VALUES(#{ic_userId}, #{ic_userName}, #{ic_content})
+	INSERT INTO infoComment(ic_boardNum, ic_userId, ic_userName, ic_content)
+	VALUES(#{ic_boardNum}, #{ic_userId}, #{ic_userName}, #{ic_content})
 </insert>
 
 <select id="selectAll" resultType="InfoComment">
 	SELECT * FROM infoComment
+	WHERE ic_boardNum = #{boardNum}
+	ORDER BY ic_num DESC;
 </select>
 
 </mapper>
