@@ -6,10 +6,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +19,6 @@ import com.ssafy.bicycle.model.dto.InfoBoard;
 import com.ssafy.bicycle.model.dto.SearchCondition;
 import com.ssafy.bicycle.model.service.InfoBoardService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -29,6 +30,7 @@ public class InfoBoardController {
 	// 등록
 	@PostMapping("/info")
 	public ResponseEntity<?> write(@RequestBody InfoBoard infoBoard) {
+		System.out.println(infoBoard);
 
 		infoBoardService.writeBoard(infoBoard);
 
@@ -70,8 +72,9 @@ public class InfoBoardController {
 	}
 
 	// 삭제
-	@Delete("/info/{num}")
-	public ResponseEntity<?> delete(@RequestBody int num) {
+	@DeleteMapping("/info/{num}")
+	public ResponseEntity<?> delete(@PathVariable int num) {
+		System.out.println("delete " + num);
 		if (infoBoardService.removeInfo(num)) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		}

@@ -19,7 +19,7 @@
 //import com.ssafy.bicycle.model.service.CourseMapService;
 //import com.ssafy.bicycle.model.service.CourseService;
 //
-//import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//
 //
 //@RestController
 //@RequestMapping("/api")

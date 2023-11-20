@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class FreeCommentController {
 	private FreeCommentService freeCommentService;
 	
 	@PostMapping("/freeComment")
-	public ResponseEntity<?> writeFreeComment(FreeComment freeComment){
+	public ResponseEntity<?> writeFreeComment(@RequestBody FreeComment freeComment){
 		freeCommentService.writeFreeComment(freeComment);
 		return new ResponseEntity<FreeComment>(freeComment,HttpStatus.CREATED);
 	}

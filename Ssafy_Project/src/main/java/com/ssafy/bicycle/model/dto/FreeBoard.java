@@ -1,7 +1,5 @@
 package com.ssafy.bicycle.model.dto;
 
-import java.security.Timestamp;
-
 /**
  * @author SSAFY
  *

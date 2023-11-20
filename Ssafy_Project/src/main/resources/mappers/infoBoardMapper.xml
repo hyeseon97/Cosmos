@@ -29,8 +29,8 @@
 
 	<update id="updateBoard" parameterType="InfoBoard">
 		UPDATE infoBoard
-		SET
-		ib_title=#{ib_title}, ib_content = #{ib_content}
+		SET ib_title=#{ib_title}, ib_content = #{ib_content}
+		WHERE ib_num = #{ib_num}
 	</update>
 
 	<delete id="deleteBoard" parameterType="int">

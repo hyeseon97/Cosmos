@@ -10,7 +10,7 @@ public class User {
 	private String user_grade;
 	private int user_boardCnt;
 	private int user_commentCnt;
-	private Timestamp user_joinDate;
+	private String user_joinDate;
 	
 	public User() {
 	}
@@ -82,11 +82,11 @@ public class User {
 		this.user_commentCnt = user_commentCnt;
 	}
 
-	public Timestamp getUser_joinDate() {
+	public String getUser_joinDate() {
 		return user_joinDate;
 	}
 
-	public void setUser_joinDate(Timestamp user_joinDate) {
+	public void setUser_joinDate(String user_joinDate) {
 		this.user_joinDate = user_joinDate;
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class InfoCommentController {
 	private InfoCommentService infoCommentService;
 
 	@PostMapping("/infoComment")
-	public ResponseEntity<?> writeInfoComment(InfoComment infoComment) {
+	public ResponseEntity<?> writeInfoComment(@RequestBody InfoComment infoComment) {
 		infoCommentService.writeInfoComment(infoComment);
 		return new ResponseEntity<InfoComment>(infoComment, HttpStatus.CREATED);
 	}

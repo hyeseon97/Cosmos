@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,6 @@ import com.ssafy.bicycle.model.dto.FreeBoard;
 import com.ssafy.bicycle.model.dto.SearchCondition;
 import com.ssafy.bicycle.model.service.FreeBoardService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -64,6 +64,7 @@ public class FreeBoardController {
 	// 수정
 	@PutMapping("/free")
 	public ResponseEntity<?> update(@RequestBody FreeBoard freeBoard) {
+		System.out.println();
 		if (freeBoardService.modifyFree(freeBoard)) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		}
@@ -72,7 +73,7 @@ public class FreeBoardController {
 
 	// 삭제
 	@DeleteMapping("/free/{num}")
-	public ResponseEntity<?> delete(@RequestBody int num) {
+	public ResponseEntity<?> delete(@PathVariable int num) {
 		if (freeBoardService.removeFree(num)) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		}
