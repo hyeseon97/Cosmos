@@ -243,7 +243,7 @@ const router = createRouter({
           component: UserInfo,
         },
         {
-          path: "update",
+          path: "",
           name: "userUpdate",
           component: UserUpdate,
         },

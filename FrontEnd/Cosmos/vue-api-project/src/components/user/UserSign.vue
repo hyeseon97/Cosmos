@@ -18,9 +18,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '../../stores/user';
+import { useRoute, useRouter} from 'vue-router';
 
+const userStore = useUserStore();
 const router = useRouter();
 
 const user = ref({
@@ -32,7 +34,7 @@ const user = ref({
 
 const sign = function(){
   console.log(user.value)
-  router.push({ name: "login" })
+  router.push({ name: "sign" })
 }
 
 </script>

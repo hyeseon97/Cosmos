@@ -13,7 +13,7 @@ public interface UserService {
 	List<User> getUserList();
 	
 	// 회원 한명 조회
-	User getUserOne(int num);
+	User getUserOne(String id);
 	
 	// 회원정보 수정
 	boolean modifyUser(User user);
@@ -21,6 +21,4 @@ public interface UserService {
 	// 회원탈퇴
 	boolean removeUser(int num);
 	
-	// 로그인
-	User login(User user);
 }

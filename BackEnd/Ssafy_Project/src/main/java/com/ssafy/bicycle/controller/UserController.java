@@ -48,6 +48,16 @@ public class UserController {
 		return userService.getUserList();
 	}
 
+	// 유저 한개
+	@GetMapping("/user/{id}")
+	public ResponseEntity<?> detail(@PathVariable String id){
+		User user = userService.getUserOne(id);
+		if(user == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+	
 	// 마이페이지 > 내 정보 수정
 	// 관리자 페이지
 	@PutMapping("/user")
@@ -71,7 +81,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
 
-		User dbUser = userService.login(user);
+		User dbUser = userService.getUserOne(user.getUser_id());
 
 		HttpStatus status = null;
 

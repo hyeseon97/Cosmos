@@ -13,10 +13,7 @@ public interface UserDao {
 	List<User> selectAll();
 	
 	// 한명조회
-	User selectOne(int num);
-	
-	// 한명 아이디로 조회(로그인 할 때 아이디 확인을 위해)
-	User selectOne2(User user);
+	User selectOne(String id);
 	
 	// 정보수정
 	int updateUser(User user);

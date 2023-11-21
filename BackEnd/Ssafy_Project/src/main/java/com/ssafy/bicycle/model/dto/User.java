@@ -3,6 +3,7 @@ package com.ssafy.bicycle.model.dto;
 import java.security.Timestamp;
 
 public class User {
+	private int user_num;
 	private String user_id;
 	private String user_pw;
 	private String user_name;
@@ -24,6 +25,14 @@ public class User {
 		this.user_grade = "브론즈";
 		this.user_boardCnt = 0;
 		this.user_commentCnt = 0;
+	}
+	
+	public int getUser_num() {
+		return user_num;
+	}
+
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
 	}
 
 	public String getUser_id() {
@@ -89,4 +98,13 @@ public class User {
 	public void setUser_joinDate(String user_joinDate) {
 		this.user_joinDate = user_joinDate;
 	}
+
+	@Override
+	public String toString() {
+		return "User [user_num=" + user_num + ", user_id=" + user_id + ", user_pw=" + user_pw + ", user_name="
+				+ user_name + ", user_birth=" + user_birth + ", user_grade=" + user_grade + ", user_boardCnt="
+				+ user_boardCnt + ", user_commentCnt=" + user_commentCnt + ", user_joinDate=" + user_joinDate + "]";
+	}
+	
+	
 }
