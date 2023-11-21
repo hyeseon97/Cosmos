@@ -14,7 +14,7 @@ import RecommandDetail from "@/components/recommand/RecommandDetail.vue"
 import RecommandComment from "@/components/recommand/RecommandComment.vue"
 
 import CourseList from "@/components/course/CourseList.vue"
-import KakaoMapCreate from "@/components/map/KakaoMapCreate.vue"
+import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
 import CourseDetail from "@/components/course/CourseDetail.vue"
 import CourseComment from "@/components/course/CourseComment.vue"
 
@@ -90,7 +90,7 @@ const router = createRouter({
         {
           path: "create",
           name: "courseCreate",
-          component: KakaoMapCreate,
+          component: KakaoMapCreateBeauty,
         },
         {
           path: ":num",

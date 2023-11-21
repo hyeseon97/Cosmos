@@ -13,6 +13,10 @@
 
 <script setup>
 import { onMounted, ref, toRaw } from 'vue';
+import { useCourseStore } from '@/stores/course'
+
+const courseStore = useCourseStore();
+
 let map = null;
 let manager = null;
 
@@ -51,6 +55,85 @@ const initMap = function () {
   // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
   const zoomControl = new kakao.maps.ZoomControl();
   map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+
+  // ########################################################################
+  // DB에 등록되어있는 코스 지도에 표시하기
+
+  courseStore.getCourseList()
+    .then(() => {
+      const courseList = courseStore.courseList;
+      const lineList = [];
+      courseList.forEach(course => {
+        const line = []
+        console.log(course.courseMap.length)
+        for (var i = 0; i < course.courseMap.length / 2; i++) {
+          console.log("i포문")
+          line.push(new kakao.maps.LatLng(course.courseMap[i * 2], course.courseMap[i * 2 + 1]));
+        }
+
+        // 시작위치 마커 생성
+        const dbmarker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(course.courseMap[0], course.courseMap[1]),
+          title: "위치"
+        });
+        const dbmarkers = [];
+        dbmarkers.push(dbmarker);
+        dbmarker.setMap(map);
+
+        const infowindow = new kakao.maps.InfoWindow({
+          content: course.course_name
+        })
+
+        kakao.maps.event.addListener(dbmarker, 'mouseover', makeOverListener(map, dbmarker, infowindow));
+        kakao.maps.event.addListener(dbmarker, 'mouseout', makeOutListener(infowindow));
+
+        // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+        function makeOverListener(map, marker, infowindow) {
+          return function () {
+            infowindow.open(map, marker);
+          };
+        }
+
+        // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+        function makeOutListener(infowindow) {
+          return function () {
+            infowindow.close();
+          };
+        }
+
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(dbmarker, 'click', function () {
+          // 마커 위에 인포윈도우를 표시합니다
+          infowindow.open(map, dbmarker);
+          console.log("클릭이벤트")
+        });
+
+        // 코스 표시
+        lineList.push(line);
+      });
+
+      lineList.forEach(line => {
+        var polyline = new kakao.maps.Polyline({
+          path: line, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 10, // 선의 두께 입니다
+          strokeColor: '#384C41', // 선의 색깔입니다
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: 'solid' // 선의 스타일입니다
+        });
+
+        // 지도에 선을 표시합니다 
+        polyline.setMap(map);
+      });
+
+
+    })
+
+
+  // ########################################################################
+
+
 
 
   kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
@@ -97,49 +180,22 @@ const initMap = function () {
   // 위에 작성한 옵션으로 Drawing Manager를 생성합니다
   manager = new kakao.maps.drawing.DrawingManager(drawOptions);
 
-  // manager.addListener('remove', function (e) {
-  //   console.log(e.overlayType);
-  //   console.log("delete");
-  //   // 삭제할때
-  //   // 여태까지 저장했던 포인트들의 위도경도 값 삭제하고 다시 저장해야함
-  //   // 그니까 클릭할때 위도경도 임시저장을 하는거고
-  //   // 등록버튼을 눌러야 db에 저장
-  //   point = [];
-  //   markerPosition = null;
-  //   positions = null;
-  //   markers[0].setMap(null);
-  //   markers[1].setMap(null);
-  // });
-
-
-
+  // ============ 다 그린 후에 시작지점 끝지점 마커 표시하기 ============
   manager.addListener('drawend', function (data) {
 
-    // markerPosition = new kakao.maps.LatLng(latlng.getLat(), latlng.getLng());
-
-    positions = [
-      {
-        title: '시작',
-        latlng: new kakao.maps.LatLng(point[0].lat, point[0].lng)
-      },
-      {
-        title: '끝',
-        latlng: new kakao.maps.LatLng(point[point.length - 1].lat, point[point.length - 1].lng)
-      }
-    ];
 
     marker = new kakao.maps.Marker({
       map: map,
-      position: positions[0].latlng,
-      title: positions[0].title
+      position: new kakao.maps.LatLng(point[0].lat, point[0].lng),
+      title: "시작"
     });
     markers.push(marker);
     marker.setMap(map);
 
     marker = new kakao.maps.Marker({
       map: map,
-      position: positions[1].latlng,
-      title: positions[1].title
+      position: new kakao.maps.LatLng(point[point.length - 1].lat, point[point.length - 1].lng),
+      title: "끝"
     });
     markers.push(marker);
     marker.setMap(map);
@@ -150,6 +206,9 @@ const initMap = function () {
 
 };
 
+
+
+// ============ 삭제 버튼 누르면 마커랑 선 지우고 배열데이터도 지우기 ============
 const remove = function () {
   // 모든 오버레이 가져와서 그중 선만 가져오고 0번째꺼 삭제
   manager.remove(manager.getOverlays().polyline[0]);
@@ -159,27 +218,61 @@ const remove = function () {
   // 그니까 클릭할때 위도경도 임시저장을 하는거고
   // 등록버튼을 눌러야 db에 저장
   point = [];
-  markerPosition = null;
-  positions = null;
+  // markerPosition = null;
+  // positions = null;
   markers[0].setMap(null);
   markers[1].setMap(null);
-
+  markers = [];
   console.log(marker)
 };
 
+
+// ============ 경로 그리기 버튼 누르면 그리기 모드 ============
+
 // 버튼 클릭 시 호출되는 핸들러 입니다
 const selectOverlay = function (type) {
-  // 그리기 중이면 그리기를 취소합니다
-  manager.cancel();
 
-  // 클릭한 그리기 요소 타입을 선택합니다
-  manager.select(kakao.maps.drawing.OverlayType[type]);
+  // 이미 경로가 하나 등록되어있을 때 그리기 제한
+  if (markers.length != 0) {
+    alert("코스는 하나의 길만 등록 가능합니다")
+  } else {
+
+    // 그리기 중이면 그리기를 취소합니다
+    manager.cancel();
+
+    // 클릭한 그리기 요소 타입을 선택합니다
+    manager.select(kakao.maps.drawing.OverlayType[type]);
+  }
 }
 
 
-
+// ============ 등록버튼 누르면 서버와 연결해서 DB에 저장 ============
 const regist = function () {
-  console.log(point);
+  // const courseMap = [
+  //   0, 0, 0, 0
+  // ];
+  const courseMap = [];
+
+  point.forEach(element => {
+    courseMap.push(element.lat);
+    courseMap.push(element.lng)
+  });
+
+  const course = {
+    courseMap: courseMap,
+    course_address: "대전광역시",
+    course_content: "test content'",
+    course_keyword: "봄&여름",
+    course_name: "test name",
+    course_rcm: 0,
+    course_regDate: "",
+    course_userId: "aaa",
+    course_viewCnt: 0
+  }
+
+  courseStore.createCourse(course);
+
+  // console.log(point);
 };
 
 let check = false;
@@ -217,7 +310,7 @@ onMounted(() => {
   display: inline;
 }
 
-.template-map > div {
+.template-map>div {
   display: flex;
   flex-direction: column;
 }
@@ -234,7 +327,7 @@ onMounted(() => {
 .buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5px; /* 버튼 사이의 간격을 조절할 수 있습니다. */
+  gap: 5px;
+  /* 버튼 사이의 간격을 조절할 수 있습니다. */
 }
-
 </style>

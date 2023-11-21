@@ -8,12 +8,8 @@ public interface CourseMapDao {
 
 	int insertCourseMap(CourseMap courseMap);
 
-	List<CourseMap> selectAll();
+	List<CourseMap> selectAll(int courseNum);
 
 	boolean updateCourseMap(CourseMap courseMap);
 
-	boolean updateCourseMap(int num);
-
-	
-	
 }

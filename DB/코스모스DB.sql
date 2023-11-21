@@ -80,12 +80,12 @@ CREATE TABLE `course` (
 );
 
 CREATE TABLE courseComment (
-    cc_num INT AUTO_INCREMENT,
-    cc_courseNum INT,
-    cc_userId VARCHAR(30),
-    cc_userName VARCHAR(30),
-    cc_content VARCHAR(30),
-    cc_regDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `cc_num` INT AUTO_INCREMENT,
+    `cc_courseNum` INT,
+    `cc_userId` VARCHAR(30),
+    `cc_userName` VARCHAR(30),
+    `cc_content` VARCHAR(30),
+    `cc_regDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (cc_num),
     FOREIGN KEY (cc_courseNum) REFERENCES course (course_num) on delete cascade,
     FOREIGN KEY (cc_userId) REFERENCES user (user_id) on delete cascade
@@ -100,6 +100,7 @@ CREATE TABLE `courseMap`(
 	PRIMARY KEY (cm_num),
 	FOREIGN KEY (cm_courseNum) REFERENCES course (course_num) on delete cascade
 );
+
 
 CREATE TABLE `image` (
 	`image_num` INT AUTO_INCREMENT,
@@ -128,6 +129,14 @@ CREATE TABLE `travel`(
     `travel_userId` varchar(30),
 	PRIMARY KEY(travel_num),
     FOREIGN KEY(travel_userId) REFERENCES user(user_id) on delete cascade
+);
+
+CREATE TABLE `like` (
+	`like_num` INT AUTO_INCREMENT,
+	`like_userId` VARCHAR(30),
+    `like_type` INT,
+    `like_boardNum` INT,
+    PRIMARY KEY (like_num)
 );
 
 show TABLES;
@@ -227,9 +236,9 @@ VALUES
 ('자전거 바닷길 최고','동해바다 최고 산책길, 바다보고 싶다','강원 강릉시 강문동','바다/가족/산','ssafy'),
 ('가수원에서 엑스포까지','진짜 자전거타기 딱 좋은 코스인데 같이 탈 사람','대전 서구 가수원 타슈정거장','혼자/맑음/가을','hyeseon'),
 ('봄에 예쁜 산책길','봄바람 휘날리며 흩날리는 벚꽃잎이','대전 유성구 동학사','봄/연인/맑음','woojin'),
-('자전거 동호회 1픽','산악 동호회랑도 같이 갔음 마운틴뷰 짱','강원 평창군 용평면 이승복생가길 160','고급/친구/산/맑음/눈','jyeonju'),
+('자전거 동호회 1픽','산악 동호회랑도 같이 갔음 마운틴뷰 짱','강원 평창군 용평면 이승복생가길 160','고급/친구/산/맑음/눈','yeonju'),
 ('자전거 타면서 단풍구경','은행냄새 안나요 걱정하지 마세요','서울 송파구 잠실로 148','가을/친구/산','chunsic'),
-('가족이랑 자전거 여행','두발자전거, 세발자전거, 커플자전거, 레일바이크','경기 의왕시 왕송못동로 221','가족/여름/가을','samsung'),
+('가족이랑 자전거 여행','두발자전거, 세발자전거, 커플자전거, 레일바이크','경기 의왕시 왕송못동로 221','가족/여름/가을','ironman'),
 ('인생최고코스','는 바로 가수원에서 엑스포까지 가는 길','대전 서구 가수원 타슈정거장','혼자/친구/초급/도시','hyeseon'),
 ('겨울맛집 자전거 코스','눈 올때 자전거 안타본 사람??','강원 평창군 용평면 이승복생가길 160','겨울/눈/중급','santa'),
 ('시간여행코스','타노스 잡으러 갔다온 길 나는 아이언맨','타이탄','프로/친구/시골/비/흐림','ironman'),
@@ -237,8 +246,14 @@ VALUES
 ('평범하지 않은 코스','특별한 코스 재밌는 코스 코스모스','강원도충청도전라도경상도','봄/여름/가을/겨울','bbb'),
 ('시원한 바람이 부는 길','이제 더이상 아무할말이 없다','데이터누가대신만들어줘','비/흐림/산/고급','aaa');
 
-insert into courseMap (cm_courseNum,cm_seq, cm_lat, cm_lng)
-values (1,1,3456,4567);
+INSERT INTO courseMap (cm_courseNum, cm_seq, cm_lat, cm_lng)
+VALUES
+('1', '1', '36.364929', '127.388048'),
+('1', '2', '36.364947', '127.393530'),
+('1', '3', '36.374554', '127.393489'),
+('1', '4', '36.374314', '127.384083'),
+('1', '5', '36.371052', '127.384111'),
+('1', '6', '36.370805', '127.388077');
 
 select * from user;
 select * from freeBoard;

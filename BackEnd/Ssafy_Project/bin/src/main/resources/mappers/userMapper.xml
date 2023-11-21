@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.UserDao">
+
+	<insert id="insertUser" parameterType="User">
+		INSERT INTO user
+		(user_id, user_pw, user_name, user_birth, user_grade, user_boardCnt, user_commentCnt)
+		VALUES
+		(#{user_id}, #{user_pw}, #{user_name}, #{user_birth}, #{user_grade}, #{user_boardCnt}, #{user_commentCnt})
+	</insert>
+
+	<select id="selectAll" resultType="User">
+		SELECT * FROM user
+	</select>
+
+	<select id="selectOne" resultType="User" parameterType="String">
+		SELECT *
+		FROM user
+		WHERE user_id = #{user_id}
+	</select>
+
+	<update id="updateUser" parameterType="User">
+		UPDATE user
+		SET user_pw = #{user_pw}, user_name = #{user_name}, user_birth = #{user_birth}, user_grade = #{user_grade}, user_boardCnt = #{user_boardCnt}, user_commentCnt = #{user_commentCnt}
+		WHERE
+		user_id = #{user_id}
+	</update>
+
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user
+		WHERE
+		user_num = #{user_num}
+	</delete>
+</mapper>
