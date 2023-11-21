@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserOne(int num) {
-		return userDao.selectOne(num);
+	public User getUserOne(String id) {
+		return userDao.selectOne(id);
 	}
 
 	@Transactional
@@ -43,8 +43,4 @@ public class UserServiceImpl implements UserService {
 		return userDao.deleteUser(num) > 0;
 	}
 
-	@Override
-	public User login(User user) {
-		return userDao.selectOne2(user);
-	}
 }

@@ -5,7 +5,7 @@
     <div>기온 : {{ tmp }}℃</div>
     <div>하늘상태 : {{ sky }}</div>
     <div>강수형태 : {{ pty }}</div>
-    <div>강수확률 : {{ pop }}%</div>
+    <div>{{ rain }} : {{ pop }}%</div>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ const tmp = ref(null);
 const sky = ref(null);
 const pty = ref(null);
 const pop = ref(0);
+const rain = "💧";
 onMounted(() => {
   const API_URL = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst`;
 
@@ -28,17 +29,31 @@ onMounted(() => {
   const todayStr = `${year}${month}${day}`;
   console.log(todayStr);
   //발표시간을 전부 넣어둬
-  const times = ['0200', '0500', ]//8개넣어 
+  const currentTime = today.getHours().toString().padStart(2, "0") + "00";
+  // 가장 가까운 시간 찾기
+  const closestTime = findClosestTime(currentTime, [
+    "0200",
+    "0500",
+    "0800",
+    "1100",
+    "1400",
+    "1700",
+    "2000",
+    "2300",
+  ]);
+
   axios
     .get(API_URL, {
       params: {
         ServiceKey: import.meta.env.VITE_WEATHER_API_KEY,
         dataType: "JSON",
-        base_date: todayStr, //20231105 형태
-        base_time: "0200",   //이것은 총 8회 발표 
+        base_date: todayStr,
+        base_time: closestTime,
         numOfRows: 15,
-        nx: 61, //역삼위치
-        ny: 125,
+        //대전 위치
+        nx: 67,
+        ny: 101,
+
       },
     })
     .then((response) => {
@@ -59,29 +74,34 @@ onMounted(() => {
       //SNO : 1시간 적설량
       //TMN : 일 최저기온 ℃ x
       //TMX : 일 최고기온 ℃ x
-      response.forEach((item) => {
-        if (item.category === "TMP") {
-          tmp.value = item.fcstValue;
-        } else if (item.category === "SKY") {
-          switch (item.fcstValue) {
-            case "1":
-              sky.value = "맑음";
-              break;
-            case "3":
-              sky.value = "구름많음";
-              break;
-            case "4":
-              sky.value = "흐림";
-              break;
+      console.log("API Response:", response);
+      const responseData = response.data?.response?.body?.items?.item;
+      console.log("API Data:", responseData);
+      if (responseData) {
+
+        response.forEach((item) => {
+          if (item.category === "TMP") {
+            tmp.value = item.fcstValue;
+          } else if (item.category === "SKY") {
+            switch (item.fcstValue) {
+              case "1":
+                sky.value = "☀️";
+                break;
+              case "3":
+                sky.value = "🌥️";
+                break;
+              case "4":
+                sky.value = "☁️";
+                break;
+            }
+          } else if (item.category === "PTY") {
+            pty.value = item.fcstValue;
+          } else if (item.category === "POP") {
+            pop.value = item.fcstValue;
           }
-        } else if (item.category === "PTY") {
-          pty.value = item.fcstValue;
-        } else if (item.category === "POP") {
-          pop.value = item.fcstValue;
-        }
-      });
+        });
+      }
     });
 });
 </script>
-
 <style scoped></style>

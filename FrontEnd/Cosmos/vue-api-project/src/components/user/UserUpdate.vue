@@ -2,38 +2,36 @@
   <div>
     <h4>UserUpdate</h4>
     <div>
-      <input type="text" v-model="user.id" placeholder="{{ user.id }}" readonly>
+      <input type="text" v-model="userStore.user.user_id" readonly>
     </div>
     <div>
-      <input type="password" v-model="user.pw" placeholder="PASSWORD">
+      <input type="password" v-model="userStore.user.user_pw" placeholder="PASSWORD">
     </div>
     <div>
-      <input type="text" v-model="user.name" placeholder="NAME">
+      <input type="text" v-model="userStore.user.user_name" placeholder="NAME">
     </div>
     <div>
-      <input type="date" v-model="user.birth">
+      <input type="date" v-model="userStore.user.user_birth">
     </div>
     <button @click="update">수정</button>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '../../stores/user';
+import { useRoute, useRouter} from 'vue-router';
 
-const router = useRouter();
-
-const user = ref({
-  id: "hyeseon",
-  pw: '',
-  name: '',
-  birth: '',
-})
+const userStore = useUserStore();
 
 const update = function(){
-  console.log(user.value)
-  router.push({ name: "info" })
+  console.log(userStore.user.value)
+  userStore.updateUser()
 }
+
+onMounted(() => {
+  userStore.getUser(userStore.loginUserId)
+})
 
 </script>
 

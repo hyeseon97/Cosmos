@@ -24,7 +24,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '../../stores/user';
 
 const router = useRouter();
-const store = useUserStore();
+const useStore = useUserStore();
 
 // const id = ref('')
 // const pw = ref('')
@@ -38,11 +38,12 @@ const user = ref(
 
 const login = function () {
   // console.log(user.value)
-  store.userLogin(user)
+  useStore.userLogin(user)
 }
 
 const sign = function () {
   // router.push({ name: "sign" })
+  useStore.signup()
 }
 </script>
 

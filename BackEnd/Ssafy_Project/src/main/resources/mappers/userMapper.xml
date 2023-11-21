@@ -15,13 +15,7 @@
 		SELECT * FROM user
 	</select>
 
-	<select id="selectOne" resultType="User" parameterType="int">
-		SELECT *
-		FROM user
-		WHERE user_num = #{user_num}
-	</select>
-
-	<select id="selectOne2" resultType="User" parameterType="User">
+	<select id="selectOne" resultType="User" parameterType="String">
 		SELECT *
 		FROM user
 		WHERE user_id = #{user_id}
