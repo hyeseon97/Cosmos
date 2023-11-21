@@ -70,7 +70,7 @@ CREATE TABLE `course` (
     `course_userId` VARCHAR(30),
     `course_name` VARCHAR(30),
     `course_content` VARCHAR(100),
-    `course_address` VARCHAR(30),
+    `course_address` VARCHAR(100),
     `course_keyword` VARCHAR(30),
     `course_viewCnt` INT DEFAULT 0,
     `course_rcm` INT DEFAULT 0,
