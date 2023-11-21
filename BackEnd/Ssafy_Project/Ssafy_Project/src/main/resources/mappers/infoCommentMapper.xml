@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.InfoCommentDao">
+
+	<insert id="insertComment" parameterType="InfoComment">
+		INSERT INTO infoComment(ic_boardNum, ic_userId, ic_userName, ic_content)
+		VALUES(#{ic_boardNum}, #{ic_userId}, #{ic_userName}, #{ic_content})
+	</insert>
+
+	<select id="selectAll" parameterType="int" resultType="InfoComment">
+		SELECT * FROM infoComment
+		WHERE ic_boardNum = #{num}
+		ORDER BY ic_num DESC;
+	</select>
+
+</mapper>

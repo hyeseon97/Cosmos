@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.FreeCommentDao">
+	
+	<insert id="insertComment" parameterType="FreeComment">
+		INSERT INTO freeComment(fc_boardNum, fc_userId, fc_userName, fc_content)
+		VALUES(#{fc_boardNum}, #{fc_userId}, #{fc_userName}, #{fc_content})
+	</insert>
+
+	<select id="selectAll" parameterType="int" resultType="FreeComment">
+		SELECT * FROM freeComment
+		WHERE fc_boardNum = #{num}
+		ORDER BY fc_num DESC;
+	</select>
+
+</mapper>

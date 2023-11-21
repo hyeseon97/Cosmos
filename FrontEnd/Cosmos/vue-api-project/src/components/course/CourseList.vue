@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h4>CourseList</h4>
-    <KakaoMap/>
-    <Weather/>
-
+    <div class="header">
+      <Weather/>
+      <KakaoMap/>
+    </div>
+    <button @click="create">새 코스 등록</button>
     <div class="course-list" v-for="c in course">
       <div class="course" @click="goDetail(c.num)">
         <img src="" alt="사진">
@@ -48,6 +49,9 @@ const course = ref([
   }
 ])
 
+const create = function(){
+  router.push({ name: "courseCreate" })
+}
 
 const goDetail = function(num){
   router.push({ name: "courseDetail", params: { num: num } })
@@ -56,5 +60,8 @@ const goDetail = function(num){
 </script>
 
 <style scoped>
-
+.header {
+  display: flex;
+  justify-content: space-around;
+}
 </style>

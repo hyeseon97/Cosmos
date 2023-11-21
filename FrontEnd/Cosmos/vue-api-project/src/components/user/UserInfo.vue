@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>UserInfo</h4>
-    <button @click="update">내정보수정</button>
+    <button @click="update">내정보수정2</button>
   </div>
 </template>
 

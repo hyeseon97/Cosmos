@@ -1,14 +1,18 @@
 <template>
   <div class="comment-container">
-    <input type="text" @keyup.enter="create" v-model="comment" placeholder="댓글을 입력하세요">
-    <button @click="create">등록</button>
-
-    <table>
-      <tr v-for="c in comments" :key="c.comment">
-        <td class="comment">{{ c.comment }}</td>
-        <td class="name">{{ c.name }}</td>
-      </tr>
-    </table>
+    <div class="input-form">
+      <input type="text" @keyup.enter="create" v-model="comment" placeholder="댓글을 입력하세요">
+      <button @click="create">등록</button>
+    </div>
+    <div class="comments-cover">
+      <div v-for="c in comments" :key="c.comment" class="comments">
+        <div class="comment">{{ c.cc_content }}</div>
+        <div>
+          <div class="name">{{ c.cc_userName }}</div>
+          <div class="date">{{ c.cc_regDate }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,8 +21,9 @@ import { ref } from 'vue';
 
 const comments = ref([
   {
-    comment: "댓글이당",
-    name: "혜선",
+    cc_content: "댓글이당",
+    cc_userName: "혜선",
+    cc_regDate: "2023-04-01"
   },
 ]);
 
@@ -26,8 +31,9 @@ const comment = ref('');
 
 const create = function () {
   const c = {
-    comment: comment.value,
-    name: "혜선",
+    cc_content: comment.value,
+    cc_userName: "혜선",
+    cc_regDate: "2024-03-05"
   };
   comments.value.unshift(c);
   comment.value = '';
@@ -40,8 +46,12 @@ const create = function () {
   margin: auto;
 }
 
+.input-form {
+  margin-bottom: 10px;
+}
+
 input {
-  width: 90%;
+  width: 85%;
   padding: 8px;
   margin-right: 8px;
   outline: none;
@@ -51,11 +61,13 @@ input {
 }
 
 input:focus {
-  border-color: #68a67d; /* 클릭 시 테두리 색상 변경 */
+  border-color: #68a67d;
+  /* 클릭 시 테두리 색상 변경 */
 }
 
 button {
   padding: 8px;
+  width: 13%;
   color: white;
   background-color: #68a67d;
   border: 1px solid #68a67d;
@@ -63,23 +75,29 @@ button {
   cursor: pointer;
 }
 
-table {
-  width: 100%;
-  margin-top: 16px;
-  border-collapse: collapse;
+.comments-cover {
+  height: fit-content;
 }
 
-td {
-  padding: 8px;
-  border: 1px solid #ddd;
+.comments {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 0 2%;
+  color: #24613b;
+  font-weight: 600;
 }
 
 .comment {
-  max-width: 60%;
-  word-break: break-all;
+  display: inline-flex;
 }
 
 .name {
-  max-width: 40%;
+  display: inline-flex;
+}
+
+.date {
+  display: inline-flex;
+  margin-left: 15px;
 }
 </style>

@@ -57,7 +57,7 @@ const course = ref([
     address: "주소1",
     viewCnt: 3,
     good: 1,
-    src: ''
+    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0d8M4%2FbtrahhZUSML%2F4o58d7xHy7sQ0i3M4bu6p1%2Fimg.png'
   },
   {
     num: 3,
@@ -118,7 +118,7 @@ const goDetail = function (num) {
   /* 마우스 오버시 그림자 강화 */
   /* background-color: #F18F01; */
   /* border: 5px solid #F18F01; */
-  border-radius: 40px;
+  border-radius: 20px;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   /* 두 가지 트랜지션을 한 줄에 나열 */
@@ -130,7 +130,7 @@ const goDetail = function (num) {
   margin-bottom: 1%;
   object-fit: cover;
   /* 이미지가 영역을 가득 채우도록 설정 */
-  border-radius: 10px;
+  border-radius: 15px;
   /* 원하는 모양으로 이미지 모서리를 둥글게 만들 수 있음 */
   transition: transform 0.3s ease-in-out; /* 이미지에 호버 효과를 부드럽게 만들기 위한 트랜지션 설정 */
 }

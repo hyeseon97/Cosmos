@@ -163,6 +163,8 @@ const remove = function () {
   positions = null;
   markers[0].setMap(null);
   markers[1].setMap(null);
+
+  console.log(marker)
 };
 
 // 버튼 클릭 시 호출되는 핸들러 입니다
@@ -190,6 +192,8 @@ const road = function () {
     map.removeOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
   }
 };
+
+
 
 
 onMounted(() => {

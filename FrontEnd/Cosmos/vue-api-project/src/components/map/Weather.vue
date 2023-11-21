@@ -1,7 +1,5 @@
-<template>
-  <div>
-    <h4>Weather</h4>
-    <h4>날씨정보</h4>
+<template class="template-weather">
+  <div class="weather">
     <div>기온 : {{ tmp }}℃</div>
     <div>하늘상태 : {{ sky }}</div>
     <div>강수형태 : {{ pty }}</div>
@@ -28,7 +26,7 @@ onMounted(() => {
   const todayStr = `${year}${month}${day}`;
   console.log(todayStr);
   //발표시간을 전부 넣어둬
-  const times = ['0200', '0500', ]//8개넣어 
+  const times = ['0200', '0500',]//8개넣어 
   axios
     .get(API_URL, {
       params: {
@@ -84,4 +82,23 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.template-weather {
+  display: inline;
+}
+
+.weather {
+  width: 40%;
+  background-color: #F5ECD7;
+  /* border-style: solid; */
+  /* border-width: 5px; */
+  /* border-color: #F18F01; */
+  border-radius: 50px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 가로 중앙 정렬을 위한 스타일 */
+  align-items: center; /* 세로 중앙 정렬을 위한 스타일 */
+}
+</style>

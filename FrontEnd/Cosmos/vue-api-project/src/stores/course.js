@@ -25,26 +25,32 @@ export const useCourseStore = defineStore('course', () => {
 
   //게시글 등록
   const createCourse = function (course) {
-    axios({
-      url: REST_BOARD_API,
-      method: 'POST',
-      //아래꺼 없어도 알아서 보내더라 axios 쵝오~ 
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: {
-        course: course,
-        courseMap: courseMap
-      }
-    })
-      .then(() => {
-        //response 응답으로 들어온 게시글의 id를 이용해서
-        //상세보기로 바로 점프도 가넝이야~~
-        router.push({ name: 'cousreList'})
+    axios.post(REST_BOARD_API, course.value)
+      .then(()=>{
+        router.push({ name: 'courseList' })
       })
-      .catch((err) => {
-      console.log(err)
-    })
+
+
+    // axios({
+    //   url: REST_BOARD_API,
+    //   method: 'POST',
+    //   //아래꺼 없어도 알아서 보내더라 axios 쵝오~ 
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   data: {
+    //     course: course,
+    //     courseMap: courseMap
+    //   }
+    // })
+    //   .then(() => {
+    //     //response 응답으로 들어온 게시글의 id를 이용해서
+    //     //상세보기로 바로 점프도 가넝이야~~
+    //     router.push({ name: 'cousreList'})
+    //   })
+    //   .catch((err) => {
+    //   console.log(err)
+    // })
   }
 
   const updateCourse = function () {

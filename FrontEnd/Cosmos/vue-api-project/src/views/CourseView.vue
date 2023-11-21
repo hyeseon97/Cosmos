@@ -17,7 +17,7 @@
 
 .back-color {
   /* 흰박스 안에 내용까지 여백 */
-  padding: 10vh 30vh;
+  padding: 10vh 20vh;
   height: 1300px;
   background-color: rgba(255, 255, 255, 0.7);
   /* border-radius: 20px; */

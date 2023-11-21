@@ -37,7 +37,7 @@ const user = ref(
 )
 
 const login = function () {
-  // console.log(user.value)
+  console.log(user.value)
   store.userLogin(user)
 }
 
