@@ -16,4 +16,5 @@ public interface CourseDao {
 
 	int deleteCourse(int num);
 
+	void updateViewCnt(int num);
 }

@@ -13,20 +13,20 @@ public class FreeBoard {
 	private int fb_viewCnt;
 	private int fb_rcm;
 	private String fb_regDate;
+	private String fb_img;
+	private String fb_orgImg;
 	
 	public FreeBoard() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FreeBoard(String fb_userId, String fb_title, String fb_writer, String fb_content, int fb_viewCnt,
-			int fb_rcm) {
-		super();
+	public FreeBoard(String fb_userId, String fb_title, String fb_writer, String fb_content, String fb_img, String fb_orgImg) {
 		this.fb_userId = fb_userId;
 		this.fb_title = fb_title;
 		this.fb_writer = fb_writer;
 		this.fb_content = fb_content;
-		this.fb_viewCnt = fb_viewCnt;
-		this.fb_rcm = fb_rcm;
+		this.fb_img = fb_img;
+		this.fb_orgImg = fb_orgImg;
 	}
 	
 	public int getFb_num() {
@@ -91,6 +91,22 @@ public class FreeBoard {
 
 	public void setFb_regDate(String fb_regDate) {
 		this.fb_regDate = fb_regDate;
+	}
+
+	public String getFb_img() {
+		return fb_img;
+	}
+
+	public void setFb_img(String fb_img) {
+		this.fb_img = fb_img;
+	}
+
+	public String getFb_orgImg() {
+		return fb_orgImg;
+	}
+
+	public void setFb_orgImg(String fb_orgImg) {
+		this.fb_orgImg = fb_orgImg;
 	}
 	
 }

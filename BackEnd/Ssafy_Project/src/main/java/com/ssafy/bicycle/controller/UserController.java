@@ -34,6 +34,7 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody User user) {
+		System.out.println(user);
 		int result = userService.signup(user);
 		if (result == 0) {
 			return new ResponseEntity<String>("FAIL", HttpStatus.NO_CONTENT);

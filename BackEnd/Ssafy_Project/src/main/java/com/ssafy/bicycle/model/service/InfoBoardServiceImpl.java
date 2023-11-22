@@ -29,6 +29,7 @@ public class InfoBoardServiceImpl implements InfoBoardService {
 
 	@Override
 	public InfoBoard getInfoOne(int num) {
+		infoBoardDao.updateViewCnt(num);
 		return infoBoardDao.selectOne(num);
 	}
 

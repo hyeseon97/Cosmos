@@ -37,5 +37,11 @@
 		DELETE FROM infoBoard
 		WHERE ib_num = #{ib_num}
 	</delete>
+	
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE FROM infoBoard
+		SET info_viewCnt = info_viewCnt+1
+		WHERE info_num = #{info_num} 
+	</update>
 
 </mapper>

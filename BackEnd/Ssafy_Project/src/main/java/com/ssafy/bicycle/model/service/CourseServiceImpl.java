@@ -27,6 +27,7 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public Course getCourseOne(int num) {
+		courseDao.updateViewCnt(num);
 		return courseDao.selectOne(num);
 	}
 

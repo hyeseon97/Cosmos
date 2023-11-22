@@ -22,4 +22,5 @@ public interface InfoBoardDao {
 	// 게시물 삭제
 	int deleteBoard(int num);
 
+	void updateViewCnt(int num);
 }

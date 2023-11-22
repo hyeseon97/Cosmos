@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="info-board-detail">
     <h4>InfoBoardDetail</h4>
-    <div>{{ infoBoard.ib_title }}</div>
-    <div>{{ infoBoard.ib_content }}</div>
-    <div>{{ infoBoard.ib_viewCnt }}</div>
-    <div>{{ infoBoard.ib_good }}</div>
-    <div>{{ infoBoard.ib_regDate }}</div>
-    <button @click="update(infoBoard.ib_num)" v-if="user!=null">수정</button>
-    <button @click="remove" v-if="user!=null">삭제</button>
+    <div class="board-detail-item">{{ infoBoard.ib_title }}</div>
+    <div class="board-detail-item">{{ infoBoard.ib_content }}</div>
+    <div class="board-detail-item">Views: {{ infoBoard.ib_viewCnt }}</div>
+    <div class="board-detail-item">Likes: {{ infoBoard.ib_good }}</div>
+    <div class="board-detail-item">Posted on: {{ infoBoard.ib_regDate }}</div>
+    <button @click="update(infoBoard.ib_num)" v-if="user !== null">수정</button>
+    <button @click="remove" v-if="user !== null">삭제</button>
     <InfoBoardCommentVue/>
   </div>
 </template>
@@ -25,11 +25,7 @@ const router = useRouter();
 
 const store = useInfoBoardStore();
 
-// 로그인유저 저장
-// const user = ref(null);
 const user = ref("11");
-
-console.log("현재 게시글은 " + route.params.num + "번 게시글");
 
 onMounted(() => {
   store.getInfoBoard(route.params.num)
@@ -37,14 +33,10 @@ onMounted(() => {
 
 const infoBoard = computed(()=>store.infoBoard)  
 
-
-
-// 수정 버튼
 const update = function(num){
   router.push({ name: "infoBoardUpdate", params: { num: num } })
 }
 
-// 삭제 버튼
 const remove = function(){
   store.deleteInfoBoard(infoBoard.value.ib_num)
 }
@@ -52,5 +44,30 @@ const remove = function(){
 </script>
 
 <style scoped>
+.info-board-detail {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.board-detail-item {
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
 </style>

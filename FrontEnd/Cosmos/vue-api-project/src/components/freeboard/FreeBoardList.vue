@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <div @click="create" class="create-button">글쓰기</div>
+  <div class="container">
     <!-- <router-link :to="{ name: 'freeBoardCreate' }">글쓰기</router-link> -->
     <!-- <RouterLink :to="{ name: 'freeBoardCreate'}">글쓰기</RouterLink> -->
     <table>
@@ -10,7 +9,6 @@
         <th style="width: 12%;">작성자</th>
         <th style="width: 12%;">날짜</th>
         <th style="width: 10%;">조회수</th>
-        <th style="width: 10%;">좋아요</th>
       </tr>
       <tr v-for="(item, index) in displayedArr" :key="index" @click="godetail(item.fb_num)">
         <td>{{ item.fb_num }}</td>
@@ -18,9 +16,9 @@
         <td>{{ item.fb_writer }}</td>
         <td>{{ item.fb_regDate }}</td>
         <td>{{ item.fb_viewCnt }}</td>
-        <td>{{ item.fb_rcm }}</td>
       </tr>
     </table>
+    <div @click="create" class="create-button">글쓰기</div>
     <div class="pagination">
       <button :disabled="currentPage === 1" @click="changePage(currentPage - 1)">이전</button>
       <span>{{ currentPage }} / {{ totalPages }}</span>
@@ -30,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed,  } from 'vue';
+import { ref, onMounted, computed, } from 'vue';
 import { useRouter } from 'vue-router'
 import { useFreeBoardStore } from '@/stores/freeBoard'
 import { useUserStore } from '../../stores/user';
@@ -47,10 +45,10 @@ const totalPages = Math.ceil(arr.value.length / itemsPerPage);
 
 const currentPage = ref(1);
 
-const freeBoardList = computed(()=> store.freeBoardList)
-const startIndex = computed(() => currentPage.value -1);
-const endIndex = computed(()=> startIndex.value + itemsPerPage)
-const displayedArr = computed(()=>freeBoardList.value.slice(startIndex.value,endIndex.value))
+const freeBoardList = computed(() => store.freeBoardList)
+const startIndex = computed(() => currentPage.value - 1);
+const endIndex = computed(() => startIndex.value + itemsPerPage)
+const displayedArr = computed(() => freeBoardList.value.slice(startIndex.value, endIndex.value))
 
 
 onMounted(() => {
@@ -67,30 +65,35 @@ function changePage(newPage) {
 }
 
 // 글쓰기 버튼
-const create = function(){
-  if(userStore.loginUserId!=null){
+const create = function () {
+  if (userStore.loginUserId != null) {
     router.push({ name: "freeBoardCreate" })
-  } else{
+  } else {
     alert("로그인 후 사용 가능")
   }
 }
 
 // 표 클릭하면 해당 게시글로 이동
-const godetail = function(num){
+const godetail = function (num) {
   console.log(num);
-  router.push({ name: "freeBoardDetail", params: { num: num }})
+  router.push({ name: "freeBoardDetail", params: { num: num } })
 }
 
 </script>
 
 <style scoped>
+.container {
+  position: relative;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
@@ -111,25 +114,20 @@ tr:hover {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.left-align {
-  text-align: left;
-  padding-left: 30px;
-}
-
-.create-button {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
   padding: 10px 20px;
   background-color: #8FBF9F;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* 부드러운 효과를 위한 트랜지션 추가 */
+  transition: background-color 0.3s ease;
 }
 
 .create-button:hover {
-  background-color: #68a67d; /* 마우스 오버시 색상 변경 */
+  background-color: #68a67d;
 }
 
 .pagination {
@@ -151,9 +149,13 @@ tr:hover {
 }
 
 .pagination button:disabled:hover {
-  /* 비활성화 상태에서의 마우스 오버 스타일 설정 */
   cursor: context-menu;
-  /* 다른 스타일 추가 가능 */
 }
 
+@media (max-width: 600px) {
+  .create-button {
+    bottom: 20px;
+    right: 20px;
+  }
+}
 </style>

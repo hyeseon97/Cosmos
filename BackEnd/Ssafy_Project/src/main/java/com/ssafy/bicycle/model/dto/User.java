@@ -22,9 +22,6 @@ public class User {
 		this.user_pw = user_pw;
 		this.user_name = user_name;
 		this.user_birth = user_birth;
-		this.user_grade = "브론즈";
-		this.user_boardCnt = 0;
-		this.user_commentCnt = 0;
 	}
 	
 	public int getUser_num() {

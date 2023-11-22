@@ -31,5 +31,10 @@
 		WHERE course_num = #{course_num}
 	</delete>
 
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE FROM course
+		SET course_viewCnt = course_viewCnt+1
+		WHERE course_num = #{course_num} 
+	</update>
 
 </mapper>

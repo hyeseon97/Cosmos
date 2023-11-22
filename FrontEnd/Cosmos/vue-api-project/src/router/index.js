@@ -233,7 +233,7 @@ const router = createRouter({
           component: UserLogin,
         },
         {
-          path: "sign",
+          path: "",
           name: "sign",
           component: UserSign,
         },

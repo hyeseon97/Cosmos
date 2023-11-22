@@ -43,17 +43,11 @@ export const useUserStore = defineStore('user', () => {
   const updateUser = function () {
     axios.put(`${REST_BOARD_API}`+'/user', user.value)
       .then(() => {
+        editing.value = false;
         router.push({ name: 'home' })
       })
-  }
-
-
-  const searchUserList = function (searchCondition) {
-    axios.get(REST_BOARD_API, {
-      params: searchCondition
-    })
-      .then((res) => {
-        userList.value = res.data
+      .catch((error) => {
+        console.log("업데이트 실패", error)
       })
   }
 
@@ -94,6 +88,17 @@ export const useUserStore = defineStore('user', () => {
         console.log("로그인실패")
       })
   }
+  
+  const searchUserList = function (searchCondition) {
+    axios.get(REST_BOARD_API, {
+      params: searchCondition
+    })
+      .then((res) => {
+        userList.value = res.data
+      })
+  }
+
+
 
   return { userList, user, isAuthenticated ,getUser, getUserList, signup, updateUser, searchUserList, userLogin, loginUserId }
 })

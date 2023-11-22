@@ -22,5 +22,6 @@ public interface FreeBoardDao {
 	// 게시물 삭제
 	int deleteBoard(int num);
 
-
+	// 조회수 증가
+	void updateViewCnt(int num);
 }

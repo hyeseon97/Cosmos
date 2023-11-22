@@ -29,6 +29,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
 	@Override
 	public FreeBoard getFreeOne(int num) {
+		freeBoardDao.updateViewCnt(num);
 		return freeBoardDao.selectOne(num);
 	}
 
