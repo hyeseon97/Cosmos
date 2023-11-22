@@ -30,7 +30,7 @@ public class CourseController {
 	@Autowired
 	private CourseMapService courseMapService;
 	
-	private int courseNum = 2;
+	private int courseNum = 15;
 	
 //	 등록
 //	 지도에 체크를 해서 정보를 입력하고 넣겠지??

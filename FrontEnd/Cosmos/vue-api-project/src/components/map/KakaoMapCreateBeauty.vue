@@ -74,7 +74,8 @@ const initMap = function () {
         }
 
         // 마커 이미지
-        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+        // var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+        var imageSrc = '../../assets/bicycle_pink.png', // 마커이미지의 주소입니다    
           imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
           imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
@@ -156,9 +157,9 @@ const initMap = function () {
       lineList.forEach(line => {
         var polyline = new kakao.maps.Polyline({
           path: line, // 선을 구성하는 좌표배열 입니다
-          strokeWeight: 10, // 선의 두께 입니다
-          strokeColor: '#FF8E9E', // 선의 색깔입니다
-          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeWeight: 5, // 선의 두께 입니다
+          strokeColor: '#24613b', // 선의 색깔입니다
+          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
           strokeStyle: 'solid' // 선의 스타일입니다
         });
 
@@ -269,6 +270,27 @@ const initMap = function () {
 
 
   });
+
+
+  // ============ 지도 레벨 변경을 감지하는 이벤트 리스너 추가 ============
+  kakao.maps.event.addListener(map, 'dragend', function () {
+      const newLevel = map.getLevel();
+      
+      // 레벨이 변경되었는지 확인
+      if (newLevel !== level) {
+        console.log('바뀜');
+
+        // 값이 작을수록 확대
+        if(level>newLevel){
+          // 확대
+          
+        } else{
+          // 축소
+
+        }
+        level = newLevel; // 다음 비교를 위해 레벨 업데이트
+      }
+    });
 
 
 };
@@ -384,8 +406,8 @@ onMounted(() => {
 
 #map {
   /* display: inline; */
-  width: 600px;
-  height: 450px;
+  width: 1000px;
+  height: 800px;
   border-radius: 50px;
   border-color: #24613b;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -423,8 +445,8 @@ onMounted(() => {
   font-size: 14px;
   font-weight: bold;
   overflow: hidden;
-  background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+  background: #24613b;
+  background: #24613b url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
 }
 
 .customoverlay .title {
@@ -448,3 +470,4 @@ onMounted(() => {
   background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
 }
 </style>
+

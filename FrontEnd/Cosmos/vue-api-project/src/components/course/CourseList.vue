@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <Weather/>
+      <!-- <Weather/> -->
       <KakaoMap/>
     </div>
     <button @click="create">새 코스 등록</button>

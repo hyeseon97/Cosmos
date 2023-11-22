@@ -42,6 +42,7 @@ const goDetail = function (num) {
 }
 
 const addPlan = function(){
+  
   router.push({ name: "travelCreate" })
 }
 
