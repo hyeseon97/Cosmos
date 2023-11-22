@@ -1,36 +1,42 @@
 package com.ssafy.bicycle.model.dto;
 
-import java.security.Timestamp;
 import java.util.List;
 
 public class Course {
+	private int course_num;
+	private String course_userId;
 	private String course_name;
 	private String course_content;
 	private String course_address;
 	private String course_keyword;
-	private int int_viewCnt;
+	private int course_viewCnt;
 	private int course_rcm;
-	private Timestamp course_regDate;
-	private String course_userId;
+	private String course_regDate;
 
-	private List<CourseMap> courseMap;
+	private List<Double> courseMap;
 
 	public Course() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Course(String course_name, String course_content, String course_address, String course_keyword,
-			int int_viewCnt, int course_rcm, Timestamp course_regDate, String course_userId, List<CourseMap> courseMap) {
+	public Course(String course_name, String course_content, String course_address, String course_keyword, String course_userId, List<Double> courseMap) {
 		super();
 		this.course_name = course_name;
 		this.course_content = course_content;
 		this.course_address = course_address;
 		this.course_keyword = course_keyword;
-		this.int_viewCnt = int_viewCnt;
-		this.course_rcm = course_rcm;
-		this.course_regDate = course_regDate;
 		this.course_userId = course_userId;
 		this.courseMap = courseMap;
+	}
+	
+	
+
+	public int getCourse_num() {
+		return course_num;
+	}
+
+	public void setCourse_num(int course_num) {
+		this.course_num = course_num;
 	}
 
 	public String getCourse_name() {
@@ -65,12 +71,12 @@ public class Course {
 		this.course_keyword = course_keyword;
 	}
 
-	public int getInt_viewCnt() {
-		return int_viewCnt;
+	public int getCourse_viewCnt() {
+		return course_viewCnt;
 	}
 
-	public void setInt_viewCnt(int int_viewCnt) {
-		this.int_viewCnt = int_viewCnt;
+	public void setCourse_viewCnt(int course_viewCnt) {
+		this.course_viewCnt = course_viewCnt;
 	}
 
 	public int getCourse_rcm() {
@@ -81,11 +87,11 @@ public class Course {
 		this.course_rcm = course_rcm;
 	}
 
-	public Timestamp getCourse_regDate() {
+	public String getCourse_regDate() {
 		return course_regDate;
 	}
 
-	public void setCourse_regDate(Timestamp course_regDate) {
+	public void setCourse_regDate(String course_regDate) {
 		this.course_regDate = course_regDate;
 	}
 
@@ -97,12 +103,22 @@ public class Course {
 		this.course_userId = course_userId;
 	}
 
-	public List<CourseMap> getCourseMap() {
+	public List<Double> getCourseMap() {
 		return courseMap;
 	}
 
-	public void setCourseMap(List<CourseMap> courseMap) {
+	public void setCourseMap(List<Double> courseMap) {
 		this.courseMap = courseMap;
 	}
 
+	@Override
+	public String toString() {
+		return "Course [course_num=" + course_num + ", course_userId=" + course_userId + ", course_name=" + course_name
+				+ ", course_content=" + course_content + ", course_address=" + course_address + ", course_keyword="
+				+ course_keyword + ", course_viewCnt=" + course_viewCnt + ", course_rcm=" + course_rcm
+				+ ", course_regDate=" + course_regDate + ", courseMap=" + courseMap + "]";
+	}
+
+	
+	
 }

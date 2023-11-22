@@ -10,13 +10,10 @@ public interface CourseMapService{
 	int writeCourseMap(CourseMap courseMap);
 	
 	// 코스맵 조회
-	List<CourseMap> getCourseMapList();
+	List<CourseMap> getCourseMapList(int courseNum);
 	
 	// 코스맵 수정
 	boolean modifyCourseMap(CourseMap courseMap);
-	
-	// 코스맵 삭제
-	boolean removeCourseMap(int num);
-	
+
 	
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.TravelDao">
+
+	<insert id="insertTravel" parameterType="Travel">
+		INSERT INTO
+		travel(travel_num, travel_title, travel_memo, travel_travelDate, travel_userId)
+		VALUES(#{travel_num}, #{travel_title}, #{travel_memo}, #{travel_travelDate}, #{travel_userId})
+	</insert>
+
+	<select id="selectAll" resultType="Travel">
+		SELECT * FROM travel
+	</select>
+
+	<select id="selectOne" parameterType="int" resultType="Travel">
+		SELECT * FROM travel
+		WHERE travel_num = #{travel_num}
+	</select>
+
+	<!-- <update id="updateTravel" parameterType="Travel">
+		UPDATE travel
+		SET travel_title = #{travel_title}, travel_memo = #{travel_memo}
+		WHERE fb_num = #{fb_num}
+	</update> -->
+
+	<delete id="deleteTravel" parameterType="int">
+		DELETE FROM travel
+		WHERE travel_num = #{travel_num}
+	</delete>
+
+</mapper>

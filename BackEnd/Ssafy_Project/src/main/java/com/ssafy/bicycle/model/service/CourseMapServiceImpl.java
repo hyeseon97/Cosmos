@@ -22,20 +22,14 @@ public class CourseMapServiceImpl implements CourseMapService{
 	}
 
 	@Override
-	public List<CourseMap> getCourseMapList() {
-		return courseMapDao.selectAll();
+	public List<CourseMap> getCourseMapList(int courseNum) {
+		return courseMapDao.selectAll(courseNum);
 	}
 
 	@Transactional
 	@Override
 	public boolean modifyCourseMap(CourseMap courseMap) {
 		return courseMapDao.updateCourseMap(courseMap);
-	}
-
-	@Transactional
-	@Override
-	public boolean removeCourseMap(int num) {
-		return courseMapDao.updateCourseMap(num);
 	}
 
 }

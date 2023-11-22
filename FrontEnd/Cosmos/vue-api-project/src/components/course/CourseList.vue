@@ -1,10 +1,14 @@
 <template>
   <div>
     <div class="header">
-      <Weather/>
+      <!-- <Weather/> -->
       <KakaoMap/>
     </div>
     <button @click="create">새 코스 등록</button>
+    <RouterLink to="/test/kakaomap">/test/kakaomap</RouterLink><br>
+    <RouterLink to="/test/kakaomapcreate">/test/kakaomapcreate</RouterLink><br>
+    <RouterLink to="/test/kakaomapcreatebeauty">/test/kakaomapcreatebeauty</RouterLink><br>
+    <RouterLink to="/test/maptravel">/test/maptravel</RouterLink><br>
     <div class="course-list" v-for="c in course">
       <div class="course" @click="goDetail(c.num)">
         <img src="" alt="사진">

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.CourseMapDao">
+
+	<insert id="insertCourseMap" parameterType="CourseMap">
+		INSERT INTO courseMap(cm_courseNum, cm_seq, cm_lat, cm_lng)
+		VALUES(#{cm_courseNum}, #{cm_seq}, #{cm_lat}, #{cm_lng})
+	</insert>
+
+	<select id="selectAll" parameterType="int" resultType="CourseMap">
+		SELECT * FROM courseMap
+		WHERE cm_courseNum = #{courseNum}
+	</select>
+
+	<update id="updateCourseMap" parameterType="CourseMap">
+		UPDATE courseMap
+		SET cm_seq=#{cm_seq}, cm_lat=#{cm_lat}, cm_lng=#{cm_lng}
+		WHERE cm_courseNum = #{courseNum}
+	</update>
+
+</mapper>

@@ -8,13 +8,14 @@ const REST_BOARD_API = `http://localhost:8080/api/course`
 export const useCourseStore = defineStore('course', () => {
   const courseList = ref([])
   const getCourseList = function () {
-    axios.get(REST_BOARD_API)
+    return axios.get(REST_BOARD_API)
       .then((response) => {
-      courseList.value = response.data
+        courseList.value = response.data
+        return response.data
       })
   }
 
-  //게시글 한개
+  //코스 한개
   const course = ref({})
   const getCourse = function (id) {
     axios.get(`${REST_BOARD_API}/${id}`)
@@ -23,9 +24,11 @@ export const useCourseStore = defineStore('course', () => {
     })
   }
 
-  //게시글 등록
+  //코스 등록
   const createCourse = function (course) {
-    axios.post(REST_BOARD_API, course.value)
+    console.log("store의 요청 전")
+    console.log(course)
+    axios.post(REST_BOARD_API, course)
       .then(()=>{
         router.push({ name: 'courseList' })
       })

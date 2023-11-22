@@ -3,12 +3,14 @@ package com.ssafy.bicycle.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bicycle.model.dao.CourseDao;
 import com.ssafy.bicycle.model.dto.Course;
 import com.ssafy.bicycle.model.dto.SearchCondition;
 
+@Service
 public class CourseServiceImpl implements CourseService {
 
 	@Autowired

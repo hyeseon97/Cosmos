@@ -5,10 +5,8 @@
 <mapper namespace="com.ssafy.bicycle.model.dao.CourseDao">
 
 	<insert id="insertCourse" parameterType="Course">
-		INSERT INTO course(course_name, course_content, course_address,
-		course_keyword, course_userId)
-		VALUES(#{course_name}, #{course_content}. #{course_address}, #{course_keyword},
-		#{course_userId})
+		INSERT INTO course(course_name, course_content, course_address, course_keyword, course_userId)
+		VALUES(#{course_name}, #{course_content}, #{course_address}, #{course_keyword}, #{course_userId})
 	</insert>
 
 	<select id="selectAll" resultType="Course">
@@ -22,8 +20,8 @@
 
 	<update id="updateCourse" parameterType="Course">
 		UPDATE course
-		SET course_name = #{course_name}, course_address = #{course_address},
-		course_keyword=#{course_keyword}
+		SET course_name = #{course_name}, course_content = #{course_content}, course_address = #{course_address}, course_keyword = #{course_keyword}
+		WHERE course_num = #{course_num}
 	</update>
 	
 	<delete id="deleteCourse" parameterType="int">
