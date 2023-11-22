@@ -2,25 +2,25 @@ package com.ssafy.bicycle.model.dao;
 
 import java.util.List;
 
-import com.ssafy.bicycle.model.dto.FreeBoard;
 import com.ssafy.bicycle.model.dto.SearchCondition;
+import com.ssafy.bicycle.model.dto.Travel;
 
 public interface TravelDao {
 
 	// 게시물 작성
-	int insertBoard(FreeBoard freeBoard);
+	int insertTravel(Travel travel);
 
 	// 게시물 조회
-	List<FreeBoard> search(SearchCondition condition);
+	List<Travel> selectAll();
 
 	// 게시물 한개 조회
-	FreeBoard selectOne(int num);
+	Travel selectOne(int num);
 
-	// 게시물 수정
-	int updateBoard(FreeBoard freeBoard);
+//	// 게시물 수정
+//	int updateTravel(Travel travel);
 
 	// 게시물 삭제
-	int deleteBoard(int num);
+	int deleteTravel(int num);
 
 
 }

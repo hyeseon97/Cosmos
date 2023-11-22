@@ -79,7 +79,7 @@ CREATE TABLE `course` (
     FOREIGN KEY (course_userId) REFERENCES user (user_id) on delete cascade
 );
 
-CREATE TABLE courseComment (
+CREATE TABLE `courseComment` (
     `cc_num` INT AUTO_INCREMENT,
     `cc_courseNum` INT,
     `cc_userId` VARCHAR(30),
@@ -116,19 +116,19 @@ CREATE TABLE `travel`(
     `travel_title` VARCHAR(100),
     `travel_memo` VARCHAR(100),
     `travel_travelDate` TIMESTAMP,
-    `travel_place1Name` VARCHAR(100),
-    `travel_place1Address` VARCHAR(100),
-	`travel_place2Name` VARCHAR(100),
-    `travel_place2Address` VARCHAR(100),
-	`travel_place3Name` VARCHAR(100),
-    `travel_place3Address` VARCHAR(100),
-	`travel_place4Name` VARCHAR(100),
-    `travel_place4Address` VARCHAR(100),
-    `travel_place5Name` VARCHAR(100),
-    `travel_place5Address` VARCHAR(100),
     `travel_userId` varchar(30),
 	PRIMARY KEY(travel_num),
     FOREIGN KEY(travel_userId) REFERENCES user(user_id) on delete cascade
+);
+
+CREATE TABLE `place` (
+	`place_num` INT AUTO_INCREMENT,
+    `place_travelNum` INT,
+    `place_seq` INT,
+    `place_name` VARCHAR(50),
+    `place_address` VARCHAR(50),
+    PRIMARY KEY (place_num),
+    FOREIGN KEY (place_travelNum) REFERENCES travel(travel_num) on DELETE CASCADE
 );
 
 CREATE TABLE `like` (
@@ -357,11 +357,17 @@ VALUES
 (107, 12, 6, 36.384037, 127.358207),
 (108, 12, 7, 36.380293, 127.356496);
 
+INSERT INTO travel (travel_num, travel_title, travel_memo, travel_travelDate, travel_userId)
+VALUES
+(1, "대전 빵 여행", "한밭수목원에서 자전거 타고 산책하고 성심당 가서 빵 먹기", "2023-11-22", "aaa");
+
 select * from user;
 select * from freeBoard;
 select * from course;
 select * from courseMap;
 SELECT * from infoBoard;
+SELECT * FROM travel;
+SELECT * FROM place;
 -- delete from user
 -- where user_id = 'bbb';
 

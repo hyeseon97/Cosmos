@@ -5,26 +5,28 @@ import axios from 'axios'
 
 const REST_BOARD_API = `http://localhost:8080/api/travel`
 
-export const useBoardStore = defineStore('board', () => {
-  const boardList = ref([])
-  const getBoardList = function () {
+export const useTravelStore = defineStore('travel', () => {
+  const travelList = ref([])
+
+  const getTravelList = function () {
     axios.get(REST_BOARD_API)
       .then((response) => {
-      boardList.value = response.data
+        travelList.value = response.data
       })
   }
 
   //게시글 한개
-  const board = ref({})
-  const getBoard = function (id) {
+  const travel = ref({})
+  const getTravel = function (id) {
     axios.get(`${REST_BOARD_API}/${id}`)
       .then((response) => {
-      board.value = response.data
-    })
+        travel.value = response.data
+      })
   }
 
   //게시글 등록
-  const createBoard = function (board) {
+  const createTravel = function (travel) {
+    console.log(travel.value)
     axios({
       url: REST_BOARD_API,
       method: 'POST',
@@ -32,40 +34,31 @@ export const useBoardStore = defineStore('board', () => {
       headers: {
         "Content-Type": "application/json"
       },
-      data: board
+      data: travel.value
     })
       .then(() => {
         //response 응답으로 들어온 게시글의 id를 이용해서
         //상세보기로 바로 점프도 가넝이야~~
-        router.push({ name: 'boardList'})
+        router.push({ name: 'travelList' })
       })
       .catch((err) => {
-      console.log(err)
-    })
+        console.log(err)
+      })
   }
 
-  const updateBoard = function () {
-    axios.put(REST_BOARD_API, board.value)
-      .then(() => {
-      router.push({name: 'boardList'})
-    })
+  // const updateFreeBoard = function () {
+  //   axios.put(REST_BOARD_API, freeBoard.value)
+  //     .then(() => {
+  //       router.push({ name: 'freeBoardDetail', params: { num: freeBoard.value.fb_num } })
+  //     })
+  // }
+
+  const deleteTravel = function (id) {
+    axios.delete(`${REST_BOARD_API}/${id}`)
+      .then((response) => {
+        router.push({ name: 'travelList'})
+      })
   }
 
-  const searchBoardList = function (searchCondition) {
-    axios.get(REST_BOARD_API, {
-      params: searchCondition
-    })
-      .then((res) => {
-        boardList.value = res.data
-    })
-  }
-
-
-
-
-
-
-
-
-  return { boardList, getBoardList, board, getBoard, createBoard, updateBoard,searchBoardList }
+  return { travelList, getTravelList, travel, getTravel, createTravel, deleteTravel }
 })

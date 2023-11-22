@@ -1,19 +1,59 @@
-<template class="template-map">
-  <div>
-    <div id="map"></div>
-    <div class="buttons">
-      <button class="course-draw-button" @click="selectOverlay('POLYLINE')">경로 그리기</button>
-      <button class="course-remove-button" @click="remove">경로 삭제</button>
-      <button class="course-create-button" @click="regist">등록</button>
-      <button class="bicycleroad-button" @click="road">자전거도로</button>
-      <input type="text" v-model="keyword" @keyup.enter="searchkeyword">
+<template>
+  <div class="course-create-container">
+
+    <div class="course-create-container-left">
+      <div class="course-form">
+        <div>
+          <input type="text" v-model="course.course_name" placeholder="코스 이름">
+        </div>
+        <div class="course-form-address">
+          {{ course.course_address }}
+          <!-- 주소 -->
+        </div>
+        <div>
+          <textarea cols="30" rows="10" v-model="course.course_content" placeholder="코스 내용"></textarea>
+        </div>
+
+        <!-- 키워드 리스트 -->
+        <div>코스와 어울리는 키워드를 골라주세요 (최대 5개)</div>
+        <div class="course-keyword-list">
+          <label v-for="(keyword, index) in keywords" :key="index" :class="{ 'checked': keyword.checked }">
+            <input type="checkbox" :name="'coursekeyword' + index" :value="keyword.value" v-model="keyword.checked">
+            {{ keyword.label }}
+          </label>
+        </div>
+        <!-- 키워드 리스트 -->
+
+      </div>
+      
+      
+
     </div>
-    <p id="result"></p>
+
+    <div class="course-create-container-right">
+      <div id="map"></div>
+      <div class="buttons">
+        <button class="course-draw-button" @click="selectOverlay('POLYLINE')">경로 그리기</button>
+        <button class="course-remove-button" @click="remove">경로 삭제</button>
+        <button class="course-create-button" @click="regist">등록</button>
+        <button class="bicycleroad-button" @click="road">자전거도로</button>
+        <input type="text" v-model="keyword" @keyup.enter="searchkeyword">
+      </div>
+
+      <!-- 최종 등록 버튼 -->
+      <div class="course-final-buttons"></div>
+      <button @click="create">등록</button>
+      <button @click="cancel">취소</button>
+      <!-- 최종 등록 버튼 -->
+    </div>
+
+
+
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useCourseStore } from '@/stores/course'
 
 const courseStore = useCourseStore();
@@ -26,6 +66,64 @@ let markers = [];
 let markerPosition = null;
 let marker = null;
 let point = [];
+
+const courseMap = [];
+
+const keywords = ref([
+  { value: '봄', label: '봄', checked: false },
+  { value: '여름', label: '여름', checked: false },
+  { value: '가을', label: '가을', checked: false },
+  { value: '겨울', label: '겨울', checked: false },
+  { value: '맑음', label: '맑음', checked: false },
+  { value: '흐림', label: '흐림', checked: false },
+  { value: '비', label: '비', checked: false },
+  { value: '눈', label: '눈', checked: false },
+  { value: '산', label: '산', checked: false },
+  { value: '바다', label: '바다', checked: false },
+  { value: '도시', label: '도시', checked: false },
+  { value: '시골', label: '시골', checked: false },
+  { value: '혼자', label: '혼자', checked: false },
+  { value: '연인', label: '연인', checked: false },
+  { value: '친구', label: '친구', checked: false },
+  { value: '가족', label: '가족', checked: false },
+  { value: '초급', label: '초급', checked: false },
+  { value: '중급', label: '중급', checked: false },
+  { value: '고급', label: '고급', checked: false },
+  { value: '프로', label: '프로', checked: false },
+]);
+
+
+const course = ref({
+  courseMap: courseMap,
+  course_address: '',
+  course_content: '',
+  course_keyword: '',
+  course_name: '',
+  course_rcm: 0,
+  course_regDate: '',
+  course_userId: '',
+  course_viewCnt: 0
+})
+
+
+
+// ============ 등록버튼 누르면 서버와 연결해서 DB에 저장 ============
+const regist = function () {
+
+  point.forEach(element => {
+    courseMap.push(element.lat);
+    courseMap.push(element.lng)
+  });
+
+  courseStore.createCourse(course);
+};
+
+// ========================================================================================================================
+// ========================================================================================================================
+// ========================================================================================================================
+// 여기부터 지도
+
+
 
 const initMap = function () {
   let myCenter = new kakao.maps.LatLng(36.370841, 127.387943); //카카오본사
@@ -109,39 +207,6 @@ const initMap = function () {
           content: content,
           yAnchor: 1
         });
-
-        // customOverlay.setMap(map);
-
-        // // 시작위치 마커 생성
-        // const dbmarker = new kakao.maps.Marker({
-        //   map: map,
-        //   position: new kakao.maps.LatLng(course.courseMap[0], course.courseMap[1]),
-        //   title: "위치"
-        // });
-        // const dbmarkers = [];
-        // dbmarkers.push(dbmarker);
-        // dbmarker.setMap(map);
-
-        // const infowindow = new kakao.maps.InfoWindow({
-        //   content: course.course_name
-        // })
-
-        // kakao.maps.event.addListener(dbmarker, 'mouseover', makeOverListener(map, dbmarker, infowindow));
-        // kakao.maps.event.addListener(dbmarker, 'mouseout', makeOutListener(infowindow));
-
-        // // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-        // function makeOverListener(map, marker, infowindow) {
-        //   return function () {
-        //     infowindow.open(map, marker);
-        //   };
-        // }
-
-        // // 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-        // function makeOutListener(infowindow) {
-        //   return function () {
-        //     infowindow.close();
-        //   };
-        // }
 
         // 마커에 클릭이벤트를 등록합니다
         kakao.maps.event.addListener(dbmarker, 'click', function () {
@@ -272,6 +337,9 @@ const initMap = function () {
   });
 
 
+  // ============ 지도 레벨 변경을 감지하는 이벤트 리스너 추가 ============
+  
+
 };
 
 
@@ -314,34 +382,6 @@ const selectOverlay = function (type) {
 }
 
 
-// ============ 등록버튼 누르면 서버와 연결해서 DB에 저장 ============
-const regist = function () {
-  // const courseMap = [
-  //   0, 0, 0, 0
-  // ];
-  const courseMap = [];
-
-  point.forEach(element => {
-    courseMap.push(element.lat);
-    courseMap.push(element.lng)
-  });
-
-  const course = {
-    courseMap: courseMap,
-    course_address: "대전광역시",
-    course_content: "test content'",
-    course_keyword: "봄&여름",
-    course_name: "test name",
-    course_rcm: 0,
-    course_regDate: "",
-    course_userId: "aaa",
-    course_viewCnt: 0
-  }
-
-  courseStore.createCourse(course);
-
-  // console.log(point);
-};
 
 let check = false;
 const road = function () {
@@ -371,82 +411,129 @@ onMounted(() => {
   }
 });
 
+
 </script>
 
-<style>
-.template-map {
-  display: inline;
-}
-
-.template-map>div {
-  display: flex;
-  flex-direction: column;
-}
-
+<style scoped>
 #map {
-  /* display: inline; */
-  width: 1000px;
-  height: 800px;
-  border-radius: 50px;
+  width: 100%;
+  /* 부모 컨테이너의 가로 길이에 맞게 지도 크기 조정 */
+  height: 450px;
+  border-radius: 10px;
   border-color: #24613b;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
-  /* 버튼 사이의 간격을 조절할 수 있습니다. */
+/* 전체 컨테이너 스타일 */
+.course-create-container {
+  display: flex;
+}
+
+/* 왼쪽 섹션 스타일 */
+.course-create-container-left {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+  /* 연한 배경색 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 부드러운 박스 그림자 */
+}
+
+/* 오른쪽 섹션 스타일 */
+.course-create-container-right {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  /* 흰 배경색 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 부드러운 박스 그림자 */
+  display: flex;
+  flex-direction: column;
+  /* 자식 엘리먼트들을 세로로 정렬하기 위해 */
+  align-items: center;
+  /* 자식 엘리먼트들을 가운데로 정렬하기 위해 */
 }
 
 
-/* 커스텀오버레이 */
-.customoverlay {
-  position: relative;
-  bottom: 85px;
-  border-radius: 6px;
+.course-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-form div {
+  margin-bottom: 15px;
+}
+
+.course-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-bottom: 2px solid #ddd;
-  float: left;
+  border-radius: 5px;
 }
 
-.customoverlay:nth-of-type(n) {
-  border: 0;
-  box-shadow: 0px 1px 2px #888;
+.course-form-address {
+  width: 100%;
+  height: 32px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
 }
 
-.customoverlay a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-  text-align: center;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
-  overflow: hidden;
-  background: #24613b;
-  background: #24613b url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+.course-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.customoverlay .title {
-  display: block;
-  text-align: center;
-  background: #fff;
-  margin-right: 35px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: bold;
+/* 체크박스 */
+.course-keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10%;
 }
 
-.customoverlay:after {
-  content: '';
-  position: absolute;
-  margin-left: -12px;
-  left: 50%;
-  bottom: -12px;
-  width: 22px;
-  height: 12px;
-  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+.course-keyword-list label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 가로 중앙 정렬을 위한 스타일 */
+  align-items: center;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  font-size: 0.9rem;
+  width: 20%;
+  /* 4개씩 나열하므로 100%를 4로 나눈 값 */
+  border: 2px solid #ddd;
+  /* 테두리 추가 */
+  padding: 10px;
+  /* 테두리 내부 여백 추가 */
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
+
+.course-keyword-list label:hover {
+  background-color: #ffe0e4;
+}
+
+/* 클릭한 상태의 라벨 스타일 */
+.course-keyword-list label.checked {
+  background-color: #FF8E9E;
+  /* 클릭 시 배경색 변경 */
+  border-color: #ff7e90;
+}
+
+.course-keyword-list input[type="checkbox"] {
+  display: none;
+}
+
+
+
+
+
 </style>
-

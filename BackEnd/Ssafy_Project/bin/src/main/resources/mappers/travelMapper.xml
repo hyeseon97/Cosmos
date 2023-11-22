@@ -10,7 +10,7 @@
 		VALUES(#{fb_userId}, #{fb_title}, #{fb_writer}, #{fb_content})
 	</insert>
 
-	<select id="search" parameterType="SearchCondition" resultType="FreeBoard">
+	<select id="search" parameterType="SearchCondition">
 		SELECT * FROM freeBoard
 		<if test="key != 'none'">
 			WHERE ${key} LIKE CONCAT ('%',#{word}, '%')

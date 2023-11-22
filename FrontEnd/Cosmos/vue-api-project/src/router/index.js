@@ -14,12 +14,16 @@ import RecommandDetail from "@/components/recommand/RecommandDetail.vue"
 import RecommandComment from "@/components/recommand/RecommandComment.vue"
 
 import CourseList from "@/components/course/CourseList.vue"
+import CourseCreate from "@/components/course/CourseCreate.vue"
 // import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
 // import KakaoMap from "@/components/map/KakaoMap.vue"
 import CourseDetail from "@/components/course/CourseDetail.vue"
 import CourseComment from "@/components/course/CourseComment.vue"
 
 import KakaoMap from "@/components/map/KakaoMap.vue"
+import KakaoMapCreate from "@/components/map/KakaoMapCreate.vue"
+import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
+import MapTravel from "@/components/map/MapTravel.vue"
 import Weather from "@/components/map/Weather.vue"
 
 import FreeBoardList from "@/components/freeboard/FreeBoardList.vue"
@@ -91,7 +95,7 @@ const router = createRouter({
         {
           path: "create",
           name: "courseCreate",
-          component: KakaoMap,
+          component: CourseCreate,
         },
         {
           path: ":num",
@@ -249,6 +253,28 @@ const router = createRouter({
           component: UserUpdate,
         },
       ]
+    },
+
+
+    {
+      path: "/test/kakaomap",
+      name: "kakaomap",
+      component: KakaoMap,
+    },
+    {
+      path: "/test/kakaomapcreate",
+      name: "kakaomapcreate",
+      component: KakaoMapCreate,
+    },
+    {
+      path: "/test/kakaomapcreatebeauty",
+      name: "kakaomapcreatebeauty",
+      component: KakaoMapCreateBeauty,
+    },
+    {
+      path: "/test/maptravel",
+      name: "maptravel",
+      component: MapTravel,
     },
   ],
 });

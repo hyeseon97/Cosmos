@@ -6,42 +6,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.bicycle.model.dao.FreeBoardDao;
-import com.ssafy.bicycle.model.dto.FreeBoard;
-import com.ssafy.bicycle.model.dto.SearchCondition;
+import com.ssafy.bicycle.model.dao.TravelDao;
+import com.ssafy.bicycle.model.dto.Travel;
 
 @Service
-public class TravelServiceImpl implements FreeBoardService {
+public class TravelServiceImpl implements TravelService {
 
 	@Autowired
-	private FreeBoardDao freeBoardDao;
+	private TravelDao travelDao;
 
 	@Transactional
 	@Override
-	public int writeBoard(FreeBoard freeBoard) {
-		return freeBoardDao.insertBoard(freeBoard);
+	public int writeTravel(Travel travel) {
+		return travelDao.insertTravel(travel);
 	}
 
 	@Override
-	public List<FreeBoard> search(SearchCondition condition) {
-		return freeBoardDao.search(condition);
+	public List<Travel> getList() {
+		return travelDao.selectAll();
 	}
 
 	@Override
-	public FreeBoard getFreeOne(int num) {
-		return freeBoardDao.selectOne(num);
+	public Travel getTravelOne(int num) {
+		return travelDao.selectOne(num);
 	}
+
+//	@Transactional
+//	@Override
+//	public boolean modifyFree(Travel Travel) {
+//		return travelDao.updateTravel(Travel) > 0;
+//	}
 
 	@Transactional
 	@Override
-	public boolean modifyFree(FreeBoard freeBoard) {
-		return freeBoardDao.updateBoard(freeBoard) > 0;
-	}
-
-	@Transactional
-	@Override
-	public boolean removeFree(int num) {
-		return freeBoardDao.deleteBoard(num) > 0;
+	public boolean removeTravel(int num) {
+		return travelDao.deleteTravel(num) > 0;
 	}
 
 }
