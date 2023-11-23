@@ -89,6 +89,7 @@ const keywords = ref([
 
 // 최대 5개의 키워드만 선택 가능하도록 처리
 const handleKeywordChange = () => {
+  console.log("키워드클릭")
   const selectedKeywords = keywords.value.filter(keyword => keyword.checked);
   if (selectedKeywords.length > 5) {
     // 선택한 키워드가 5개를 초과하면 알림창 띄우기
@@ -127,7 +128,7 @@ const regist = function () {
 
   keywords.value.forEach(k => {
     if (k.checked) {
-      keyword += ('/' + k.value)
+      keyword += k.value
     }
   });
 
@@ -185,7 +186,13 @@ const initMap = function () {
 
   // ==================== DB 데이터 표시 ====================
 
-  courseStore.getCourseList()
+  const condition = {
+    key: 'none',
+    word: '',
+    orderBy: 'none',
+    orderByDir: ''
+  }
+  courseStore.getCourseList(condition)
     .then(() => {
       const courseList = courseStore.courseList;
       const lineList = [];
@@ -435,6 +442,7 @@ onMounted(() => {
     }); //헤드태그에 추가
     document.head.appendChild(script);
   }
+  userStore.getUser(userStore.loginUserId);
 });
 
 
@@ -536,7 +544,7 @@ onMounted(() => {
   justify-content: center;
   /* 가로 중앙 정렬을 위한 스타일 */
   align-items: center;
-  margin-bottom: 10px;
+  margin: 5px;
   font-size: 0.9rem;
   width: 23%;
   /* 4개씩 나열하므로 100%를 4로 나눈 값 */
@@ -584,6 +592,7 @@ onMounted(() => {
   background-color: #f7f2e4;
   border-radius: 5px;
   width: 24%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .course-create-buttons>.course-bicycle-button:hover {

@@ -23,8 +23,13 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	public List<Course> geKeywordList(List<String> keywords){
+		return courseDao.getCourseByKeywords(keywords);
+	}
+
+	@Override
 	public List<Course> search(SearchCondition condition) {
-		return courseDao.selectAll();
+		return courseDao.selectAll(condition);
 	}
 
 	@Override
@@ -44,5 +49,7 @@ public class CourseServiceImpl implements CourseService {
 	public boolean removeCourse(int num) {
 		return courseDao.deleteCourse(num) > 0;
 	}
+
+
 
 }

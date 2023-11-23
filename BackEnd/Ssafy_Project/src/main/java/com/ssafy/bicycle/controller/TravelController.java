@@ -1,6 +1,8 @@
 package com.ssafy.bicycle.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,39 +57,40 @@ public class TravelController {
 		}
 	}
 
-	// 조회 or 검색
-	@GetMapping("/travel")
-	public ResponseEntity<?> list() {
-		List<Travel> list = travelService.getList();
-		
-		for(int i = 0;i<list.size();i++) {
-			int travelNum = list.get(i).getTravel_num();
-			
-			List<Place> placeList = placeService.getPlaceList(travelNum);
-			
-			list.get(i).setPlaces(placeList);
-		}
-		
-		if (list == null || list.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
-		
-		return new ResponseEntity<List<Travel>>(list, HttpStatus.OK);
-	}
+//	// 조회 or 검색
+//	@GetMapping("/travel")
+//	public ResponseEntity<?> list() {
+//		List<Travel> list = travelService.getList();
+//		
+//		for(int i = 0;i<list.size();i++) {
+//			int travelNum = list.get(i).getTravel_num();
+//			
+//			List<Place> placeList = placeService.getPlaceList(travelNum);
+//			
+//			list.get(i).setPlaces(placeList);
+//		}
+//		
+//		if (list == null || list.size() == 0) {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+//		
+//		return new ResponseEntity<List<Travel>>(list, HttpStatus.OK);
+//	}
 
 	// 상세조회
-	@GetMapping("/travel/{num}")
-	public ResponseEntity<?> detail(@PathVariable int num) {
-		
-		Travel travel = travelService.getTravelOne(num);
-		if (travel == null) {
+	// num을 유저아이디로 하고 1~3개 가져온다음에 인덱스로 디테일을 가자 굿
+	@GetMapping("/travel/{id}")
+	public ResponseEntity<?> detail(@PathVariable String id) {
+		List<Travel> list = travelService.getList(id);
+		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		
-		List<Place> placeList = placeService.getPlaceList(num);
-		travel.setPlaces(placeList);
-		
-		return new ResponseEntity<Travel>(travel, HttpStatus.OK);
+		for(int i = 0;i<list.size();i++) {
+			List<Place> placeList = placeService.getPlaceList(list.get(i).getTravel_num());
+			list.get(i).setPlaces(placeList);
+		}
+		return new ResponseEntity<List<Travel>>(list, HttpStatus.OK);
 	}
 
 //	// 수정
@@ -101,9 +104,14 @@ public class TravelController {
 //	}
 
 	// 삭제
-	@DeleteMapping("/travel/{num}")
-	public ResponseEntity<?> delete(@PathVariable int num) {
-		if (travelService.removeTravel(num)) {
+	// 유저아이디_여행넘버 로 요청 받아오자
+	@DeleteMapping("/travel/{id}")
+	public ResponseEntity<?> delete(@PathVariable String id) {
+		StringTokenizer st = new StringTokenizer(id, "_");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("travel_userId", st.nextToken());
+		map.put("travel_num", Integer.parseInt(st.nextToken()));
+		if (travelService.removeTravel(map)) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("FAIL", HttpStatus.BAD_REQUEST);

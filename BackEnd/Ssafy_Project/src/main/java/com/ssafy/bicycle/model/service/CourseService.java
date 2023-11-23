@@ -10,6 +10,9 @@ public interface CourseService {
 	// 코스 입력
 	int writeCourse(Course course);
 	
+	// 키워드 조회
+	List<Course> geKeywordList(List<String> keywords);
+	
 	// 코스 조회
 	List<Course> search(SearchCondition condition);
 	

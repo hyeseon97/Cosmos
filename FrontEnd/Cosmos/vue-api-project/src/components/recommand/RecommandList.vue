@@ -1,94 +1,40 @@
 <template>
   <div class="course-list">
-    <div class="course" v-for="c in course" @click="goDetail(c.num)">
-      <img :src="c.src" alt="사진" class="course-image">
+    <div class="course" v-for="c in course" @click="goDetail(c.course_num)">
+      <img src="" alt="사진" class="course-image">
       <div class="view-good">
-        <div class="viewCnt icon-center" style="margin-right: 10px;"><img src="../../assets/view.png" style="width: 20px; margin-right: 10px;">{{ c.viewCnt }}</div>
-        <div class="good icon-center"><img src="../../assets/good.png" style="width: 20px; margin-right: 10px;">{{ c.good }}</div>
+        <div class="viewCnt icon-center" style="margin-right: 10px;"><img src="../../assets/view.png" style="width: 20px; margin-right: 10px;">{{ c.course_viewCnt }}</div>
+        <div class="good icon-center"><img src="../../assets/good.png" style="width: 20px; margin-right: 10px;">{{ c.course_rcm }}</div>
       </div>
-      <div class="name">{{ c.name }}</div>
-      <div class="address">{{ c.address }}</div>
+      <div class="name">{{ c.course_name }}</div>
+      <div class="address">{{ c.course_address }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+import { useCourseStore } from '../../stores/course';
 
 const router = useRouter();
+const courseStore = useCourseStore();
 
-const course = ref([
-  {
-    num: 1,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 3495735,
-    good: 5921,
-    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhKzRz%2FbtradSs09rD%2FgDcrgDfYvrlXY9RPxEH1kK%2Fimg.png'
-  },
-  {
-    num: 2,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 2563524,
-    good: 2643,
-    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcgVNR1%2FbtracZlbhFp%2FLWdO69OUTBkZKE2RZI2sOk%2Fimg.png'
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 134314,
-    good: 932,
-    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FWxf89%2FbtrafMeM3pE%2FN2SiTnFSs0SB1kAIEOieO0%2Fimg.png'
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: "1k",
-    good: 1,
-    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FwWwlg%2FbtrafLAcSgK%2FecIZaDEa4UwQxD8Mu3x7b1%2Fimg.jpg'
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 3,
-    good: 1,
-    src: 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0d8M4%2FbtrahhZUSML%2F4o58d7xHy7sQ0i3M4bu6p1%2Fimg.png'
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 3,
-    good: 1,
-    src: ''
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 3,
-    good: 1,
-    src: ''
-  },
-  {
-    num: 3,
-    name: "이름1",
-    address: "주소1",
-    viewCnt: 3,
-    good: 1,
-    src: ''
-  },
-])
-
+const course = computed(() => courseStore.courseList.slice(0, 8));
 
 const goDetail = function (num) {
   router.push({ name: "recommandDetail", params: { num: num } })
 }
+
+onMounted(() => {
+  const condition = {
+    key: 'none',
+    word: '',
+    orderBy: 'course_viewCnt',
+    orderByDir: 'DESC'
+  }
+  courseStore.getCourseList(condition);
+});
 
 </script>
 

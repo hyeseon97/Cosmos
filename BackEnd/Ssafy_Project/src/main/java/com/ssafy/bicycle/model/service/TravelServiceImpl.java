@@ -1,5 +1,6 @@
 package com.ssafy.bicycle.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class TravelServiceImpl implements TravelService {
 	}
 
 	@Override
-	public List<Travel> getList() {
-		return travelDao.selectAll();
+	public List<Travel> getList(String id) {
+		return travelDao.selectAll(id);
 	}
 
 	@Override
@@ -39,8 +40,8 @@ public class TravelServiceImpl implements TravelService {
 
 	@Transactional
 	@Override
-	public boolean removeTravel(int num) {
-		return travelDao.deleteTravel(num) > 0;
+	public boolean removeTravel(HashMap<String, Object> map) {
+		return travelDao.deleteTravel(map) > 0;
 	}
 
 }

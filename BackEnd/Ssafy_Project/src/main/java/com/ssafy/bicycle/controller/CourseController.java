@@ -2,6 +2,7 @@ package com.ssafy.bicycle.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +92,7 @@ public class CourseController {
 	// 조회 or 조회
 	@GetMapping("/course")
 	public ResponseEntity<?> list(SearchCondition condition) {
+//		System.out.println(condition);
 		List<Course> list = courseService.search(condition);
 		for (int i = 0; i < list.size(); i++) {
 			int courseNum = list.get(i).getCourse_num();
@@ -99,7 +102,6 @@ public class CourseController {
 			List<Double> courseMap = new ArrayList<Double>();
 
 			for (int seq = 0; seq < cmlist.size(); seq++) {
-				System.out.println(cmlist.get(seq));
 				courseMap.add(cmlist.get(seq).getCm_lat());
 				courseMap.add(cmlist.get(seq).getCm_lng());
 			}
@@ -115,27 +117,11 @@ public class CourseController {
 	}
 	
 	// 키워드 조회
-	@GetMapping("/course/keyword")
-	public ResponseEntity<?> list(String keyword){
-		List<Course> list = courseService.search(null);
-		for(int i = 0;i<list.size();i++) {
-			int courseNum = list.get(i).getCourse_num();
-			
-			List<CourseMap> cmlist = courseMapService.getCourseMapList(courseNum);
-			
-			List<Double> courseMap = new ArrayList<Double>();
-			
-			System.out.println("i=" + i + "   courseNum=" + courseNum + "   " + cmlist.size());
-			System.out.println(list.get(i));
-			for(int seq = 0;seq<cmlist.size();seq++) {
-				System.out.println(cmlist.get(seq));
-				courseMap.add(cmlist.get(seq).getCm_lat());
-				courseMap.add(cmlist.get(seq).getCm_lng());
-			}
-			 
-			list.get(i).setCourseMap(courseMap);
-		}
-		
+	@GetMapping("/course/keyword/{senddata}")
+	public ResponseEntity<?> list(@PathVariable String senddata){
+		System.out.println("keyword - " + senddata);
+		List<String> stringList = Arrays.asList(senddata.split("_"));
+		List<Course> list = courseService.geKeywordList(stringList);
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
