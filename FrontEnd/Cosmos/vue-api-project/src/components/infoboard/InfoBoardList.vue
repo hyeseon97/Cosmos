@@ -68,6 +68,8 @@ const userStore = useUserStore();
 
 const user = ref("11");
 
+const searchQuery = ref('');
+
 const arr = ref([]);
 
 const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수

@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFreeBoardStore } from '../../stores/freeBoard';
 import { useUserStore } from '../../stores/user';
@@ -29,10 +29,14 @@ const router = useRouter();
 const store = useFreeBoardStore();
 const userStore = useUserStore();
 
+// 파일업로드
+const file = ref({})
+const imageUploaded = ref({})
+
 const freeBoard = ref({
   fb_num: 0,
   fb_title: "",
-  fb_writer: "",
+  fb_writer: userStore.user.user_name,
   fb_content: "",
   fb_userId: userStore.loginUserId,
   fb_viewCnt: 0,
@@ -45,8 +49,6 @@ const cancel = function () {
 }
 
 const regist = function () {
-
-
   const frm = new FormData()
   frm.append("fb_num", freeBoard.value.fb_num)
   frm.append("fb_title", freeBoard.value.fb_title)
@@ -60,10 +62,6 @@ const regist = function () {
   store.createFreeBoard(frm)
 }
 
-// 파일업로드
-const file = ref({})
-const imageUploaded = ref({})
-
 const imageUpload = function () {
   const photo = document.getElementById("photo")
   file.value = photo.files[0];
@@ -71,6 +69,10 @@ const imageUpload = function () {
   console.log(file.value)
   imageUploaded.value = URL.createObjectURL(image)
 }
+
+onMounted(() => {
+  userStore.getUser(userStore.loginUserId);
+})
 
 </script>
 

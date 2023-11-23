@@ -8,19 +8,10 @@ const REST_BOARD_API = `http://localhost:8080/api/travel`
 export const useTravelStore = defineStore('travel', () => {
   const travelList = ref([])
 
-  const getTravelList = function () {
-    axios.get(REST_BOARD_API)
-      .then((response) => {
-        travelList.value = response.data
-      })
-  }
-
-  //게시글 한개
-  const travel = ref({})
-  const getTravel = function (id) {
+  const getTravelList = function (id) {
     axios.get(`${REST_BOARD_API}/${id}`)
       .then((response) => {
-        travel.value = response.data
+        travelList.value = response.data
       })
   }
 
@@ -60,5 +51,5 @@ export const useTravelStore = defineStore('travel', () => {
       })
   }
 
-  return { travelList, getTravelList, travel, getTravel, createTravel, deleteTravel }
+  return { travelList, getTravelList, createTravel, deleteTravel }
 })

@@ -59,5 +59,13 @@ public class InfoComment {
 	public void setIc_regDate(String ic_regDate) {
 		this.ic_regDate = ic_regDate;
 	}
+
+	@Override
+	public String toString() {
+		return "InfoComment [ic_boardNum=" + ic_boardNum + ", ic_userId=" + ic_userId + ", ic_userName=" + ic_userName
+				+ ", ic_content=" + ic_content + ", ic_regDate=" + ic_regDate + "]";
+	}
+	
+	
 	
 }

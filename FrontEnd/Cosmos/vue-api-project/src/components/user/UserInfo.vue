@@ -42,45 +42,6 @@
   </div>
 </template>
 
-
-<!-- <template>
-  <h1>마이페이지</h1>
-  <div class="mypage-container">
-    <div class="mypage-image-container">
-      <input type="hidden" v-model="userStore.user.user_grade">
-      <img v-if="userStore.user.user_grade === 1" class="mypage-image" src="../../assets/grade_1.png" alt="Grade 1 Image">
-      <img v-else-if="userStore.user.user_grade === 2" class="mypage-image" src="../../assets/grade_2.png"
-        alt="Grade 2 Image">
-      <img v-else-if="userStore.user.user_grade === 3" class="mypage-image" src="../../assets/grade_3.png"
-        alt="Grade 3 Image">
-      <img v-else class="mypage-image" src="../../assets/grade_4.png" alt="Grade 4 Image">
-    </div>
-
-    <div class="mypage-input-container">
-      <div>아이디</div>
-      <input type="text" class="mypage-input" v-model="userStore.user.user_id" :readonly="true">
-
-      <div>패스워드</div>
-      <input type="password" class="mypage-input" v-model="userStore.user.user_pw" :readonly="!editing" @focus="highlight"
-        @blur="removeHighlight">
-
-      <div>이름</div>
-      <input type="text" class="mypage-input" v-model="userStore.user.user_name" :readonly="!editing" @focus="highlight"
-        @blur="removeHighlight">
-
-      <div>생년월일</div>
-      <input type="date" class="mypage-input" v-model="userStore.user.user_birth" :readonly="!editing" @focus="highlight"
-        @blur="removeHighlight">
-
-      수정 및 취소 버튼
-      <div class="buttons">
-        <button class="mypage-updateBtn" id="mypage-update-btn" type="button" @click="toggleEditing">{{ editing ? '수정 완료' : '수정' }}</button>
-        <button v-if="editing" class="mypage-cancelBtn" id="mypage-cancel-btn" type="button" @click="cancelEditing">취소</button>
-      </div>
-    </div>
-  </div>
-</template> -->
-
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useUserStore } from '../../stores/user';
@@ -174,7 +135,7 @@ onMounted(() => {
   border: 0;
   border-radius: 15px;
   outline: none;
-  padding-left: 10px;
+  padding: 5px 10px 5px;
   background-color: rgb(233, 233, 233);
 }
 #mypage-cancel-btn,
@@ -202,6 +163,10 @@ onMounted(() => {
 
 .mypage-grade{
   text-align: center;
+}
+
+.mypage-updateBtn{
+  margin: 10px 10px;
 }
 
 @media (max-width: 600px) {

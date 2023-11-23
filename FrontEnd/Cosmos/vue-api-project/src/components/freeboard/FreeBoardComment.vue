@@ -25,30 +25,30 @@ import { useFreeCommentStore } from '../../stores/freeBoardComment';
 import { useUserStore } from '../../stores/user';
 
 const route = useRoute();
-const store = useFreeCommentStore();
+const commentStore = useFreeCommentStore();
 const userStore = useUserStore();
 
-const freeCommentList = computed(()=> store.freeCommentList)
-
-onMounted(()=>{
-  store.getFreeCommentList(route.params.num)
-})
+const freeCommentList = computed(()=> commentStore.freeCommentList)
 
 const comment = ref({
   fc_boardNum: route.params.num,
   fc_userId: userStore.loginUserId,
-	fc_userName: 'aaa',
+	fc_userName: userStore.user.user_name,
 	fc_content: ''
 })
 
 const create = function(){
-  console.log("comment " + route.params.num)
-  store.createComment(comment)
+  commentStore.createComment(comment)
   .then(()=>{
-    store.getFreeCommentList(route.params.num)
+    commentStore.getFreeCommentList(route.params.num)
     comment.value.fc_content = ''
   })
 }
+
+onMounted(()=>{
+  userStore.getUser(userStore.loginUserId);
+  commentStore.getFreeCommentList(route.params.num)
+})
 
 </script>
 

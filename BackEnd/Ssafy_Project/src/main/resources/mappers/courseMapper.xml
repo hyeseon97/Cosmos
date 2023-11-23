@@ -9,9 +9,25 @@
 		VALUES(#{course_name}, #{course_content}, #{course_address}, #{course_keyword}, #{course_userId})
 	</insert>
 
-	<select id="selectAll" resultType="Course">
+	<select id="selectAll" parameterType="SearchCondition" resultType="Course">
 		SELECT * FROM course
+		<if test="key != 'none'">
+			WHERE ${key} LIKE CONCAT ('%',#{word}, '%')
+		</if>
+		<if test="orderBy != 'none'">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>
 	</select>
+	
+	
+	<select id="getCourseByKeywords" resultType="Course">
+        SELECT * FROM course
+        <where>
+            <foreach collection="keywords" item="keyword" separator=" AND ">
+                course_keyword LIKE concat('%', #{keyword}, '%')
+            </foreach>
+        </where>
+    </select>
 
 	<select id="selectOne" parameterType="int" resultType="Course">
 		SELECT * FROM course

@@ -47,7 +47,7 @@
     <div class="container-right">
       <div id="map"></div>
       <div class="map-controls">
-        <div class="bicycleroad-button" @click="road">자전거도로</div>
+        <div class="bicycleroad-button" @click="road" :class="{ 'active': check }">자전거도로</div>
         <input type="text" @keyup.enter="search" v-model="keyword" class="search-input">
         <div @click="search" class="search-button">검색</div>
         <div @click="save" class="save-button">장소저장</div>
@@ -62,11 +62,13 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTravelStore } from '../../stores/travel';
 import { useCourseStore } from '@/stores/course'
+import { useUserStore } from '../../stores/user';
 
 
 const router = useRouter();
-const store = useTravelStore();
+const travelStore = useTravelStore();
 const courseStore = useCourseStore();
+const userStore = useUserStore();
 
 let map = null;
 let idx = 0;
@@ -93,7 +95,7 @@ const travel = ref({
   travel_title: '',
   travel_memo: '',
   travel_travelDate: '',
-  travel_userId: 'aaa',
+  travel_userId: userStore.loginUserId,
   places: place.value,
 })
 
@@ -120,7 +122,7 @@ const removePlace = function (index) {
 // 여행 등록
 const create = function () {
   console.log(place)
-  store.createTravel(travel)
+  travelStore.createTravel(travel)
   // router.push({ name: "travelDetail", params: { num: 1 }})
 }
 
@@ -169,7 +171,14 @@ const initMap = function () {
 
   // ==================== DB 데이터 표시 ====================
 
-  courseStore.getCourseList()
+  const condition = {
+    key: 'none',
+    word: '',
+    orderBy: 'none',
+    orderByDir: ''
+  }
+
+  courseStore.getCourseList(condition)
     .then(() => {
       const courseList = courseStore.courseList;
       const lineList = [];
@@ -289,11 +298,10 @@ const initMap = function () {
 
 
 // ==================== 자전거 도로 ====================
-let check = false;
+let check = ref(false);
 const road = function () {
-  console.log(check);
-  check = !check;
-  if (check) {
+  check.value = !check.value;
+  if (check.value) {
     map.addOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
   } else {
     map.removeOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
@@ -402,6 +410,7 @@ onMounted(() => {
     }); //헤드태그에 추가
     document.head.appendChild(script);
   }
+  userStore.getUser(userStore.loginUserId);
 });
 
 
@@ -451,19 +460,19 @@ onMounted(() => {
 
 /* 버튼 추가 스타일 */
 .container button {
-  background-color: #24613b;
+  background-color: #f7f2e4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   /* 초록 버튼 배경색 */
-  color: #ffffff;
+  /* color: #ffffff; */
   /* 흰 텍스트 색상 */
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
   margin-right: 10px;
 }
 
 .container button:hover {
-  background-color: #18482b;
+  background-color: #ebe4d1;
   /* 호버 시 더 어두운 초록 */
 }
 
@@ -501,8 +510,8 @@ textarea {
 }
 
 .container th {
-  background-color: #24613b;
-  color: #ffffff;
+  background-color: #ddd;
+  /* color: #ffffff; */
   text-align: center;
 }
 
@@ -564,7 +573,7 @@ textarea {
 }
 
 .map-controls>input:focus {
-  border-color: #24613b;
+  border-color: #f3ead3;
   border-width: 3px;
 }
 
@@ -573,9 +582,8 @@ textarea {
 .bicycleroad-button {
   padding: 8px 16px;
   font-size: 14px;
-  cursor: pointer;
-  background-color: #24613b;
-  color: #fff;
+  background-color: #f7f2e4;
+  /* color: #fff; */
   border: none;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -583,13 +591,18 @@ textarea {
 
 .search-button:hover,
 .save-button:hover {
-  background-color: #185627;
+  background-color: #f3ead3;
 }
 
 
 .bicycleroad-button:hover {
-  background-color: #185627;
+  background-color: #fff27c;
   /* 클릭하거나 호버 시 더 어두운 초록 */
+}
+
+
+.bicycleroad-button.active {
+  background-color: #fff27c;
 }
 
 /* 커스텀오버레이 */

@@ -6,15 +6,15 @@
         <Weather />
       </div>
       <!-- 키워드 리스트 -->
-      <div>키워드로 코스 검색하기 (최대 5개)</div><br>
+      <div style="font-size: 20px;">키워드로 코스 검색하기 (최대 5개)</div><br>
       <div class="course-list-keyword-list">
-          <label v-for="(keyword, index) in keywords" :key="index"
-            :class="{ 'checked': keyword.checked, 'disabled': isKeywordDisabled(keyword) }">
-            <input type="checkbox" :name="'coursekeyword' + index" :value="keyword.value" v-model="keyword.checked"
-              @change="handleKeywordChange">
-            {{ keyword.label }}
-          </label>
-        </div>
+        <label v-for="(keyword, index) in keywords" :key="index"
+          :class="{ 'checked': keyword.checked, 'disabled': isKeywordDisabled(keyword) }">
+          <input type="checkbox" :name="'coursekeyword' + index" :value="keyword.value" v-model="keyword.checked"
+            @change="handleKeywordChange">
+          {{ keyword.label }}
+        </label>
+      </div>
       <!-- 키워드 리스트 -->
     </div>
 
@@ -80,6 +80,13 @@ const keywords = ref([
 // 최대 5개의 키워드만 선택 가능하도록 처리
 const handleKeywordChange = () => {
   const selectedKeywords = keywords.value.filter(keyword => keyword.checked);
+  courseStore.keywords.value = selectedKeywords;
+
+  // 아래 두 줄을 추가하여 변경된 키워드 데이터를 출력해봅니다.
+  console.log('Selected Keywords:', selectedKeywords);
+  console.log('Course Store Keywords:', courseStore.keywords.value);
+
+
   if (selectedKeywords.length > 5) {
     // 선택한 키워드가 5개를 초과하면 알림창 띄우기
     alert("최대 5개까지 선택 가능합니다.");
@@ -90,6 +97,21 @@ const handleKeywordChange = () => {
       }
     });
   }
+
+  let senddata = '';
+  // 아래 두 줄을 추가하여 변경된 키워드 데이터를 출력해봅니다.
+  console.log('Keywords after if statement:', keywords.value);
+  keywords.value.forEach(element => {
+    if (element.checked) {
+      console.log('Checked Keyword:', element.value);
+      senddata += ("_" + element.value);
+    }
+  });
+
+  courseStore.keywords.value = keywords.value;
+
+  courseStore.getCourseListByKeyword(senddata);
+
   initMap();
 };
 
@@ -103,16 +125,10 @@ const checkedKeywordsCount = computed(() => {
   return keywords.value.filter(keyword => keyword.checked).length;
 });
 
-// if(checkedKeywordsCount==6)
 
 const create = function () {
   router.push({ name: "courseCreate" })
 }
-
-const goDetail = function (num) {
-  router.push({ name: "courseDetail", params: { num: num } })
-}
-
 
 // ========================================================================================================================
 // ========================================================================================================================
@@ -154,7 +170,13 @@ const initMap = function () {
 
   // ==================== DB 데이터 표시 ====================
 
-  courseStore.getCourseList()
+  const condition = {
+    key: 'none',
+    word: '',
+    orderBy: 'none',
+    orderByDir: ''
+  }
+  courseStore.getCourseList(condition)
     .then(() => {
       const courseList = courseStore.courseList;
       const lineList = [];
@@ -206,7 +228,7 @@ const initMap = function () {
           // // 마커 위에 인포윈도우를 표시합니다
           // infowindow.open(map, dbmarker);
           console.log("클릭이벤트")
-          router.push({ name: "courseDetail", params: { num: course.course_num } });
+          router.push({ name: "recommandDetail", params: { num: course.course_num } })
         });
 
         // 코스 표시
@@ -251,7 +273,7 @@ const initMap = function () {
 
     if (point.length == 1) {
       // 주소-좌표 변환 객체를 생성합니다
-      getAddr(point[0].lat, point[0].lng);  
+      getAddr(point[0].lat, point[0].lng);
       function getAddr(lat, lng) {
         let geocoder = new kakao.maps.services.Geocoder();
 
@@ -275,7 +297,6 @@ const initMap = function () {
 // ==================== 자전거 도로 ====================
 let check = ref(false);
 const road = function () {
-  console.log(check.value);
   check.value = !check.value;
   if (check.value) {
     map.addOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
@@ -329,7 +350,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 40%;
   flex: 1;
   padding: 20px;
   background-color: #f4f4f4;
@@ -341,7 +362,7 @@ onMounted(() => {
 
 /* 오른쪽 섹션 스타일 */
 .course-list-container-right {
-  width: 50%;
+  width: 60%;
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -416,35 +437,40 @@ onMounted(() => {
 .course-list-keyword-list label.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  pointer-events: none; /* 클릭 이벤트 비활성화 */
+  pointer-events: none;
+  /* 클릭 이벤트 비활성화 */
 }
 
 .course-list-buttons {
   width: 100%;
   margin-top: 30px;
   display: flex;
-  justify-content: end; /* 가로로 균등하게 정렬하려면 추가 */
+  justify-content: end;
+  /* 가로로 균등하게 정렬하려면 추가 */
 }
 
 .course-bicycle-button,
 .course-list-create-button {
   margin-left: 5px;
+  margin: 0 5px;
   padding: 10px;
-  background-color: #f7f2e4; /* 배경색은 원하는 색상으로 변경 */
+  background-color: #f7f2e4;
+  /* 배경색은 원하는 색상으로 변경 */
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.course-bicycle-button:hover{
-  background-color: #fff27c; /* 마우스 호버 시 배경색 변경 */
+.course-bicycle-button:hover {
+  background-color: #fff27c;
+  /* 마우스 호버 시 배경색 변경 */
 }
 
-.course-list-create-button:hover{
+.course-list-create-button:hover {
   background-color: #ffe0e4;
 }
 
 .course-bicycle-button.active {
-  background-color: #fff27c; /* 활성 상태일 때 배경색 변경 */
-}
-</style>
+  background-color: #fff27c;
+  /* 활성 상태일 때 배경색 변경 */
+}</style>

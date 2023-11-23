@@ -1,59 +1,63 @@
 <template>
-    <aside class="side-bar">
-      <ul>
-        <li style="margin-bottom: 20%;">
-          <RouterLink to="/">
-            <div class="centered-content">
-                Course 모스<img src="../../assets/free-icon-pink-cosmos-8116980.png" class="image-container"
+  <aside class="side-bar">
+    <ul>
+      <li style="margin-bottom: 20%;">
+        <RouterLink to="/">
+          <div class="centered-content">
+            Course 모스<img src="../../assets/free-icon-pink-cosmos-8116980.png" class="image-container"
               style="width: 60px; margin-left: 10px;">
 
-            </div>
+          </div>
         </RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'recommandList' }" :class="{ 'active': $route.path.includes('/recommand') }">Today's Course 모스</RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'courseList' }" :class="{ 'active': $route.path.includes('/course') }">우리나라 Course</RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'travelList' }" :class="{ 'active': $route.path.includes('/travel') }">자전거 여행 플래너</RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'freeBoardList' }" :class="{ 'active': $route.path.includes('/free') }">자유게시판</RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'infoBoardList' }" :class="{ 'active': $route.path.includes('/infoboard') }">정보게시판</RouterLink>
-        </li>
-        <li v-if="!loginStatus">
-            <RouterLink :to="{ name: 'login' }" :class="{ 'active': $route.path.includes('/user') }">로그인</RouterLink>
-        </li>
-        <li v-if="loginStatus">
-            <RouterLink :to="{ name: 'userInfo' }" :class="{ 'active': $route.path.includes('/user') }">마이페이지</RouterLink>
-        </li>
-        <li v-if="loginStatus" @click="logout">
-            <RouterLink :to="{ name: 'home' }">로그아웃</RouterLink>
-        </li>
-        <li>
-            <RouterLink :to="{ name: 'adminUserList' }" :class="{ 'active': $route.path.includes('/admin') }">관리자페이지</RouterLink>
-        </li>
+      </li>
+      <li>
+        <RouterLink :to="{ name: 'recommandList' }" :class="{ 'active': $route.path.includes('/recommand') }">Today's
+          <span class="coursemos">Course 모스</span></RouterLink>
+      </li>
+      <li>
+        <RouterLink :to="{ name: 'courseList' }" :class="{ 'active': $route.path.includes('/course') }">우리나라 Course
+        </RouterLink>
+      </li>
+      <li v-if="loginStatus">
+        <RouterLink :to="{ name: 'travelList' }" :class="{ 'active': $route.path.includes('/travel') }">자전거 여행 플래너
+        </RouterLink>
+      </li>
+      <li v-else @click="showAlert">
+        <a>자전거 여행 플래너</a>
+      </li>
+      <li>
+        <RouterLink :to="{ name: 'freeBoardList' }" :class="{ 'active': $route.path.includes('/free') }">자유게시판
+        </RouterLink>
+      </li>
+      <li>
+        <RouterLink :to="{ name: 'infoBoardList' }" :class="{ 'active': $route.path.includes('/infoboard') }">정보게시판
+        </RouterLink>
+      </li>
+      <li v-if="!loginStatus">
+        <RouterLink :to="{ name: 'login' }" :class="{ 'active': $route.path.includes('/user') }">로그인</RouterLink>
+      </li>
+      <li v-if="loginStatus">
+        <RouterLink :to="{ name: 'userInfo' }" :class="{ 'active': $route.path.includes('/user') }">마이페이지</RouterLink>
+      </li>
+      <li v-if="loginStatus" @click="logout">
+        <RouterLink :to="{ name: 'home' }">로그아웃</RouterLink>
+      </li>
 
-      </ul>
-      <div class="menu">
-        <!-- <div>MENUMENU</div> -->
-        <div>M</div>
-        <div>E</div>
-        <div>N</div>
-        <div>U</div>
-      </div>
-    </aside>
-    
+    </ul>
+    <div class="menu">
+      <!-- <div>MENUMENU</div> -->
+      <div>M</div>
+      <div>E</div>
+      <div>N</div>
+      <div>U</div>
+    </div>
+  </aside>
 </template>
 
 <script setup>
 
 //로그인 상태 유지시키고, 로그아웃 버튼으로 변경하는 것
-import { ref,computed,onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '../../stores/user';
 
 const userStore = useUserStore();
@@ -64,13 +68,20 @@ const loginStatus = computed(() => {
 
 const logout = function () {
   sessionStorage.clear()
+  userStore.loginUserId = null;
   userStore.isAuthenticated = false;
 }
 
+
+// 로그인 하지 않았을 때 자전거 여행 메뉴로 갈 수 없게 하기
+const showAlert = function(){
+  alert("로그인 후 사용가능합니다")
+}
+
 onMounted(() => {
-  if(sessionStorage.getItem('login-token') == null){
+  if (sessionStorage.getItem('login-token') == null) {
     userStore.isAuthenticated = false;
-  }else{
+  } else {
     userStore.isAuthenticated = true;
   }
 })
@@ -136,7 +147,8 @@ li {
 
 .centered-content {
   display: flex;
-  align-items: center; /* 수직 중앙 정렬을 위한 속성 */
+  align-items: center;
+  /* 수직 중앙 정렬을 위한 속성 */
 }
 
 .side-bar {
@@ -171,8 +183,13 @@ li {
   padding-left: 50px;
 }
 
+.coursemos {
+  color: #fca6b2;
+}
+
 .side-bar li a.active {
-  color: #24613b; /* 원하는 활성화된 색상으로 변경 */
+  color: #24613b;
+  /* 원하는 활성화된 색상으로 변경 */
   /* 다른 스타일 속성들... */
 }
 
@@ -204,5 +221,4 @@ li {
     font-size: 1rem;
     /* 작은 화면일 때 원하는 크기로 변경 */
   }
-}
-</style>
+}</style>

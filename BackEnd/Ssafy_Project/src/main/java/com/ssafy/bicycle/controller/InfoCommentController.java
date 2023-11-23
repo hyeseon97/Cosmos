@@ -24,6 +24,7 @@ public class InfoCommentController {
 
 	@PostMapping("/infoComment")
 	public ResponseEntity<?> writeInfoComment(@RequestBody InfoComment infoComment) {
+		System.out.println(infoComment);
 		infoCommentService.writeInfoComment(infoComment);
 		return new ResponseEntity<InfoComment>(infoComment, HttpStatus.CREATED);
 	}

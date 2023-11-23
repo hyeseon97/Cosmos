@@ -2,18 +2,19 @@
   <div class="info-board-detail">
     <div>
       <div class="board-detail-item">
-        <h2>제목입니다.{{ infoBoard.ib_title }}</h2>
+        <h2>{{ infoBoard.ib_title }}</h2><br>
       </div>
-      <span>조회수: {{ infoBoard.ib_viewCnt }}</span>
+      <span style="margin-right: 30px;">조회수: {{ infoBoard.ib_viewCnt }}</span>
       <span>작성일: {{ infoBoard.ib_regDate }}</span>
     </div>
+    <br>
     <div>
       <div class="board-detail-item">{{ infoBoard.ib_content }}</div>
     </div>
 
     <div>
-      <!-- <button @click="update(infoBoard.ib_num)" v-if="user !== null">수정</button>
-      <button @click="remove" v-if="user !== null">삭제</button> -->
+      <button @click="update(infoBoard.ib_num)" v-if="userStore.loginUserId==admin">수정</button>
+      <button @click="remove" v-if="userStore.loginUserId==admin">삭제</button>
     </div>
   </div>
   <div class="info-board-comment">
@@ -34,21 +35,11 @@ const router = useRouter();
 
 const store = useInfoBoardStore();
 
-const user = ref("11");
-
 onMounted(() => {
   store.getInfoBoard(route.params.num)
 })
 
 const infoBoard = computed(() => store.infoBoard)
-
-const update = function (num) {
-  router.push({ name: "infoBoardUpdate", params: { num: num } })
-}
-
-const remove = function () {
-  store.deleteInfoBoard(infoBoard.value.ib_num)
-}
 
 </script>
 

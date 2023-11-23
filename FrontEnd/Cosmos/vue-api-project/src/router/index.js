@@ -6,7 +6,6 @@ import CourseView from "@/views/CourseView.vue";
 import TravelView from "@/views/TravelView.vue";
 import FreeBoardView from "@/views/FreeBoardView.vue";
 import InfoBoardView from "@/views/InfoBoardView.vue";
-import AdminView from "@/views/AdminView.vue";
 import UserView from "@/views/UserView.vue";
 
 import RecommandList from "@/components/recommand/RecommandList.vue"
@@ -18,7 +17,6 @@ import CourseSearchList from "@/components/course/CourseSearchList.vue"
 import CourseCreate from "@/components/course/CourseCreate.vue"
 // import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
 // import KakaoMap from "@/components/map/KakaoMap.vue"
-import CourseDetail from "@/components/course/CourseDetail.vue"
 import CourseComment from "@/components/course/CourseComment.vue"
 
 import KakaoMap from "@/components/map/KakaoMap.vue"
@@ -49,9 +47,6 @@ import UserLogin from "@/components/user/UserLogin.vue"
 import UserSign from "@/components/user/UserSign.vue"
 import UserInfo from "@/components/user/UserInfo.vue"
 import UserUpdate from "@/components/user/UserUpdate.vue"
-
-import AdminUserList from "@/components/admin/AdminUserList.vue"
-import AdminUserUpdate from "@/components/admin/AdminUserUpdate.vue"
 
 
 const router = createRouter({
@@ -103,11 +98,6 @@ const router = createRouter({
           path: "create",
           name: "courseCreate",
           component: CourseCreate,
-        },
-        {
-          path: ":num",
-          name: "courseDetail",
-          component: CourseDetail,
         },
         {
           path: ":num",
@@ -214,23 +204,6 @@ const router = createRouter({
           path: ":num",
           name: "travelUpdate",
           component: TravelUpdate,
-        },
-      ]
-    },
-    {
-      path: "/admin",
-      name: "admin",
-      component: AdminView,
-      children: [
-        {
-          path: "",
-          name: "adminUserList",
-          component: AdminUserList,
-        },
-        {
-          path: "userupdate",
-          name: "adminUserUpdate",
-          component: AdminUserUpdate,
         },
       ]
     },

@@ -2,16 +2,17 @@
   <div class="free-board-detail">
     <div>
       <div class="board-detail-item">
-        <h2>제목입니다.{{ freeBoard.fb_title }}</h2>
+        <h2>제목입니다.{{ freeBoard.fb_title }}</h2><br>
       </div>
-      <div>작성자: {{ freeBoard.fb_wrtier }}</div>
-      <span>조회수: {{ freeBoard.fb_viewCnt }}</span>
+      <div>작성자: {{ freeBoard.fb_writer }}</div><br>
+      <span style="margin-right: 30px;">조회수: {{ freeBoard.fb_viewCnt }}</span>
       <span>작성일: {{ freeBoard.fb_regDate }}</span>
     </div>
+    <br>
     <div>
       <div class="board-detail-item">{{ freeBoard.fb_content }}</div>
     </div>
-
+    <br>
     <div>
       <button @click="update(freeBoard.ib_num)" v-if="userStore.loginUserId==freeBoard.fb_userId">수정</button>
       <button @click="remove" v-if="userStore.loginUserId==freeBoard.fb_userId">삭제</button>

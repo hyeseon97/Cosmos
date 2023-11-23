@@ -1,5 +1,6 @@
 package com.ssafy.bicycle.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.ssafy.bicycle.model.dto.SearchCondition;
@@ -11,7 +12,7 @@ public interface TravelDao {
 	int insertTravel(Travel travel);
 
 	// 게시물 조회
-	List<Travel> selectAll();
+	List<Travel> selectAll(String id);
 
 	// 게시물 한개 조회
 	Travel selectOne(int num);
@@ -20,7 +21,7 @@ public interface TravelDao {
 //	int updateTravel(Travel travel);
 
 	// 게시물 삭제
-	int deleteTravel(int num);
+	int deleteTravel(HashMap<String, Object> map);
 
 
 }

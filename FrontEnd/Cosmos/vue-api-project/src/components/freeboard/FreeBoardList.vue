@@ -46,8 +46,8 @@
             </tr>
           </tbody>
         </table>
-                <div @click="create" class="create-button">글쓰기</div>
       </div>
+      <div @click="create" class="create-button">글쓰기</div>
     </div>
 
     <!-- 페이지네이션 -->
@@ -68,6 +68,8 @@ import { useUserStore } from '../../stores/user';
 const router = useRouter();
 const store = useFreeBoardStore();
 const userStore = useUserStore();
+
+const searchQuery = ref('');
 
 const arr = ref([]);
 
@@ -341,8 +343,8 @@ section.notice {
   border-radius: 4px;
   cursor: pointer;
   position: absolute;
-  bottom: 0px;
   right: 0px;
+  margin: 10px;
   padding: 10px 20px;
   background-color: #8FBF9F;
   color: white;
@@ -361,4 +363,9 @@ section.notice {
     right: 20px;
   }
 }
+
+#free-board-list{
+position: relative;
+}
+
 </style>

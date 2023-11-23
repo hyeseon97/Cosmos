@@ -6,36 +6,25 @@
         <div class="plan-date">{{ plan.date }}</div>
       </div>
 
-      <div v-for="no in noplans" class="add" @click="addPlan">
+      <div v-for="no in (3-plans.length)" class="add" @click="addPlan">
         <div class="add-name">새 여행 등록</div>
       </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTravelStore } from '../../stores/travel';
+import { useUserStore } from '../../stores/user';
 
 const router = useRouter()
+const travelStore = useTravelStore();
+const userStore = useUserStore();
 
-const plans = ref([
-  {
-    num: 1,
-    icon: "111",
-    name: "한밭수목원",
-    date: "2023-11-03"
-  },
-  {
-    num: 2,
-    icon: "111",
-    name: "제주도",
-    date: "2023-12-25"
-  }
-])
+const plans = computed(()=>travelStore.travelList)
 
-const noplans = ref([
-  {},
-])
+const noplans = ref([])
 
 const goDetail = function (num) {
   router.push({ name: "travelDetail", params: { num: num } })
@@ -46,6 +35,9 @@ const addPlan = function(){
   router.push({ name: "travelCreate" })
 }
 
+onMounted(() => {
+  travelStore.getTravelList(userStore.loginUserId);
+});
 
 </script>
 

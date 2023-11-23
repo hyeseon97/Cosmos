@@ -8,9 +8,19 @@ public class SearchCondition {
 
 	// 기본 생성자습관
 	public SearchCondition() {
-//		this.key = "none";
-//		this.orderBy = "none";
 	}
+	
+	
+
+	public SearchCondition(String key, String word, String orderBy, String orderByDir) {
+		super();
+		this.key = key;
+		this.word = word;
+		this.orderBy = orderBy;
+		this.orderByDir = orderByDir;
+	}
+
+
 
 	public String getKey() {
 		return key;
@@ -43,5 +53,13 @@ public class SearchCondition {
 	public void setOrderByDir(String orderByDir) {
 		this.orderByDir = orderByDir;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchCondition [key=" + key + ", word=" + word + ", orderBy=" + orderBy + ", orderByDir=" + orderByDir
+				+ "]";
+	}
+	
+	
 
 }

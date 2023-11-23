@@ -25,30 +25,31 @@ import { useInfoCommentStore } from '../../stores/infoBoardComment';
 import { useUserStore } from '../../stores/user';
 
 const route = useRoute();
-const store = useInfoCommentStore();
+const commentStore = useInfoCommentStore();
 const userStore = useUserStore();
 
-const infoCommentList = computed(()=> store.infoCommentList)
-
-onMounted(()=>{
-  store.getInfoCommentList(route.params.num)
-})
+const infoCommentList = computed(()=> commentStore.infoCommentList)
 
 const comment = ref({
   ic_boardNum: route.params.num,
   ic_userId: userStore.loginUserId,
-	ic_userName: 'aaa',
+	ic_userName: userStore.loginUserName,
 	ic_content: ''
 })
 
 const create = function(){
-  console.log("comment " + route.params.num)
-  store.createComment(comment)
+  console.log(comment.value)
+  commentStore.createComment(comment)
   .then(()=>{
-    store.getInfoCommentList(route.params.num)
+    commentStore.getInfoCommentList(route.params.num)
     comment.value.ic_content = ''
   })
 }
+
+onMounted(()=>{
+  userStore.getUser(userStore.loginUserId);
+  commentStore.getInfoCommentList(route.params.num)
+})
 
 </script>
 
