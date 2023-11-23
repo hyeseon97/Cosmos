@@ -217,10 +217,6 @@ const initMap = function () {
 
     console.log("클릭할 때 마다 : ");
     console.log(manager);
-
-    var resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = message;
-
   });
 
 

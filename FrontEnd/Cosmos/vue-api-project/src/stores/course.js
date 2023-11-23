@@ -15,9 +15,18 @@ export const useCourseStore = defineStore('course', () => {
       })
   }
 
+  const getCourseListByKeyword = function () {
+    return axios.get(REST_BOARD_API+'/keyword')
+      .then((response) => {
+        courseList.value = response.data
+        return response.data
+      })
+  }
+
   //코스 한개
   const course = ref({})
   const getCourse = function (id) {
+    console.log("요청왔니")
     axios.get(`${REST_BOARD_API}/${id}`)
       .then((response) => {
       course.value = response.data
@@ -28,32 +37,10 @@ export const useCourseStore = defineStore('course', () => {
   const createCourse = function (course) {
     console.log("store의 요청 전")
     console.log(course)
-    axios.post(REST_BOARD_API, course)
+    axios.post(REST_BOARD_API, course.value)
       .then(()=>{
         router.push({ name: 'courseList' })
       })
-
-
-    // axios({
-    //   url: REST_BOARD_API,
-    //   method: 'POST',
-    //   //아래꺼 없어도 알아서 보내더라 axios 쵝오~ 
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   data: {
-    //     course: course,
-    //     courseMap: courseMap
-    //   }
-    // })
-    //   .then(() => {
-    //     //response 응답으로 들어온 게시글의 id를 이용해서
-    //     //상세보기로 바로 점프도 가넝이야~~
-    //     router.push({ name: 'cousreList'})
-    //   })
-    //   .catch((err) => {
-    //   console.log(err)
-    // })
   }
 
   const updateCourse = function () {

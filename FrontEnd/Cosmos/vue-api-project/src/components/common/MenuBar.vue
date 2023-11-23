@@ -23,7 +23,7 @@
             <RouterLink :to="{ name: 'freeBoardList' }" :class="{ 'active': $route.path.includes('/free') }">자유게시판</RouterLink>
         </li>
         <li>
-            <RouterLink :to="{ name: 'infoBoardList' }" :class="{ 'active': $route.path.includes('/info') }">정보게시판</RouterLink>
+            <RouterLink :to="{ name: 'infoBoardList' }" :class="{ 'active': $route.path.includes('/infoboard') }">정보게시판</RouterLink>
         </li>
         <li v-if="!loginStatus">
             <RouterLink :to="{ name: 'login' }" :class="{ 'active': $route.path.includes('/user') }">로그인</RouterLink>

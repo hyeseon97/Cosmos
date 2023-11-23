@@ -29,13 +29,21 @@
 
 	<update id="updateBoard" parameterType="InfoBoard">
 		UPDATE infoBoard
-		SET ib_title=#{ib_title}, ib_content = #{ib_content}
-		WHERE ib_num = #{ib_num}
+		SET
+		ib_title=#{ib_title}, ib_content = #{ib_content}
+		WHERE ib_num =
+		#{ib_num}
 	</update>
 
 	<delete id="deleteBoard" parameterType="int">
 		DELETE FROM infoBoard
 		WHERE ib_num = #{ib_num}
 	</delete>
+	
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE FROM infoBoard
+		SET info_viewCnt = info_viewCnt+1
+		WHERE info_num = #{info_num} 
+	</update>
 
 </mapper>

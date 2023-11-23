@@ -1,6 +1,7 @@
 <template>
   <div>
     <h4>CourseDetail</h4>
+    <h4>{{ route.params.num }}</h4>
     <div v-for="i in image">
       <img src="" alt="사진">
     </div>
@@ -20,6 +21,8 @@ import CourseComment from './CourseComment.vue';
 
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute();
 
 const image = ref([
   {

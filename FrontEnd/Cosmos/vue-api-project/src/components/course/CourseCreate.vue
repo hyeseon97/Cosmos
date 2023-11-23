@@ -17,34 +17,26 @@
         <!-- 키워드 리스트 -->
         <div>코스와 어울리는 키워드를 골라주세요 (최대 5개)</div>
         <div class="course-keyword-list">
-          <label v-for="(keyword, index) in keywords" :key="index" :class="{ 'checked': keyword.checked }">
-            <input type="checkbox" :name="'coursekeyword' + index" :value="keyword.value" v-model="keyword.checked">
+          <label v-for="(keyword, index) in keywords" :key="index"
+            :class="{ 'checked': keyword.checked, 'disabled': isKeywordDisabled(keyword) }">
+            <input type="checkbox" :name="'coursekeyword' + index" :value="keyword.value" v-model="keyword.checked"
+              @change="handleKeywordChange">
             {{ keyword.label }}
           </label>
         </div>
         <!-- 키워드 리스트 -->
-
       </div>
-      
-      
 
     </div>
 
     <div class="course-create-container-right">
       <div id="map"></div>
-      <div class="buttons">
-        <button class="course-draw-button" @click="selectOverlay('POLYLINE')">경로 그리기</button>
-        <button class="course-remove-button" @click="remove">경로 삭제</button>
-        <button class="course-create-button" @click="regist">등록</button>
-        <button class="bicycleroad-button" @click="road">자전거도로</button>
-        <input type="text" v-model="keyword" @keyup.enter="searchkeyword">
+      <div class="course-create-buttons">
+        <div class="course-bicycle-button" @click="road" :class="{ 'active': check }">자전거도로</div>
+        <div class="course-draw-button" @click="selectOverlay('POLYLINE')">경로 그리기</div>
+        <div class="course-remove-button" @click="remove">경로 삭제</div>
+        <div class="course-create-button" @click="regist">코스 등록</div>
       </div>
-
-      <!-- 최종 등록 버튼 -->
-      <div class="course-final-buttons"></div>
-      <button @click="create">등록</button>
-      <button @click="cancel">취소</button>
-      <!-- 최종 등록 버튼 -->
     </div>
 
 
@@ -55,8 +47,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useCourseStore } from '@/stores/course'
+import { useUserStore } from '../../stores/user';
 
 const courseStore = useCourseStore();
+const userStore = useUserStore();
 
 let map = null;
 let manager = null;
@@ -66,6 +60,7 @@ let markers = [];
 let markerPosition = null;
 let marker = null;
 let point = [];
+let drawmode = false;
 
 const courseMap = [];
 
@@ -92,6 +87,27 @@ const keywords = ref([
   { value: '프로', label: '프로', checked: false },
 ]);
 
+// 최대 5개의 키워드만 선택 가능하도록 처리
+const handleKeywordChange = () => {
+  const selectedKeywords = keywords.value.filter(keyword => keyword.checked);
+  if (selectedKeywords.length > 5) {
+    // 선택한 키워드가 5개를 초과하면 알림창 띄우기
+    alert("최대 5개까지 선택 가능합니다.");
+    // 변경된 체크된 상태를 다시 원래대로 돌리기
+    keywords.value.forEach(keyword => {
+      if (!selectedKeywords.some(selectedKeyword => selectedKeyword.value === keyword.value)) {
+        keyword.checked = false;
+      }
+    });
+  }
+};
+
+// 선택 불가능한 상태인지 여부를 확인하는 함수
+const isKeywordDisabled = (keyword) => {
+  const selectedKeywords = keywords.value.filter(k => k.checked);
+  return selectedKeywords.length >= 5 && !keyword.checked;
+};
+
 
 const course = ref({
   courseMap: courseMap,
@@ -101,20 +117,31 @@ const course = ref({
   course_name: '',
   course_rcm: 0,
   course_regDate: '',
-  course_userId: '',
+  course_userId: userStore.loginUserId,
   course_viewCnt: 0
 })
 
-
-
 // ============ 등록버튼 누르면 서버와 연결해서 DB에 저장 ============
 const regist = function () {
+  let keyword = '';
+
+  keywords.value.forEach(k => {
+    if (k.checked) {
+      keyword += ('/' + k.value)
+    }
+  });
 
   point.forEach(element => {
     courseMap.push(element.lat);
     courseMap.push(element.lng)
   });
 
+  course.value.course_keyword = keyword;
+  console.log("코스");
+  console.log(course.value);
+  console.log("유저아이디")
+  console.log(userStore.loginUserId);
+  console.log(userStore.isAuthenticated);
   courseStore.createCourse(course);
 };
 
@@ -156,8 +183,7 @@ const initMap = function () {
   map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 
-  // ########################################################################
-  // DB에 등록되어있는 코스 지도에 표시하기
+  // ==================== DB 데이터 표시 ====================
 
   courseStore.getCourseList()
     .then(() => {
@@ -165,15 +191,13 @@ const initMap = function () {
       const lineList = [];
       courseList.forEach(course => {
         const line = []
-        console.log(course.courseMap.length)
         for (var i = 0; i < course.courseMap.length / 2; i++) {
-          console.log("i포문")
           line.push(new kakao.maps.LatLng(course.courseMap[i * 2], course.courseMap[i * 2 + 1]));
         }
 
         // 마커 이미지
         // var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
-        var imageSrc = '../../assets/bicycle_pink.png', // 마커이미지의 주소입니다    
+        var imageSrc = 'https://cdn-icons-png.flaticon.com/512/5693/5693811.png', // 마커이미지의 주소입니다    
           imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
           imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
@@ -192,7 +216,7 @@ const initMap = function () {
 
         // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
         var content = '<div class="customoverlay">' +
-          '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
+          '  <a>' +
           '    <span class="title">' + course.course_name + '</span>' +
           '  </a>' +
           '</div>';
@@ -223,7 +247,7 @@ const initMap = function () {
         var polyline = new kakao.maps.Polyline({
           path: line, // 선을 구성하는 좌표배열 입니다
           strokeWeight: 5, // 선의 두께 입니다
-          strokeColor: '#24613b', // 선의 색깔입니다
+          strokeColor: '#C75869', // 선의 색깔입니다
           strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
           strokeStyle: 'solid' // 선의 스타일입니다
         });
@@ -236,38 +260,11 @@ const initMap = function () {
     })
 
 
-  // ########################################################################
+  // ==================== DB 데이터 표시 끝 ====================
 
 
 
-  // ########################################################################
-  // 장소 검색 객체를 생성합니다
-  var ps = new kakao.maps.services.Places();
-  const keyword = ref('')
-  // 키워드로 장소를 검색합니다
-  ps.keywordSearch(keyword.value, placesSearchCB);
-
-  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-  function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      var bounds = new kakao.maps.LatLngBounds();
-
-      for (var i = 0; i < data.length; i++) {
-        displayMarker(data[i]);
-        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-      }
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      map.setBounds(bounds);
-    }
-  }
-
-
-  // ########################################################################
-
+  // ==================== 클릭했을 때 ====================
 
   kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
@@ -277,17 +274,38 @@ const initMap = function () {
     var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
     message += '경도는 ' + latlng.getLng() + ' 입니다';
 
-    // 코스 좌표 배열에 클릭할때마다 하나씩 푸쉬
-    point.push({ lat: latlng.getLat(), lng: latlng.getLng() });
+    if (drawmode) {
+      // 코스 좌표 배열에 클릭할때마다 하나씩 푸쉬
+      point.push({ lat: latlng.getLat(), lng: latlng.getLng() });
+    }
+
+    if (point.length == 1) {
+      // 주소-좌표 변환 객체를 생성합니다
+      getAddr(point[0].lat, point[0].lng);
+      function getAddr(lat, lng) {
+        let geocoder = new kakao.maps.services.Geocoder();
+
+        let coord = new kakao.maps.LatLng(lat, lng);
+        let callback = function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            console.log(result);
+            course.value.course_address = result[0].address.address_name;
+          }
+        }
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+      }
+    }
 
     console.log("클릭할 때 마다 : ");
     console.log(manager);
 
-    var resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = message;
-
   });
+  // ==================== 클릭했을 때 끝 ====================
 
+
+
+
+  // ==================== 그리기 모드 설정 ====================
 
   var drawOptions = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -301,17 +319,23 @@ const initMap = function () {
       draggable: false, // 그린 후 드래그가 가능하도록 설정합니다
       removable: false, // 그린 후 삭제 할 수 있도록 x 버튼이 표시됩니다
       editable: false, // 그린 후 수정할 수 있도록 설정합니다 
-      strokeColor: '#FF8E9E', // 선 색
+      strokeColor: '#2B9D82', // 선 색
       strokeStyle: 'solid', // 선 스타일
       strokeWeight: 10, // 선 두께
-      strokeOpacity: 0.8, // 선 투명도
-      hintStrokeStyle: 'dash', // 그리중 마우스를 따라다니는 보조선의 선 스타일
-      hintStrokeOpacity: 0.7  // 그리중 마우스를 따라다니는 보조선의 투명도
+      strokeOpacity: 0, // 선 투명도
+      hintStrokeStyle: 'solid', // 그리중 마우스를 따라다니는 보조선의 선 스타일
+      hintStrokeOpacity: 0  // 그리중 마우스를 따라다니는 보조선의 투명도
     }
   };
 
   // 위에 작성한 옵션으로 Drawing Manager를 생성합니다
   manager = new kakao.maps.drawing.DrawingManager(drawOptions);
+
+  // ==================== 그리기 설정 끝 ====================
+
+
+
+
 
   // ============ 다 그린 후에 시작지점 끝지점 마커 표시하기 ============
   manager.addListener('drawend', function (data) {
@@ -333,12 +357,13 @@ const initMap = function () {
     markers.push(marker);
     marker.setMap(map);
 
+    drawmode = false;
 
   });
 
 
   // ============ 지도 레벨 변경을 감지하는 이벤트 리스너 추가 ============
-  
+
 
 };
 
@@ -359,6 +384,7 @@ const remove = function () {
   markers[0].setMap(null);
   markers[1].setMap(null);
   markers = [];
+  course.value.course_address = '';
   console.log(marker)
 };
 
@@ -372,7 +398,7 @@ const selectOverlay = function (type) {
   if (markers.length != 0) {
     alert("코스는 하나의 길만 등록 가능합니다")
   } else {
-
+    drawmode = true;
     // 그리기 중이면 그리기를 취소합니다
     manager.cancel();
 
@@ -382,18 +408,18 @@ const selectOverlay = function (type) {
 }
 
 
-
-let check = false;
+// ==================== 자전거 도로 ====================
+let check = ref(false);
 const road = function () {
-  console.log(check);
-  check = !check;
-  if (check) {
+  console.log(check.value);
+  check.value = !check.value;
+  if (check.value) {
     map.addOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
   } else {
     map.removeOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
   }
 };
-
+// ==================== 자전거 도로 끝 ====================
 
 
 
@@ -443,6 +469,9 @@ onMounted(() => {
 /* 오른쪽 섹션 스타일 */
 .course-create-container-right {
   flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   background-color: #ffffff;
   /* 흰 배경색 */
@@ -477,10 +506,11 @@ onMounted(() => {
 .course-form-address {
   width: 100%;
   height: 32px;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: white;
+  font-size: 15px;
 }
 
 .course-form textarea {
@@ -493,8 +523,11 @@ onMounted(() => {
 /* 체크박스 */
 .course-keyword-list {
   display: flex;
+  width: 100%;
   flex-wrap: wrap;
-  padding: 0 10%;
+  padding: 0 7%;
+  justify-content: center;
+  align-items: center;
 }
 
 .course-keyword-list label {
@@ -503,11 +536,9 @@ onMounted(() => {
   justify-content: center;
   /* 가로 중앙 정렬을 위한 스타일 */
   align-items: center;
-  margin-right: 15px;
   margin-bottom: 10px;
-  padding-left: 5px;
   font-size: 0.9rem;
-  width: 20%;
+  width: 23%;
   /* 4개씩 나열하므로 100%를 4로 나눈 값 */
   border: 2px solid #ddd;
   /* 테두리 추가 */
@@ -526,14 +557,108 @@ onMounted(() => {
   background-color: #FF8E9E;
   /* 클릭 시 배경색 변경 */
   border-color: #ff7e90;
+  color: white;
 }
 
 .course-keyword-list input[type="checkbox"] {
   display: none;
 }
 
+.course-create-buttons {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.course-create-container {
+  display: flex;
+  width: 100%;
+}
+
+.course-create-buttons>div {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+  padding: 10px;
+  background-color: #f7f2e4;
+  border-radius: 5px;
+  width: 24%;
+}
+
+.course-create-buttons>.course-bicycle-button:hover {
+  background-color: #fff27c;
+}
+.course-create-buttons>.course-bicycle-button.active {
+  background-color: #fff27c;
+}
+
+.course-create-buttons>.course-create-button:hover {
+  background-color: #ffe0e4;
+}
+
+
+.course-create-buttons>div:hover {
+  background-color: #F5ECD7;
+}
 
 
 
+/* 커스텀오버레이 */
+.customoverlay {
+  position: relative;
+  bottom: 85px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  border-bottom: 2px solid #ddd;
+  float: left;
+}
+
+.customoverlay:nth-of-type(n) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+
+.customoverlay a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  overflow: hidden;
+  background: #4982C8;
+  background: #4982C8 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+}
+
+.customoverlay .title {
+  display: block;
+  text-align: center;
+  background: #fff;
+  margin-right: 35px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.customoverlay:after {
+  content: '';
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: -12px;
+  width: 22px;
+  height: 12px;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+}
+
+/* 선택 불가능한 상태일 때 스타일 추가 */
+.course-keyword-list label.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  /* 클릭 이벤트 비활성화 */
+}
 
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>오늘의 날씨</div><br>
     <p>{{ tmp }}℃ | {{ sky }} | {{ rain }} {{ pop }}%</p>
   </div>
 </template>
@@ -90,7 +91,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-* {
-  color: white;
-}
+
 </style>

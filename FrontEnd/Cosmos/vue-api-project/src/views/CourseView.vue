@@ -1,7 +1,7 @@
 <template>
-  <div  class="container-center">
+  <div class="container-center">
     <div class="back-color">
-      <RouterView/>
+        <RouterView />
     </div>
   </div>
 </template>
@@ -18,8 +18,8 @@
 .back-color {
   /* 흰박스 안에 내용까지 여백 */
   padding: 10vh 5vh;
-  height: 1300px;
+  height: 90vh;
   background-color: rgba(255, 255, 255, 0.7);
-  /* border-radius: 20px; */
+  border-radius: 20px;
 }
 </style>

@@ -14,6 +14,7 @@ import RecommandDetail from "@/components/recommand/RecommandDetail.vue"
 import RecommandComment from "@/components/recommand/RecommandComment.vue"
 
 import CourseList from "@/components/course/CourseList.vue"
+import CourseSearchList from "@/components/course/CourseSearchList.vue"
 import CourseCreate from "@/components/course/CourseCreate.vue"
 // import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
 // import KakaoMap from "@/components/map/KakaoMap.vue"
@@ -24,6 +25,7 @@ import KakaoMap from "@/components/map/KakaoMap.vue"
 import KakaoMapCreate from "@/components/map/KakaoMapCreate.vue"
 import KakaoMapCreateBeauty from "@/components/map/KakaoMapCreateBeauty.vue"
 import MapTravel from "@/components/map/MapTravel.vue"
+import MapCourse from "@/components/map/MapCourse.vue"
 import Weather from "@/components/map/Weather.vue"
 
 import FreeBoardList from "@/components/freeboard/FreeBoardList.vue"
@@ -91,6 +93,11 @@ const router = createRouter({
           path: "",
           name: "courseList",
           component: CourseList,
+        },
+        {
+          path: "/search",
+          name: "courseSearchList",
+          component: CourseSearchList,
         },
         {
           path: "create",
@@ -275,6 +282,11 @@ const router = createRouter({
       path: "/test/maptravel",
       name: "maptravel",
       component: MapTravel,
+    },
+    {
+      path: "/test/mapcourse",
+      name: "mapcourse",
+      component: MapCourse,
     },
   ],
 });

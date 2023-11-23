@@ -1,58 +1,12 @@
-<template>
-  <div class="container">
-    <div class="container-left">
-      <!-- 여행 폼 -->
-      <div class="travel-form">
-        <div>
-          <input type="text" v-model="travel.travel_title" placeholder="여행 계획 이름">
-        </div>
-        <div>
-          <input type="date" v-model="travel.travel_travelDate">
-        </div>
-        <div>
-          <textarea cols="30" rows="10" v-model="travel.travel_memo" placeholder="메모"></textarea>
-        </div>
-      </div>
-      <!-- 여행 폼 -->
-
-      <!-- 장소리스트 -->
-      <div class="placeList">
-        <table>
-          <tr>
-            <th>장소 이름</th>
-            <th>장소 주소</th>
-            <th></th>
-            <th></th>
-          </tr>
-          <tr v-for="(p, index) in place" :key="p.num">
-            <td>{{ p.place_name }}</td>
-            <td>{{ p.place_address }}</td>
-            <td v-if="index != 4"><button @click="addPlace">+</button></td>
-            <td v-if="index == 4"></td>
-            <td v-if="index != 0"><button @click="removePlace(index)">-</button></td>
-            <td v-if="index == 0"></td>
-          </tr>
-        </table>
-      </div>
-      <!-- 장소리스트 -->
-
-      <!-- 최종 등록 버튼 -->
-      <div class="final-buttons"></div>
-      <button @click="create">등록</button>
-      <button @click="cancel">취소</button>
-      <!-- 최종 등록 버튼 -->
-    </div>
-
+<template class="template-map">
+  <div>
     <!-- 지도공간 -->
-    <div class="container-right">
       <div id="map"></div>
-      <div class="map-controls">
-        <div class="bicycleroad-button" @click="road">자전거도로</div>
-        <input type="text" @keyup.enter="search" v-model="keyword" class="search-input">
-        <div @click="search" class="search-button">검색</div>
-        <div @click="save" class="save-button">장소저장</div>
+      <div class="map-course-controls">
+        <div class="map-course bicycle-button" @click="road">자전거도로</div>
+        <div @click="create" class="map-course-create-button">코스 등록</div>
       </div>
-    </div>
+
     <!-- 지도공간 -->
   </div>
 </template>
@@ -60,81 +14,21 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useTravelStore } from '../../stores/travel';
 import { useCourseStore } from '@/stores/course'
 
-
 const router = useRouter();
-const store = useTravelStore();
 const courseStore = useCourseStore();
 
 let map = null;
-let idx = 0;
-
-// 장소 리스트
-const place = ref([
-  {
-    place_name: '',
-    place_address: '',
-  }
-])
-
-const name = ref('')
-const address = ref('')
-// 장소 저장
-const save = function () {
-  console.log(place.value.length + " " + idx)
-  place.value[idx].place_name = name.value;
-  place.value[idx].place_address = address.value;
-}
-
-// 여행 정보
-const travel = ref({
-  travel_title: '',
-  travel_memo: '',
-  travel_travelDate: '',
-  travel_userId: 'aaa',
-  places: place.value,
-})
-
-// 장소 추가
-const addPlace = function () {
-
-  if (place.value[idx].place_name == '') {
-    alert("장소를 먼저 등록해주세요")
-  } else {
-    place.value.push({
-      place_name: '',
-      place_address: '',
-    })
-    idx++;
-  }
-}
-
-// 장소 삭제
-const removePlace = function (index) {
-  place.value.splice(index, 1)
-  idx--;
-}
-
-// 여행 등록
-const create = function () {
-  console.log(place)
-  store.createTravel(travel)
-  // router.push({ name: "travelDetail", params: { num: 1 }})
-}
-
-// 취소
-const cancel = function () {
-  router.push({ name: "travelList" })
-}
-
-// ========================================================================================================================
-// ========================================================================================================================
-// ========================================================================================================================
-// 여기부터 지도
 
 let saveOverlay = null;
+const name = ref('')
+const address = ref('')
+
+const create = function(){
+  router.push({ name: "courseCreate" })
+}
+
 
 const initMap = function () {
   let myCenter = new kakao.maps.LatLng(36.370841, 127.387943); //카카오본사
@@ -175,9 +69,7 @@ const initMap = function () {
       const lineList = [];
       courseList.forEach(course => {
         const line = []
-        console.log(course.courseMap.length)
         for (var i = 0; i < course.courseMap.length / 2; i++) {
-          console.log("i포문")
           line.push(new kakao.maps.LatLng(course.courseMap[i * 2], course.courseMap[i * 2 + 1]));
         }
 
@@ -211,7 +103,7 @@ const initMap = function () {
           name.value = course.course_name;
           address.value = course.course_address;
           // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-          var content = '<div class="customoverlay">' +
+          var content = '<div class="customoverlay" onclick="detailClickHandler">' +
             '  <a>' +
             '    <span class="title">' + course.course_name + '</span>' +
             '  </a>' +
@@ -252,6 +144,7 @@ const initMap = function () {
 
     })
   // ==================== DB 데이터 표시 끝 ====================
+
 
 
   // 현재 맵 레벨에 따라 마커 크기 조정
@@ -303,90 +196,6 @@ const road = function () {
 
 
 
-// ==================== 검색 기능 ====================
-
-// 검색 키워드
-const keyword = ref('')
-
-const search = function () {
-
-  // 장소 검색 객체를 생성합니다
-  var ps = new kakao.maps.services.Places();
-
-  // 키워드로 장소를 검색합니다
-  ps.keywordSearch(keyword.value, placesSearchCB);
-
-  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-  function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      var bounds = new kakao.maps.LatLngBounds();
-
-      for (var i = 0; i < data.length; i++) {
-        displayMarker(data[i]);
-        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-      }
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      map.setBounds(bounds);
-    }
-  }
-
-  // 지도에 마커를 표시하는 함수입니다
-  function displayMarker(place) {
-
-    // 마커를 생성하고 지도에 표시합니다
-    var smarker = new kakao.maps.Marker({
-      map: map,
-      position: new kakao.maps.LatLng(place.y, place.x)
-    });
-
-    // console.log(place.address_name)
-
-    // 마커에 클릭이벤트를 등록합니다
-    kakao.maps.event.addListener(smarker, 'click', function () {
-
-      if (saveOverlay != null) {
-        saveOverlay.setMap(null);
-      }
-
-
-
-      // 장소 이름과 주소
-      name.value = place.place_name;
-      address.value = place.address_name;
-
-
-      // 아래 부분을 추가하여 커스텀 오버레이로 표시하도록 변경
-      var content = '<div class="customoverlay">' +
-        '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
-        '    <span class="title">' + place.place_name + '</span>' +
-        '  </a>' +
-        '</div>';
-
-      // 커스텀 오버레이가 표시될 위치입니다 
-      var position = new kakao.maps.LatLng(place.y, place.x);
-
-      // 커스텀 오버레이를 생성합니다
-      var customOverlay = new kakao.maps.CustomOverlay({
-        map: map,
-        position: position,
-        content: content,
-        yAnchor: 1
-      });
-
-      saveOverlay = customOverlay;
-      // console.log(place.place_name)
-      // console.log(place.address_name)
-    });
-  }
-
-}
-
-// ==================== 검색 끝 ====================
-
 
 // ========================================================================================================================
 
@@ -404,10 +213,10 @@ onMounted(() => {
   }
 });
 
-
 </script>
 
-<style>
+<style scoped>
+
 #map {
   width: 100%;
   /* 부모 컨테이너의 가로 길이에 맞게 지도 크기 조정 */
@@ -537,7 +346,7 @@ textarea {
 }
 
 /* 하단 버튼 및 입력창 스타일 */
-.map-controls {
+.map-course-controls {
   margin-top: 20px;
   display: flex;
   gap: 10px;
@@ -547,7 +356,7 @@ textarea {
   flex: 1 0 auto;
 }
 
-.map-controls>.search-input {
+.map-course-controls>.search-input {
   flex: 1;
   padding: 8px;
   border-radius: 4px;
@@ -556,14 +365,14 @@ textarea {
 
 }
 
-.map-controls>input {
+.map-course-controls>input {
   margin-top: 11px;
   transition: border-color 0.3s ease-in-out;
   transition: border-width 0.3s ease-in-out;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.map-controls>input:focus {
+.map-course-controls>input:focus {
   border-color: #24613b;
   border-width: 3px;
 }
@@ -581,13 +390,13 @@ textarea {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.search-button:hover,
-.save-button:hover {
+.map-course-controls .search-button:hover,
+.map-course-controls .save-button:hover {
   background-color: #185627;
 }
 
 
-.bicycleroad-button:hover {
+.map-course-controls .bicycleroad-button:hover {
   background-color: #185627;
   /* 클릭하거나 호버 시 더 어두운 초록 */
 }
