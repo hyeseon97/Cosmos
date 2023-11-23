@@ -1,42 +1,36 @@
 <template>
-  <div class="container">
-    <div class="mypage">
-      <!-- 이미지를 v-if로 분기하여 사용 -->
-      <div class="image">
-        <input type="hidden" v-model="userStore.user.user_grade">
-        <img v-if="userStore.user.user_grade === 1" class="png-image" src="../../assets/grade_1.png" alt="Grade 1 Image">
-        <img v-else-if="userStore.user.user_grade === 2" class="png-image" src="../../assets/grade_2.png" alt="Grade 2 Image">
-        <img v-else-if="userStore.user.user_grade === 3" class="png-image" src="../../assets/grade_3.png" alt="Grade 3 Image">
-        <img v-else class="png-image" src="../../assets/grade_4.png" alt="Grade 4 Image">
-      </div>
+  <h1>마이페이지</h1>
+  <div class="mypage-container">
+    <div class="mypage-image-container">
+      <input type="hidden" v-model="userStore.user.user_grade">
+      <img v-if="userStore.user.user_grade === 1" class="mypage-image" src="../../assets/grade_1.png" alt="Grade 1 Image">
+      <img v-else-if="userStore.user.user_grade === 2" class="mypage-image" src="../../assets/grade_2.png"
+        alt="Grade 2 Image">
+      <img v-else-if="userStore.user.user_grade === 3" class="mypage-image" src="../../assets/grade_3.png"
+        alt="Grade 3 Image">
+      <img v-else class="mypage-image" src="../../assets/grade_4.png" alt="Grade 4 Image">
+    </div>
 
-      <!-- 사용자 정보 입력 -->
-      <div class="input-container">
-        <div>
-          <div>아이디</div>
-          <input type="text" class="loginbg" v-model="userStore.user.user_id" :readonly="true">
-        </div>
+    <div class="mypage-input-container">
+      <div>아이디</div>
+      <input type="text" class="mypage-input" v-model="userStore.user.user_id" :readonly="true">
 
-        <div>
-          <div>패스워드</div>
-          <input type="password" class="loginbg" v-model="userStore.user.user_pw" :readonly="!editing" @focus="highlight" @blur="removeHighlight">
-        </div>
+      <div>패스워드</div>
+      <input type="password" class="mypage-input" v-model="userStore.user.user_pw" :readonly="!editing" @focus="highlight"
+        @blur="removeHighlight">
 
-        <div>
-          <div>이름</div>
-          <input type="text" class="loginbg" v-model="userStore.user.user_name" :readonly="!editing" @focus="highlight" @blur="removeHighlight">
-        </div>
+      <div>이름</div>
+      <input type="text" class="mypage-input" v-model="userStore.user.user_name" :readonly="!editing" @focus="highlight"
+        @blur="removeHighlight">
 
-        <div>
-          <div>생년월일</div>
-          <input type="date" class="loginbg" v-model="userStore.user.user_birth" :readonly="!editing" @focus="highlight" @blur="removeHighlight">
-        </div>
-      </div>
+      <div>생년월일</div>
+      <input type="date" class="mypage-input" v-model="userStore.user.user_birth" :readonly="!editing" @focus="highlight"
+        @blur="removeHighlight">
 
       <!-- 수정 및 취소 버튼 -->
       <div class="buttons">
-        <button class="modifybtn" type="button" @click="toggleEditing">{{ editing ? '수정 완료' : '수정' }}</button>
-        <button v-if="editing" class="modifybtn" type="button" @click="cancelEditing">취소</button>
+        <button class="mypage-updateBtn" type="button" @click="toggleEditing">{{ editing ? '수정 완료' : '수정' }}</button>
+        <button v-if="editing" class="mypage-cancelBtn" type="button" @click="cancelEditing">취소</button>
       </div>
     </div>
   </div>
@@ -65,7 +59,7 @@ const toggleEditing = function () {
 }
 
 const highlight = function (event) {
-  event.target.style.border = "5px solid #F18F01";
+  event.target.style.border = "3px solid #24613b";
 }
 
 const removeHighlight = function (event) {
@@ -83,60 +77,27 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.container {
+.mypage-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* 화면 전체 높이만큼 설정 */
 }
 
-.mypage {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  flex-direction: column;
-  align-items: center;
+.mypage-image {
+  max-width: 80%;
+  /* 이미지의 최대 너비를 부모 요소에 맞게 조절합니다. */
+  max-height: 80%;
+  /* 이미지의 최대 높이를 부모 요소에 맞게 조절합니다. */
 }
 
-.loginbg,
-.modifybtn {
-  width: 100%;
-  max-width: 400px;
-  font-size: 25px;
-  border-top: 1px solid #24613b;
-  border-right: 1px solid #24613b;
-  border-left: 3px solid #8FBF9F;
-  border-bottom: 3px solid #8FBF9F;
-  border-radius: 8px;
+.mypage-input {
+  width: 50%px;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
   outline: none;
   padding-left: 10px;
-  margin-bottom: 10px;
-}
-
-.modifybtn {
-  background: #24613b;
-  color: white;
-}
-
-.loginbg:focus {
-  border: 2px solid black;
-}
-
-.png-image {
-  width: 100%; /* 이미지 너비를 부모 요소에 맞게 조절 */
-  height: auto; /* 이미지 높이를 자동으로 조정하여 비율 유지 */
-}
-
-.mypage {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  flex-direction: column;
-  align-items: center;
-}
-
-.input-container {
-  width: 100%;
-  max-width: 400px;
+  background-color: rgb(233, 233, 233);
 }
 </style>

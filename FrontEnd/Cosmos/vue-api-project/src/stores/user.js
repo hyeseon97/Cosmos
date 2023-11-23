@@ -81,7 +81,7 @@ export const useUserStore = defineStore('user', () => {
         console.log(user_id['id'])
         loginUserId.value = user_id['id']
 
-        router.push({ name: "userInfo" })
+        router.push({ name: "home" })
 
       })
       .catch((err) => {

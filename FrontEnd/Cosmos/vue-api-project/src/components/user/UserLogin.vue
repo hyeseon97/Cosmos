@@ -1,96 +1,7 @@
-<!-- <template>
-  <div class="login-form">
-    <input v-model="user.user_id" type="text" placeholder="아이디">
-    <input v-model="user.user_pw" type="password" placeholder="비밀번호">
-
-    <div class="button-container">
-      <button @click="login" class="login-button">로그인</button>
-      <button @click="sign" class="sign-button">회원가입</button>
-    </div>
-  </div>
-
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'
-import { useUserStore } from '../../stores/user';
-
-const router = useRouter();
-const useStore = useUserStore();
-
-const user = ref({
-  user_id: '',
-  user_pw: ''
-});
-
-const login = () => {
-  useStore.userLogin(user);
-}
-
-const sign = () => {
-  router.push({ name: "sign" });
-  // useStore.signup()
-}
-</script>
-
-<style scoped>
-.login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  margin-top: 20vh;
-}
-
-input {
-  width: 30%;
-  margin: 5px;
-  padding: 15px;
-  outline: none;
-  border: 4px solid #d4d4d4; /* Pastel gray border */
-  border-radius: 50px;
-  transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-input:focus {
-  border-color: #b0e57c; /* Pastel green border on focus */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-}
-
-.button-container {
-  width: 30%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-button {
-  border-radius: 30px;
-  border: 2px solid transparent;
-  color: #fff;
-  font-weight: 600;
-  width: 48%;
-  padding: 15px;
-  outline: none;
-  background-color: #b0e57c;
-}
-
-button:hover{
-  background-color: #80a858;
-}
-</style> -->
-
-
-
-
-
-
-
 <template>
   <div class="login-wrap">
     <div class="login-html">
+      <img src="../../assets/free-icon-pink-cosmos-8116980.png" style="width: 80px; margin-left: 150px;">
       <div class="login-container">
         <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">로그인</label>
         <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">회원가입</label>
@@ -98,11 +9,11 @@ button:hover{
           <div class="sign-in-htm">
             <div class="group">
               <label for="user" class="label">아이디</label>
-              <input v-model="user.user_id" id="user" type="text" class="input">
+              <input v-model="user.user_id" id="user" type="text" class="input" placeholder="아이디를 입력하세요">
             </div>
             <div class="group">
               <label for="pass" class="label">비밀번호</label>
-              <input v-model="user.user_pw" id="pass" type="password" class="input" data-type="password">
+              <input v-model="user.user_pw" id="pass" type="password" class="input" data-type="password" placeholder="비밀번호를 입력하세요">
             </div>
             <div class="group">
               <input id="check" type="checkbox" class="check" checked>
@@ -178,7 +89,7 @@ const signUp = ref({
 const signBtn = function () {
   console.log(signUp.value)
   useStore.signup(signUp)
-  router.push({ name: "login" })
+  router.push({ name: "home" })
 }
 
 
@@ -229,7 +140,7 @@ a {
   position: absolute;
   margin-top: 3em;
   padding: 90px 70px 50px 70px;
-  background: #24613b;
+  background: #8FBF9F;
 }
 
 .login-html .sign-in-htm,
@@ -271,7 +182,7 @@ a {
 
 .login-html .sign-in:checked+.tab,
 .login-html .sign-up:checked+.tab {
-  color: #FF8E9E;
+  color: #000000;
   border-color: #FF8E9E;
 }
 
@@ -307,7 +218,7 @@ a {
 	-webkit-text-security:circle;
 } */
 .login-form .group .label {
-  color: #aaa;
+  color: #171717;
   font-size: 12px;
 }
 

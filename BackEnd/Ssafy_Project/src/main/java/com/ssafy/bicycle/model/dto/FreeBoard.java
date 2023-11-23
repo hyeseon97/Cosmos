@@ -1,5 +1,7 @@
 package com.ssafy.bicycle.model.dto;
 
+import java.util.List;
+
 /**
  * @author SSAFY
  *
@@ -13,20 +15,19 @@ public class FreeBoard {
 	private int fb_viewCnt;
 	private int fb_rcm;
 	private String fb_regDate;
-	private String fb_img;
-	private String fb_orgImg;
+	
+	private List<Image> list; 
 	
 	public FreeBoard() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FreeBoard(String fb_userId, String fb_title, String fb_writer, String fb_content, String fb_img, String fb_orgImg) {
+	public FreeBoard(String fb_userId, String fb_title, String fb_writer, String fb_content, List<Image> list) {
 		this.fb_userId = fb_userId;
 		this.fb_title = fb_title;
 		this.fb_writer = fb_writer;
 		this.fb_content = fb_content;
-		this.fb_img = fb_img;
-		this.fb_orgImg = fb_orgImg;
+		this.list = list;
 	}
 	
 	public int getFb_num() {
@@ -93,20 +94,20 @@ public class FreeBoard {
 		this.fb_regDate = fb_regDate;
 	}
 
-	public String getFb_img() {
-		return fb_img;
+	public List<Image> getList() {
+		return list;
 	}
 
-	public void setFb_img(String fb_img) {
-		this.fb_img = fb_img;
+	public void setList(List<Image> list) {
+		this.list = list;
 	}
 
-	public String getFb_orgImg() {
-		return fb_orgImg;
+	@Override
+	public String toString() {
+		return "FreeBoard [fb_num=" + fb_num + ", fb_userId=" + fb_userId + ", fb_title=" + fb_title + ", fb_writer="
+				+ fb_writer + ", fb_content=" + fb_content + ", fb_viewCnt=" + fb_viewCnt + ", fb_rcm=" + fb_rcm
+				+ ", fb_regDate=" + fb_regDate + ", list=" + list + "]";
 	}
 
-	public void setFb_orgImg(String fb_orgImg) {
-		this.fb_orgImg = fb_orgImg;
-	}
 	
 }

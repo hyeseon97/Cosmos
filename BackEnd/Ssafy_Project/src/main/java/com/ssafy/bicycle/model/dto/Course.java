@@ -14,12 +14,13 @@ public class Course {
 	private String course_regDate;
 
 	private List<Double> courseMap;
+	private List<Image> list;
 
 	public Course() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Course(String course_name, String course_content, String course_address, String course_keyword, String course_userId, List<Double> courseMap) {
+	public Course(String course_name, String course_content, String course_address, String course_keyword, String course_userId, List<Double> courseMap,List<Image> list) {
 		super();
 		this.course_name = course_name;
 		this.course_content = course_content;
@@ -27,10 +28,9 @@ public class Course {
 		this.course_keyword = course_keyword;
 		this.course_userId = course_userId;
 		this.courseMap = courseMap;
+		this.list = list;
 	}
 	
-	
-
 	public int getCourse_num() {
 		return course_num;
 	}
@@ -109,6 +109,14 @@ public class Course {
 
 	public void setCourseMap(List<Double> courseMap) {
 		this.courseMap = courseMap;
+	}
+
+	public List<Image> getList() {
+		return list;
+	}
+
+	public void setList(List<Image> list) {
+		this.list = list;
 	}
 
 	@Override

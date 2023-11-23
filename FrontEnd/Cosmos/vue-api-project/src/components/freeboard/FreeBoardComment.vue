@@ -1,14 +1,18 @@
 <template>
   <div>
-    <h4>FreeBoardComment</h4>
-    <input type="text" @keyup.enter="create" v-model="comment.fc_content" placeholder="댓글을 입력하세요">
-    <button @click="create">등록</button>
+    <h4>댓글목록</h4>
+    <div class="free-board-comment-input-container">
+      <input class="free-comment-input" type="text" @keyup.enter="create" v-model="comment.fc_content" placeholder="댓글을 입력하세요">
+      <button @click="create">등록</button>
+    </div>
 
     <table>
       <tr v-for="(item, index) in freeCommentList" :key="index">
+        <td>
+          <h4>{{ item.fc_userName }}</h4>
+          <span class="comment-date">{{ item.fc_regdate }}</span>
+        </td>
         <td>{{ item.fc_content }}</td>
-        <td>{{ item.fc_userName }}</td>
-        <td>{{ item.fc_regdate }}</td>
       </tr>
     </table>
   </div>
@@ -49,5 +53,59 @@ const create = function(){
 </script>
 
 <style scoped>
+.free-board-comment-input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.free-comment-input {
+  flex: 1;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+button {
+  height: 32px;
+  background-color: #68a67d;
+  color: white;
+  padding: 0 15px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+
+button:hover {
+  background-color: #45a049;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+td {
+  padding: 10px;
+}
+
+h4, .comment-date {
+  margin-bottom: 5px;
+}
+
+.comment-date {
+  color: #888;
+  font-size: 12px;
+}
 
 </style>

@@ -20,6 +20,4 @@ public interface FreeBoardService {
 	
 	// 게시물 삭제
 	boolean removeFree(int num);
-	
-	
 }

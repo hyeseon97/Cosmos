@@ -6,8 +6,8 @@
 
 	<insert id="insertBoard" parameterType="FreeBoard">
 		INSERT INTO
-		freeBoard(fb_userId, fb_title, fb_writer, fb_content, fb_img, fb_orgImg)
-		VALUES(#{fb_userId}, #{fb_title}, #{fb_writer}, #{fb_content}),#{fb_img}, #{fb_orgImg}
+		freeBoard(fb_userId, fb_title, fb_writer, fb_content)
+		VALUES(#{fb_userId}, #{fb_title}, #{fb_writer}, #{fb_content})
 	</insert>
 
 	<select id="search" parameterType="SearchCondition" resultType="FreeBoard">
@@ -37,7 +37,7 @@
 	</delete>
 	
 	<update id="updateViewCnt" parameterType="int">
-		UPDATE FROM freeBoard
+		UPDATE freeBoard
 		SET fb_viewCnt = fb_viewCnt+1
 		WHERE fb_num = #{fb_num} 
 	</update>

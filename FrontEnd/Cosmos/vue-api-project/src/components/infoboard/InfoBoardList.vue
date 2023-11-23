@@ -1,14 +1,14 @@
 <template>
   <section class="notice">
     <div class="page-title">
-      <div class="container">
+      <div class="info-board-container">
         <h3>공지사항</h3>
       </div>
     </div>
 
     <!-- board seach area -->
-    <div id="board-search">
-      <div class="container">
+    <div id="info-board-search">
+      <div class="info-board-container">
         <div class="search-window">
           <form @submit.prevent="search">
             <div class="search-wrap">
@@ -22,9 +22,9 @@
     </div>
 
     <!-- board list area -->
-    <div id="board-list">
-      <div class="container">
-        <table class="board-table">
+    <div id="info-board-list">
+      <div class="info-board-container">
+        <table class="info-board-table">
           <thead>
             <tr>
               <th scope="col" class="th-num">번호</th>
@@ -129,16 +129,16 @@ section.notice {
 .page-title h3 {
   font-size: 28px;
   color: #333333;
-  font-weight: 400;
+  font-weight: 1000;
   text-align: center;
 }
 
-#board-search .search-window {
+#info-board-search .search-window {
   padding: 15px 0;
   background-color: #f9f7f9;
 }
 
-#board-search .search-window .search-wrap {
+#info-board-search .search-window .search-wrap {
   position: relative;
   /*   padding-right: 124px; */
   margin: 0 auto;
@@ -146,21 +146,21 @@ section.notice {
   max-width: 564px;
 }
 
-#board-search .search-window .search-wrap input {
+#info-board-search .search-window .search-wrap input {
   height: 40px;
   width: 100%;
-  font-size: 14px;
+  font-size: 15px;
   padding: 7px 14px;
   border: 1px solid #ccc;
 }
 
-#board-search .search-window .search-wrap input:focus {
+#info-board-search .search-window .search-wrap input:focus {
   border-color: #333;
   outline: 0;
   border-width: 1px;
 }
 
-#board-search .search-window .search-wrap .btn {
+#info-board-search .search-window .search-wrap .btn {
   position: absolute;
   right: 0;
   top: 0;
@@ -170,14 +170,14 @@ section.notice {
   font-size: 16px;
 }
 
-.board-table {
-  font-size: 13px;
+.info-board-table {
+  font-size: 15px;
   width: 100%;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
 
-.board-table a {
+.info-board-table a {
   color: #333;
   display: inline-block;
   line-height: 1.4;
@@ -185,41 +185,41 @@ section.notice {
   vertical-align: middle;
 }
 
-.board-table a:hover {
+.info-board-table a:hover {
   text-decoration: underline;
 }
 
-.board-table th {
+.info-board-table th {
   text-align: center;
 }
 
-.board-table .th-num {
+.info-board-table .th-num {
   width: 100px;
   text-align: center;
 }
 
-.board-table .th-date {
+.info-board-table .th-date {
   width: 200px;
 }
 
-.board-table th,
-.board-table td {
+.info-board-table th,
+.info-board-table td {
   padding: 14px 0;
 }
 
-.board-table tbody td {
+.info-board-table tbody td {
   border-top: 1px solid #e7e7e7;
   text-align: center;
 }
 
-.board-table tbody th {
+.info-board-table tbody th {
   padding-left: 28px;
   padding-right: 14px;
   border-top: 1px solid #e7e7e7;
   text-align: left;
 }
 
-.board-table tbody th p {
+.info-board-table tbody th p {
   display: none;
 }
 
@@ -291,10 +291,10 @@ section.notice {
   clear: both;
 }
 
-.container {
+/* .info-board-container {
   width: 1100px;
   margin: 0 auto;
-}
+} */
 
 .blind {
   position: absolute;
@@ -331,5 +331,12 @@ section.notice {
   display: inline-block;
   margin: 0 10px;
   font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .create-button {
+    bottom: 20px;
+    right: 20px;
+  }
 }
 </style>
