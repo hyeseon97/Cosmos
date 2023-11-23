@@ -90,6 +90,7 @@ public class UserController {
 			if (dbUser.getUser_id() != null && dbUser.getUser_id().length() > 0) {
 				result.put("login-token", jwtUtil.createToken("id", dbUser.getUser_id()));
 				result.put("message", "SUCCESS");
+				result.put("name", dbUser.getUser_name());
 				status = HttpStatus.ACCEPTED;
 			} else { // 로그인 실패라면
 				result.put("message", "FAIL");

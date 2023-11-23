@@ -13,8 +13,11 @@
     </div>
 
     <div>
-      <button @click="update(freeBoard.ib_num)" v-if="userStore.loginUserId==freeBoard.fb_wrtier">수정</button>
-      <button @click="remove" v-if="userStore.loginUserId==freeBoard.fb_wrtier">삭제</button>
+      <button @click="update(freeBoard.ib_num)" v-if="userStore.loginUserId==freeBoard.fb_userId">수정</button>
+      <button @click="remove" v-if="userStore.loginUserId==freeBoard.fb_userId">삭제</button>
+    </div>
+    <div>
+      <!-- <img :src="`/localhost:8080/upload/${freeBoard.list[0]}`"> -->
     </div>
   </div>
   <div class="free-board-comment">

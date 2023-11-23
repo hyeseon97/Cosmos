@@ -52,6 +52,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 로그인
+  const loginUserName = ref('')
   const loginUserId = ref('')
   const isAuthenticated = ref(false);
   const userLogin = function (user) {
@@ -69,7 +70,6 @@ export const useUserStore = defineStore('user', () => {
       .then((response) => {
         //response 응답으로 들어온 게시글의 id를 이용해서
         //상세보기로 바로 점프도 가넝이야~~
-        console.log(response)
         isAuthenticated.value = true;
         sessionStorage.setItem('login-token', response.data["login-token"])
 
@@ -80,6 +80,8 @@ export const useUserStore = defineStore('user', () => {
         user_id = JSON.parse(user_id)
         console.log(user_id['id'])
         loginUserId.value = user_id['id']
+        loginUserName.value = response.data['name']
+        console.log("name :", loginUserName.value)
 
         router.push({ name: "home" })
 
@@ -100,5 +102,5 @@ export const useUserStore = defineStore('user', () => {
 
 
 
-  return { userList, user, isAuthenticated ,getUser, getUserList, signup, updateUser, searchUserList, userLogin, loginUserId }
+  return { userList, user, isAuthenticated ,getUser, getUserList, signup, updateUser, searchUserList, userLogin, loginUserId, loginUserName }
 })

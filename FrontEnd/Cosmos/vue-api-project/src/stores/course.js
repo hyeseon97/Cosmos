@@ -33,15 +33,36 @@ export const useCourseStore = defineStore('course', () => {
     })
   }
 
-  //코스 등록
-  const createCourse = function (course) {
-    console.log("store의 요청 전")
-    console.log(course)
-    axios.post(REST_BOARD_API, course.value)
-      .then(()=>{
-        router.push({ name: 'courseList' })
-      })
+  // //코스 등록
+  // const createCourse = function (course) {
+  //   console.log("store의 요청 전")
+  //   console.log(course)
+  //   axios.post(REST_BOARD_API, course.value)
+  //     .then(()=>{
+  //       router.push({ name: 'courseList' })
+  //     })
+  // }
+
+  const createCourse = function (frm) {
+    for(let key of frm){
+      console.log(key)
+    }
+    axios({
+      url: REST_BOARD_API,
+      method: 'POST',
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      data: frm
+    })
+    .then(() => {
+      router.push({ name: 'courseList'})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
+
 
   const updateCourse = function () {
     axios.put(REST_BOARD_API, course.value)

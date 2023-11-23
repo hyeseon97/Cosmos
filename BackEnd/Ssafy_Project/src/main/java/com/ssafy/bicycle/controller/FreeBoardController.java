@@ -45,6 +45,8 @@ public class FreeBoardController {
 	@PostMapping("/free")
 	public ResponseEntity<?> write(@ModelAttribute FreeBoard freeBoard,@RequestParam(required=false) MultipartFile file) {
 		try {
+			System.out.println(freeBoard);
+			System.out.println(file);
 	           if(file != null && file.getSize() > 0) {
 	               Resource res = resourceLoader.getResource("classpath:/static/upload"); // 경로
 	               Image image = new Image();

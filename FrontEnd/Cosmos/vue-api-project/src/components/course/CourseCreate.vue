@@ -26,8 +26,10 @@
         </div>
         <!-- 키워드 리스트 -->
       </div>
-
     </div>
+
+    <input type="file" @change="imageUpload" ref="boardImage" id="photo" accept="image/*">이미지 등록
+                <img :src="imageUploaded" alt="사용자가 업로드한 이미지">
 
     <div class="course-create-container-right">
       <div id="map"></div>
@@ -48,6 +50,7 @@
 import { onMounted, ref } from 'vue';
 import { useCourseStore } from '@/stores/course'
 import { useUserStore } from '../../stores/user';
+import { storeToRefs } from 'pinia';
 
 const courseStore = useCourseStore();
 const userStore = useUserStore();
@@ -142,8 +145,34 @@ const regist = function () {
   console.log("유저아이디")
   console.log(userStore.loginUserId);
   console.log(userStore.isAuthenticated);
-  courseStore.createCourse(course);
+  // courseStore.createCourse(course);
+
+  const frm = new FormData()
+  console.log(course.value)
+  frm.append("courseMap",course.value.courseMap)
+  frm.append("course_userId",userStore.loginUserId)
+  frm.append("course_name",course.value.course_name)
+  frm.append("course_content",course.value.course_content)
+  frm.append("course_address",course.value.course_address)
+  frm.append("course_keyword",course.value.course_keyword)
+  frm.append("course_viewCnt",course.value.course_viewCnt)
+  frm.append("course_rcm",course.value.course_rcm)
+  frm.append("course_regDate",course.value.course_regDate)
+  frm.append("file",file.value)
+  courseStore.createCourse(frm)
 };
+
+// 파일업로드
+const file = ref({})
+const imageUploaded = ref({})
+
+const imageUpload = function () {
+    const photo = document.getElementById("photo")
+    file.value = photo.files[0];
+    const image = file.value
+    console.log(file.value)
+    imageUploaded.value=URL.createObjectURL(image)
+}
 
 // ========================================================================================================================
 // ========================================================================================================================

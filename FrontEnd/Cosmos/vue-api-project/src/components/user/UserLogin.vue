@@ -131,7 +131,6 @@ a {
   max-width: 525px;
   min-height: 670px;
   position: relative;
-
 }
 
 .login-html {

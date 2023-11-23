@@ -37,7 +37,7 @@
             <tr v-for="(item, index) in displayedArr" :key="index" @click="godetail(item.ib_num)">
               <td>{{ item.ib_num }}</td>
               <th>
-                <router-link :to="`/notice/${item.ib_id}`">{{ item.ib_title }}</router-link>
+                {{ item.ib_title }}
               </th>
               <td>{{ item.ib_regDate }}</td>
               <td>{{ item.ib_viewCnt }}</td>

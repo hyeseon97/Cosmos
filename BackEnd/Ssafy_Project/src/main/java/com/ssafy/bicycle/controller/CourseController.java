@@ -10,6 +10,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,9 +48,11 @@ public class CourseController {
 //	 courseMap이랑 course 필요하네
 //	 경도 위도 값이 같이 들어올거임, 그리고 제목 타이들 등등이 들어올거임
 	@PostMapping("/course")
-	public ResponseEntity<?> writeCourse(@RequestBody Course course,
+	public ResponseEntity<?> writeCourse(@ModelAttribute Course course,
 			@RequestParam(required = false) MultipartFile file) {
 		try {
+			System.out.println(course);
+			System.out.println(file);
 			if (file != null && file.getSize() > 0) {
 				Resource res = resourceLoader.getResource("classpath:/static/upload"); // 경로
 				Image image = new Image();
@@ -57,7 +60,7 @@ public class CourseController {
 				image.setImage_boardNum(course.getCourse_num());
 				image.setImage_oriName(file.getOriginalFilename());
 				image.setImage_saveName(System.currentTimeMillis() + "_" + file.getOriginalFilename());
-
+				image.setImage_boardNum(courseNum);
 				file.transferTo(new File(res.getFile().getCanonicalFile() + "/" + image.getImage_saveName()));
 
 				imageService.writeImage(image);

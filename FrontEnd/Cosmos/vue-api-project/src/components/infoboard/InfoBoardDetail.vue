@@ -12,8 +12,8 @@
     </div>
 
     <div>
-      <button @click="update(infoBoard.ib_num)" v-if="user !== null">수정</button>
-      <button @click="remove" v-if="user !== null">삭제</button>
+      <!-- <button @click="update(infoBoard.ib_num)" v-if="user !== null">수정</button>
+      <button @click="remove" v-if="user !== null">삭제</button> -->
     </div>
   </div>
   <div class="info-board-comment">
