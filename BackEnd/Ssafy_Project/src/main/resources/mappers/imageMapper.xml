@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.bicycle.model.dao.ImageDao">
+
+	<insert id="insertImage" parameterType="Image">
+		INSERT INTO image(image_type, image_boardNum, image_oriName,image_saveName)
+		VALUES(#{image_type}, #{image_boardNum}, #{image_oriName}, #{image_saveName})
+	</insert>
+
+	<select id="selectAll" parameterType="hashmap" resultType="Image">
+		SELECT * FROM image
+		WHERE image_boardNum = #{num} and image_type = #{type}
+	</select>
+
+</mapper>

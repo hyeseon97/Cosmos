@@ -1,6 +1,7 @@
 package com.ssafy.bicycle.controller;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.bicycle.model.dto.FreeBoard;
+import com.ssafy.bicycle.model.dto.Image;
 import com.ssafy.bicycle.model.dto.SearchCondition;
 import com.ssafy.bicycle.model.service.FreeBoardService;
+import com.ssafy.bicycle.model.service.ImageService;
 
 
 @RestController
@@ -34,14 +37,35 @@ public class FreeBoardController {
 	
 	@Autowired
 	private ResourceLoader  resourceLoader;
+	
+	@Autowired
+	private ImageService imageService;
 
 	// 등록
 	@PostMapping("/free")
-	public ResponseEntity<?> write(@RequestBody FreeBoard freeBoard) {
+	public ResponseEntity<?> write(@ModelAttribute FreeBoard freeBoard,@RequestParam(required=false) MultipartFile file) {
+		try {
+	           if(file != null && file.getSize() > 0) {
+	               Resource res = resourceLoader.getResource("classpath:/static/upload"); // 경로
+	               Image image = new Image();
+	               image.setImage_type(2);
+	               image.setImage_boardNum(freeBoard.getFb_num());
+	               image.setImage_oriName(file.getOriginalFilename());
+	               image.setImage_saveName(System.currentTimeMillis()+"_"+file.getOriginalFilename());
+	               
+	               file.transferTo(new File(res.getFile().getCanonicalFile()+"/"+ image.getImage_saveName()));
+	               System.out.println(image.toString());
+	               imageService.writeImage(image);
+	               
+	           }
+	            // 나머지 게시글 등록 로직
+	            freeBoardService.writeBoard(freeBoard);
 
-		freeBoardService.writeBoard(freeBoard);
-
-		return new ResponseEntity<FreeBoard>(freeBoard, HttpStatus.CREATED);
+	            return new ResponseEntity<FreeBoard>(freeBoard, HttpStatus.CREATED);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
 	}
 
 	// 조회 or 검색
@@ -56,15 +80,25 @@ public class FreeBoardController {
 		return new ResponseEntity<List<FreeBoard>>(list, HttpStatus.OK);
 	}
 
+	//course >>1
+	//free >>2;
+	//info >>3;
+	
 	// 상세조회
 	@GetMapping("/free/{num}")
 	public ResponseEntity<?> detail(@PathVariable int num) {
 
 		FreeBoard freeBoard = freeBoardService.getFreeOne(num);
-
 		if (freeBoard == null) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
+		
+		HashMap<String,Integer> map = new HashMap<>();
+		map.put("type", 2);
+		map.put("num",num);
+		
+		List<Image> list = imageService.getImageList(map);
+		freeBoard.setList(list);
 
 		return new ResponseEntity<FreeBoard>(freeBoard, HttpStatus.OK);
 	}
@@ -87,28 +121,5 @@ public class FreeBoardController {
 		}
 		return new ResponseEntity<String>("FAIL", HttpStatus.BAD_REQUEST);
 	}
-
-    // 3. 등록
-//    @PostMapping("/board")
-//    public ResponseEntity<FreeBoard> write(@ModelAttribute FreeBoard freeBoard, @RequestParam(required=false) MultipartFile file) {
-//        try {
-//           System.out.println(freeBoard);
-//           System.out.println(file.getOriginalFilename());
-//           
-//           if(file != null && file.getSize() > 0) {
-//               Resource res = resourceLoader.getResource("classpath:/static/upload");
-//               board.setImg(System.currentTimeMillis()+"_"+file.getOriginalFilename());;
-//               board.setOrgImg(file.getOriginalFilename());
-//               file.transferTo(new File(res.getFile().getCanonicalFile()+"/"+freeBoard.getImg()));
-//           }
-//            // 나머지 게시글 등록 로직
-//            freeBoardService.writeBoard(freeBoard);
-//
-//            return new ResponseEntity<FreeBoard>(freeBoard, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 	
 }

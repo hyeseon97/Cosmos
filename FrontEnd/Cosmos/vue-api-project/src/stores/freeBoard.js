@@ -25,15 +25,16 @@ export const useFreeBoardStore = defineStore('freeBoard', () => {
   }
 
   //게시글 등록
-  const createFreeBoard = function (freeBoard) {
+  const createFreeBoard = function (frm) {
+    console.log(frm)
     axios({
       url: REST_BOARD_API,
       method: 'POST',
       //아래꺼 없어도 알아서 보내더라 axios 쵝오~ 
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "multipart/form-data"
       },
-      data: freeBoard.value
+      data: frm
     })
       .then(() => {
         //response 응답으로 들어온 게시글의 id를 이용해서

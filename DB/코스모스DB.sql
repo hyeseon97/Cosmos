@@ -368,6 +368,6 @@ select * from courseMap;
 SELECT * from infoBoard;
 SELECT * FROM travel;
 SELECT * FROM place;
+select * from image;
 -- delete from user
 -- where user_id = 'bbb';
-

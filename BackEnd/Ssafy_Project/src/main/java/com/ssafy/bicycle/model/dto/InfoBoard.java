@@ -1,5 +1,7 @@
 package com.ssafy.bicycle.model.dto;
 
+import java.util.List;
+
 public class InfoBoard {
 	private int ib_num;
 	private String ib_title;
@@ -8,16 +10,19 @@ public class InfoBoard {
 	private int ib_rcm;
 	private String ib_regDate;
 
+	private List<Image> list;
+	
 	public InfoBoard() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public InfoBoard(String ib_title, String ib_content, int ib_viewCnt, int ib_rem, String ib_regDate) {
+	public InfoBoard(String ib_title, String ib_content, int ib_viewCnt, int ib_rem, String ib_regDate, List<Image> list) {
 		this.ib_title = ib_title;
 		this.ib_content = ib_content;
 		this.ib_viewCnt = ib_viewCnt;
 		this.ib_rcm = ib_rem;
 		this.ib_regDate = ib_regDate;
+		this.list = list;
 	}
 
 	public int getIb_num() {
@@ -66,6 +71,14 @@ public class InfoBoard {
 
 	public void setIb_regDate(String ib_regDate) {
 		this.ib_regDate = ib_regDate;
+	}
+	
+	public List<Image> getList() {
+		return list;
+	}
+
+	public void setList(List<Image> list) {
+		this.list = list;
 	}
 
 	@Override

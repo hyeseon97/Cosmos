@@ -1,9 +1,12 @@
 package com.ssafy.bicycle.controller;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,10 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.bicycle.model.dto.Image;
 import com.ssafy.bicycle.model.dto.InfoBoard;
 import com.ssafy.bicycle.model.dto.SearchCondition;
+import com.ssafy.bicycle.model.service.ImageService;
 import com.ssafy.bicycle.model.service.InfoBoardService;
 
 
@@ -27,14 +34,39 @@ public class InfoBoardController {
 	@Autowired
 	private InfoBoardService infoBoardService;
 
+	@Autowired
+	private ResourceLoader  resourceLoader;
+	
+	@Autowired
+	private ImageService imageService;
+	
 	// 등록
 	@PostMapping("/info")
-	public ResponseEntity<?> write(@RequestBody InfoBoard infoBoard) {
-		System.out.println(infoBoard);
+	public ResponseEntity<?> write(@RequestBody InfoBoard infoBoard,@RequestParam(required=false) MultipartFile file) {
+		try {
 
-		infoBoardService.writeBoard(infoBoard);
+			if (file != null && file.getSize() > 0) {
+				Resource res = resourceLoader.getResource("classpath:/static/upload"); // 경로
+				Image image = new Image();
+				image.setImage_type(3);
+				image.setImage_boardNum(infoBoard.getIb_num());
+				image.setImage_oriName(file.getOriginalFilename());
+				image.setImage_saveName(System.currentTimeMillis() + "_" + file.getOriginalFilename());
 
-		return new ResponseEntity<InfoBoard>(infoBoard, HttpStatus.CREATED);
+				file.transferTo(new File(res.getFile().getCanonicalFile() + "/" + image.getImage_saveName()));
+
+				imageService.writeImage(image);
+
+			}
+
+			infoBoardService.writeBoard(infoBoard);
+
+			return new ResponseEntity<InfoBoard>(infoBoard, HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	// 조회 or 검색
@@ -58,6 +90,13 @@ public class InfoBoardController {
 		if (infoBoard == null) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
+		
+		HashMap<String,Integer> map = new HashMap<>();
+		map.put("type", 3);
+		map.put("num",num);
+		
+		List<Image> list = imageService.getImageList(map);
+		infoBoard.setList(list);
 
 		return new ResponseEntity<InfoBoard>(infoBoard, HttpStatus.OK);
 	}

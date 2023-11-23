@@ -46,7 +46,19 @@ const cancel = function(){
 }
 
 const regist = function () {
-  store.createFreeBoard(freeBoard)
+  
+
+  const frm = new FormData()
+  frm.append("fb_num", freeBoard.value.fb_num)
+  frm.append("fb_title", freeBoard.value.fb_title)
+  frm.append("fb_writer", freeBoard.value.fb_writer)
+  frm.append("fb_content", freeBoard.value.fb_content)
+  frm.append("fb_userId", freeBoard.value.fb_userId)
+  frm.append("fb_viewCnt", freeBoard.value.fb_viewCnt)
+  frm.append("fb_rcm", freeBoard.value.fb_rcm)
+  frm.append("fb_regDate", freeBoard.value.fb_regDate)
+  frm.append("file",file.value)
+  store.createFreeBoard(frm)
 }
 
 // 파일업로드
