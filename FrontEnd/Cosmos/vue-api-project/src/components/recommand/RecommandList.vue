@@ -1,7 +1,7 @@
 <template>
   <div class="course-list">
     <div class="course" v-for="c in course" @click="goDetail(c.course_num)">
-      <img src="" alt="사진" class="course-image">
+      <img :src="`http://localhost:8080/upload/${c.course_imgName}`" alt="사진" class="course-image">
       <div class="view-good">
         <div class="viewCnt icon-center" style="margin-right: 10px;"><img src="../../assets/view.png" style="width: 20px; margin-right: 10px;">{{ c.course_viewCnt }}</div>
         <div class="good icon-center"><img src="../../assets/good.png" style="width: 20px; margin-right: 10px;">{{ c.course_rcm }}</div>

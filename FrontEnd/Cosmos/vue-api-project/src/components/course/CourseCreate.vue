@@ -13,7 +13,7 @@
         <div>
           <textarea cols="30" rows="10" v-model="course.course_content" placeholder="코스 내용"></textarea>
         </div>
-
+        <input type="file" @change="imageUpload" ref="boardImage" id="photo" accept="image/*">
         <!-- 키워드 리스트 -->
         <div>코스와 어울리는 키워드를 골라주세요 (최대 5개)</div>
         <div class="course-keyword-list">
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <input type="file" @change="imageUpload" ref="boardImage" id="photo" accept="image/*">이미지 등록
+    
                 <!-- <img :src="imageUploaded" alt="사용자가 업로드한 이미지"> -->
 
   </div>
@@ -555,6 +555,10 @@ onMounted(() => {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+#photo {
+  margin-bottom: 20px;
 }
 
 /* 체크박스 */

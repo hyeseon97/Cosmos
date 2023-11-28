@@ -9,9 +9,10 @@ export const useInfoBoardStore = defineStore('infoBoard', () => {
   const infoBoardList = ref([])
 
   const getInfoBoardList = function () {
-    axios.get(REST_BOARD_API)
+    return axios.get(REST_BOARD_API)
       .then((response) => {
         infoBoardList.value = response.data
+        return response.data
       })
   }
 

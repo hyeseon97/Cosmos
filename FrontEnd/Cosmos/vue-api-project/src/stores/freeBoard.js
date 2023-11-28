@@ -9,9 +9,10 @@ export const useFreeBoardStore = defineStore('freeBoard', () => {
   const freeBoardList = ref([])
 
   const getFreeBoardList = function () {
-    axios.get(REST_BOARD_API)
+    return axios.get(REST_BOARD_API)
       .then((response) => {
         freeBoardList.value = response.data
+        return response.data
       })
   }
 

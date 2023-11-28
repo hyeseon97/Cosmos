@@ -3,7 +3,7 @@
     <div class="row">
       <div v-if="list.length==0" style="font-size: large; ">키워드를 포함하는 코스가 없습니다</div>
       <div class="search-course" v-for="c in list" @click="goDetail(c.num)">
-        <img src="" alt="사진" class="course-image">
+        <img :src="`http://localhost:8080/upload/${c.course_imgName}`" alt="사진" class="course-image" style="margin-left: 7px; width: 100%; height: 80%;">
         <div class="info-container">
           <div class="view-good">
             <div class="viewCnt icon-center">
@@ -43,6 +43,7 @@ const list = computed(() => courseStore.courseList)
 .testcolor {
   background-color: black;
 }
+
 
 .scrollable-container {
   max-height: 550px;

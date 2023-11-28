@@ -3,6 +3,7 @@ package com.ssafy.bicycle.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class CourseController {
 			if (file != null && file.getSize() > 0) {
 				Resource res = resourceLoader.getResource("classpath:/static/upload"); // 경로
 				Image image = new Image();
-				image.setImage_type(2);
+				image.setImage_type(1);
 				image.setImage_boardNum(course.getCourse_num());
 				image.setImage_oriName(file.getOriginalFilename());
 				image.setImage_saveName(System.currentTimeMillis() + "_" + file.getOriginalFilename());
@@ -103,17 +104,25 @@ public class CourseController {
 
 			List<Double> courseMap = new ArrayList<Double>();
 
+//			if (list == null || list.size() == 0) {
+//				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//			}
+
 			for (int seq = 0; seq < cmlist.size(); seq++) {
 				courseMap.add(cmlist.get(seq).getCm_lat());
 				courseMap.add(cmlist.get(seq).getCm_lng());
 			}
+			
+			HashMap<String,Integer> map = new HashMap<>();
+			map.put("type", 1);
+			map.put("num",courseNum);
+			
+			List<Image> imglist = imageService.getImageList(map);
+			list.get(i).setCourse_imgName(imglist.get(0).getImage_saveName());
 
 			list.get(i).setCourseMap(courseMap);
 		}
 
-		if (list == null || list.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
 
 		return new ResponseEntity<List<Course>>(list, HttpStatus.OK);
 	}
@@ -124,10 +133,20 @@ public class CourseController {
 		System.out.println("keyword - " + senddata);
 		List<String> stringList = Arrays.asList(senddata.split("_"));
 		List<Course> list = courseService.geKeywordList(stringList);
-		if (list == null || list.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-		}
 		
+//		if (list == null || list.size() == 0) {
+//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+//		}
+		
+		for(int i = 0;i<list.size();i++) {
+			HashMap<String,Integer> map = new HashMap<>();
+			map.put("type", 1);
+			map.put("num",list.get(i).getCourse_num());
+			
+			List<Image> imglist = imageService.getImageList(map);
+			list.get(i).setCourse_imgName(imglist.get(0).getImage_saveName());
+			
+		}
 		return new ResponseEntity<List<Course>>(list, HttpStatus.OK);
 	}
 	
@@ -135,17 +154,25 @@ public class CourseController {
 //	
 //	//다시
 
-//	// 상세조회
-//	@GetMapping("/course/{num}")
-//	public ResponseEntity<?> detail(@PathVariable int num){
-//		Course course = courseService.getCourseOne(num);
-//		
-//		if(course == null) {
-//			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-//		}
-//		
-//		return new ResponseEntity<Course>(course,HttpStatus.OK);
-//	}
+	// 상세조회
+	@GetMapping("/course/{num}")
+	public ResponseEntity<?> detail(@PathVariable int num){
+		System.out.println(num);
+		Course course = courseService.getCourseOne(num);
+		
+		if(course == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+
+		HashMap<String,Integer> map = new HashMap<>();
+		map.put("type", 1);
+		map.put("num",num);
+		
+		List<Image> list = imageService.getImageList(map);
+		course.setCourse_imgName(list.get(0).getImage_saveName());
+		
+		return new ResponseEntity<Course>(course,HttpStatus.OK);
+	}
 //	
 //	// 수정
 //	@PutMapping("/course")

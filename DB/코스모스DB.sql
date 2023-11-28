@@ -146,7 +146,7 @@ VALUES
 ('aaa','aaa','aaa','1999-01-01', 1, 0, 0, "2023-04-01"),
 ('bbb','bbb','bbb','1999-01-02', 1, 0, 0, "2023-04-12"),
 ('ccc','ccc','ccc','1999-01-03', 1, 0, 0, "2023-05-17"),
-('hyeseon','hyeseon','박혜선','1997-09-07', 1, 0, 0, "2023-07-02"),
+('hyeseon','hyeseon','박혜선','1997-09-07', 5, 0, 0, "2023-07-02"),
 ('jungu','jungu','권준구','1993-10-11', 1, 0, 0, "2023-08-08"),
 ('woojin','woojin','이우진','1997-10-09', 1, 0, 0, "2023-08-11"),
 ('yeonju','yeonju','조연주','1996-07-09', 1, 0, 0, "2023-08-30"),
@@ -360,9 +360,27 @@ VALUES
 (107, 12, 6, 36.384037, 127.358207),
 (108, 12, 7, 36.380293, 127.356496);
 
-INSERT INTO travel (travel_num, travel_title, travel_memo, travel_travelDate, travel_userId)
+INSERT INTO image (image_type, image_boardNum, image_oriName, image_saveName)
 VALUES
-(1, "대전 빵 여행", "한밭수목원에서 자전거 타고 산책하고 성심당 가서 빵 먹기", "2023-11-22", "aaa");
+('1', '1', 'course_1.jpg', '1700788475873_course_1.jpg'),
+('1', '3', 'course_8.jpg', '1700793744588_course_8.jpg'),
+('1', '2', 'course_5.jpg', '1700788568791_course_5.jpg'),
+('1', '4', 'course_6.jpg', '1700788584233_course_6.jpg'),
+('1', '5', 'course_6.jpg', '1700792460439_course_6.jpg'),
+('1', '6', 'course_8.jpg', '1700788613420_course_8.jpg'),
+('1', '7', 'course_11.jpg', '1700788762800_course_11.jpg'),
+('1', '8', 'course_12.jpg', '1700788776382_course_12.jpg'),
+('1', '9', 'course_13.jpg', '1700788789843_course_13.jpg'),
+('1', '10', 'course_14.jpg', '1700788800665_course_14.jpg'),
+('1', '11', 'course_15.jpg', '1700788812067_course_15.jpg'),
+('1', '12', 'course_15.jpg', '1700788812067_course_15.jpg'),
+('1', '13', 'course_3.jpg', '1700792520756_course_3.jpg'),
+('1', '14', 'course_15.jpg', '1700788812067_course_7.jpg');
+
+
+-- INSERT INTO travel (travel_num, travel_title, travel_memo, travel_travelDate, travel_userId)
+-- VALUES
+-- (1, "대전 빵 여행", "한밭수목원에서 자전거 타고 산책하고 성심당 가서 빵 먹기", "2023-11-22", "aaa");
 
 select * from user;
 select * from freeBoard;

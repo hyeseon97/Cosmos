@@ -74,29 +74,43 @@ const searchQuery = ref('');
 const arr = ref([]);
 
 const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
-const totalPages = Math.ceil(arr.value.length / itemsPerPage);
+const totalPages = computed(() => Math.ceil(freeBoardList.value.length / itemsPerPage));
 
 
 const currentPage = ref(1);
 
-const freeBoardList = computed(() => store.freeBoardList)
-const startIndex = computed(() => currentPage.value - 1);
-const endIndex = computed(() => startIndex.value + itemsPerPage)
-const displayedArr = computed(() => freeBoardList.value.slice(startIndex.value, endIndex.value))
-
-
-onMounted(() => {
-  store.getFreeBoardList();
-  // updateDisplayedArr();
-});
+const freeBoardList = ref([])
+const startIndex = ref(0)
+const endIndex = ref(0)
+const displayedArr = ref([])
 
 
 function changePage(newPage) {
-  if (newPage >= 1 && newPage <= totalPages) {
+  console.log(newPage);
+  console.log("newPage:"+newPage+" totalPages:"+totalPages.value)
+  if (newPage >= 1 && newPage <= totalPages.value) {
     currentPage.value = newPage;
-    // updateDisplayedArr();
+    // startIndex와 endIndex를 다시 계산
+    // startIndex는 (현재 페이지 - 1) * 페이지 당 아이템 수
+    startIndex.value = (currentPage.value - 1) * itemsPerPage;
+    // endIndex는 startIndex + 페이지 당 아이템 수
+    endIndex.value = startIndex.value + itemsPerPage;
+    console.log(startIndex.value)
+    console.log(endIndex.value)
+    displayedArr.value = freeBoardList.value.slice(startIndex.value, endIndex.value)
   }
 }
+
+onMounted(() => {
+  store.getFreeBoardList()
+  .then(()=>{
+    startIndex.value = (currentPage.value - 1) * itemsPerPage;
+    endIndex.value = startIndex.value + itemsPerPage;
+    freeBoardList.value = store.freeBoardList;
+    displayedArr.value = freeBoardList.value.slice(startIndex.value, endIndex.value)
+  })
+  // updateDisplayedArr();
+});
 
 // 글쓰기 버튼
 const create = function () {

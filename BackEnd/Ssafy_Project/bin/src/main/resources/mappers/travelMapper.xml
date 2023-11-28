@@ -10,8 +10,9 @@
 		VALUES(#{travel_num}, #{travel_title}, #{travel_memo}, #{travel_travelDate}, #{travel_userId})
 	</insert>
 
-	<select id="selectAll" resultType="Travel">
+	<select id="selectAll" parameterType="String" resultType="Travel">
 		SELECT * FROM travel
+		WHERE travel_userId = #{id}
 	</select>
 
 	<select id="selectOne" parameterType="int" resultType="Travel">
@@ -25,9 +26,9 @@
 		WHERE fb_num = #{fb_num}
 	</update> -->
 
-	<delete id="deleteTravel" parameterType="int">
+	<delete id="deleteTravel" parameterType="hashmap">
 		DELETE FROM travel
-		WHERE travel_num = #{travel_num}
+		WHERE travel_num = #{travel_num} and travel_userId = #{travel_userId}
 	</delete>
 
 </mapper>

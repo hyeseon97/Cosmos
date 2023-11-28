@@ -66,8 +66,6 @@ const router = useRouter();
 const store = useInfoBoardStore();
 const userStore = useUserStore();
 
-const user = ref("11");
-
 const searchQuery = ref('');
 
 const arr = ref([]);
@@ -77,20 +75,36 @@ const totalPages = computed(() => Math.ceil(infoBoardList.value.length / itemsPe
 
 const currentPage = ref(1);
 
-const infoBoardList = computed(() => store.infoBoardList)
-const startIndex = computed(() => currentPage.value - 1);
-const endIndex = computed(() => startIndex.value + itemsPerPage)
-const displayedArr = computed(() => infoBoardList.value.slice(startIndex.value, endIndex.value))
-
-onMounted(() => {
-  store.getInfoBoardList();
-});
+const infoBoardList = ref([])
+const startIndex = ref(0)
+const endIndex = ref(0)
+const displayedArr = ref([])
 
 function changePage(newPage) {
-  if (newPage >= 1 && newPage <= totalPages) {
+  console.log(newPage);
+  console.log("newPage:"+newPage+" totalPages:"+totalPages.value)
+  if (newPage >= 1 && newPage <= totalPages.value) {
     currentPage.value = newPage;
+    // startIndex와 endIndex를 다시 계산
+    // startIndex는 (현재 페이지 - 1) * 페이지 당 아이템 수
+    startIndex.value = (currentPage.value - 1) * itemsPerPage;
+    // endIndex는 startIndex + 페이지 당 아이템 수
+    endIndex.value = startIndex.value + itemsPerPage;
+    console.log(startIndex.value)
+    console.log(endIndex.value)
+    displayedArr.value = infoBoardList.value.slice(startIndex.value, endIndex.value)
   }
 }
+
+onMounted(() => {
+  store.getInfoBoardList()
+  .then(()=>{
+    startIndex.value = (currentPage.value - 1) * itemsPerPage;
+    endIndex.value = startIndex.value + itemsPerPage;
+    infoBoardList.value = store.infoBoardList;
+    displayedArr.value = infoBoardList.value.slice(startIndex.value, endIndex.value)
+  })
+});
 
 // 글쓰기 버튼
 const create = function () {

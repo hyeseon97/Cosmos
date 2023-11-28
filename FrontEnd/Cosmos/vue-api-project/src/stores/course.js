@@ -49,6 +49,7 @@ export const useCourseStore = defineStore('course', () => {
     axios.get(`${REST_BOARD_API}/${id}`)
       .then((response) => {
         course.value = response.data
+        console.log("store에서"+  course.value.course_imgName)
       })
   }
 
