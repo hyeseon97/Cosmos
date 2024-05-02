@@ -50,7 +50,8 @@ import UserUpdate from "@/components/user/UserUpdate.vue"
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory("13.124.154.154:8080"),
   routes: [
     {
       path: "/",
