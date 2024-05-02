@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import router from '@/router'
 import axios from 'axios'
 
-const REST_BOARD_API = `http://localhost:8080/api`
+const REST_BOARD_API = `http://13.124.154.154:8080/api`
 
 export const useUserStore = defineStore('user', () => {
   const userList = ref([])
