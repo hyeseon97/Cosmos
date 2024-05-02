@@ -82,6 +82,9 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
 		Map<String, Object> result = new HashMap<String, Object>();
 
+		System.out.println("유저아이디 : " + user.getUser_id());
+		System.out.println("유저비밀번호 : " + user.getUser_pw());
+
 		User dbUser = userService.getUserOne(user.getUser_id());
 
 		HttpStatus status = null;
