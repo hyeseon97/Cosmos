@@ -6,10 +6,10 @@ use ssafy_project;
 
 CREATE TABLE `user` (
 	`user_num` INT AUTO_INCREMENT,
-    `user_id` VARCHAR(30),
-    `user_pw` VARCHAR(30),
-    `user_name` VARCHAR(30),
-	`user_birth` VARCHAR(30),
+    `user_id` VARCHAR(100),
+    `user_pw` VARCHAR(100),
+    `user_name` VARCHAR(100),
+	`user_birth` VARCHAR(100),
     `user_grade` INT default 1,
     `user_boardCnt` INT default 0,
     `user_commentCnt` INT default 0,    
@@ -20,9 +20,9 @@ CREATE TABLE `user` (
 
 CREATE TABLE `freeBoard` (
 	`fb_num` INT AUTO_INCREMENT,
-    `fb_userId` VARCHAR(30),
-    `fb_title` VARCHAR(30),
-    `fb_writer` VARCHAR(30),
+    `fb_userId` VARCHAR(100),
+    `fb_title` VARCHAR(100),
+    `fb_writer` VARCHAR(100),
     `fb_content` VARCHAR(100),
     `fb_viewCnt` INT DEFAULT 0,
     `fb_rcm` INT DEFAULT 0,
@@ -34,9 +34,9 @@ CREATE TABLE `freeBoard` (
 CREATE TABLE `freeComment` (
 	`fc_num` INT AUTO_INCREMENT,
     `fc_boardNum` INT,
-    `fc_userId` VARCHAR(30),
-    `fc_userName` VARCHAR(30),
-    `fc_content` VARCHAR(30),
+    `fc_userId` VARCHAR(100),
+    `fc_userName` VARCHAR(100),
+    `fc_content` VARCHAR(100),
     `fc_regDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (fc_num),
     FOREIGN KEY (fc_boardNum) REFERENCES freeBoard (fb_num) on delete cascade, 
@@ -45,7 +45,7 @@ CREATE TABLE `freeComment` (
 
 CREATE TABLE `infoBoard` (
 	`ib_num` INT AUTO_INCREMENT,
-    `ib_title` VARCHAR(30),
+    `ib_title` VARCHAR(100),
     `ib_content` VARCHAR(100),
     `ib_viewCnt` INT DEFAULT 0,
     `ib_rcm` INT DEFAULT 0,
@@ -56,9 +56,9 @@ CREATE TABLE `infoBoard` (
 CREATE TABLE `infoComment` (
 	`ic_num` INT AUTO_INCREMENT,
     `ic_boardNum` INT,
-    `ic_userId` VARCHAR(30),
-    `ic_userName` VARCHAR(30),
-    `ic_content` VARCHAR(30),
+    `ic_userId` VARCHAR(100),
+    `ic_userName` VARCHAR(100),
+    `ic_content` VARCHAR(100),
     `ic_regDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (ic_num),
     FOREIGN KEY (ic_boardNum) REFERENCES infoBoard (ib_num) on delete cascade,
@@ -67,11 +67,11 @@ CREATE TABLE `infoComment` (
 
 CREATE TABLE `course` (
 	`course_num` INT AUTO_INCREMENT,
-    `course_userId` VARCHAR(30),
-    `course_name` VARCHAR(30),
+    `course_userId` VARCHAR(100),
+    `course_name` VARCHAR(100),
     `course_content` VARCHAR(100),
     `course_address` VARCHAR(100),
-    `course_keyword` VARCHAR(30),
+    `course_keyword` VARCHAR(100),
     `course_viewCnt` INT DEFAULT 0,
     `course_rcm` INT DEFAULT 0,
     `course_regDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -82,9 +82,9 @@ CREATE TABLE `course` (
 CREATE TABLE `courseComment` (
     `cc_num` INT AUTO_INCREMENT,
     `cc_courseNum` INT,
-    `cc_userId` VARCHAR(30),
-    `cc_userName` VARCHAR(30),
-    `cc_content` VARCHAR(30),
+    `cc_userId` VARCHAR(100),
+    `cc_userName` VARCHAR(100),
+    `cc_content` VARCHAR(100),
     `cc_regDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (cc_num),
     FOREIGN KEY (cc_courseNum) REFERENCES course (course_num) on delete cascade,
@@ -116,7 +116,7 @@ CREATE TABLE `travel`(
     `travel_title` VARCHAR(100),
     `travel_memo` VARCHAR(100),
     `travel_travelDate` TIMESTAMP,
-    `travel_userId` varchar(30),
+    `travel_userId` VARCHAR(100),
 	PRIMARY KEY(travel_num),
     FOREIGN KEY(travel_userId) REFERENCES user(user_id) on delete cascade
 );
@@ -133,7 +133,7 @@ CREATE TABLE `place` (
 
 CREATE TABLE `like` (
 	`like_num` INT AUTO_INCREMENT,
-	`like_userId` VARCHAR(30),
+	`like_userId` VARCHAR(100),
     `like_type` INT,
     `like_boardNum` INT,
     PRIMARY KEY (like_num)

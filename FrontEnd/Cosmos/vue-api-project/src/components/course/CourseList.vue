@@ -37,7 +37,7 @@ import { ref, onMounted, computed, watch, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTravelStore } from '../../stores/travel';
 import { useCourseStore } from '@/stores/course'
-import Weather from '../map/weather.vue';
+import Weather from '../map/Weather.vue';
 import MapCourse from '../map/MapCourse.vue';
 import CourseSearchList from '../course/CourseSearchList.vue';
 

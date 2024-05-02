@@ -1,0 +1,39 @@
+version: "3.8" # Docker Compose 파일 버전
+
+services:
+  frontend:
+    build:
+      context: ./FrontEnd/Cosmos/vue-api-project # 프론트엔드 Dockerfile 위치
+    ports:
+      - "5173:5173" # 포트 매핑 설정
+
+  backend:
+    build:
+      context: ./BackEnd/Ssafy_Project # 백엔드 Dockerfile 위치
+    ports:
+      - "8080:8080" # 포트 매핑 설정
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Docker 소켓 마운트
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ssafy_project?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ssafy
+      SPRING_DATASOURCE_PASSWORD: ssafy
+      CORS_ALLOWED_ORIGIN: http://localhost:5173
+
+  mysql:
+    image: mysql:8.0 # 사용할 MySQL 이미지
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234 # MySQL 루트 계정의 비밀번호
+      MYSQL_DATABASE: ssafy_project # 생성할 데이터베이스 이름
+      MYSQL_USER: ssafy # MySQL 사용자 이름
+      MYSQL_PASSWORD: ssafy # MySQL 사용자 비밀번호
+    ports:
+      - "3308:3306" # 호스트의 3308 포트와 컨테이너의 3306 포트 매핑
+    volumes:
+      - mysql-data:/var/lib/mysql # MySQL 데이터 저장을 위한 볼륨
+      - ./DB/코스모스DB.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql-data: # MySQL 데이터를 저장할 볼륨 정의
