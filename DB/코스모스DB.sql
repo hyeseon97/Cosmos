@@ -6,7 +6,7 @@ use ssafy_project;
 
 CREATE TABLE `user` (
 	`user_num` INT AUTO_INCREMENT,
-    `user_id` VARCHAR(100),
+    `user_id` VARCHAR(101),
     `user_pw` VARCHAR(100),
     `user_name` VARCHAR(100),
 	`user_birth` VARCHAR(100),
