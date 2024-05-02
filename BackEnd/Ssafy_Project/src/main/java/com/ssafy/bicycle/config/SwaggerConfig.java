@@ -24,7 +24,7 @@ public class SwaggerConfig {
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("SSAFY 10기 BOARD REST API")
+				.title("SSAFY 10기 COSMOS REST API")
 				.description("엄청나게 대단한 게시판을 위한 레스트풀한 서버 입니다.")
 				.version("0.1")
 				.build();
