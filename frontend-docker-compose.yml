@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./FrontEnd/Cosmos/vue-api-project
+    ports:
+      - "5173:5173"
+    networks:
+      - project-network
+
+networks:
+  project-network:
+    external: true

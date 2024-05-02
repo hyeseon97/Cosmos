@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: ssafy_project
+      MYSQL_USER: ssafy
+      MYSQL_PASSWORD: ssafy
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./DB/코스모스DB.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - project-network
+
+networks:
+  project-network:
+    external: true
+
+volumes:
+  mysql-data:
